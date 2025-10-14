@@ -28,7 +28,7 @@ export default function MetricDetail() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Metric Not Found</h1>
+          <h1 className="text-4xl font-bold text-foreground mb-4">Metric Not Found</h1>
           <Link href="/">
             <Button data-testid="button-back-home">
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -99,7 +99,7 @@ export default function MetricDetail() {
             <BookOpen className="w-7 h-7 text-primary" />
             <h2 className="text-3xl font-bold text-primary">What Is It?</h2>
           </div>
-          <div className="text-[1.1rem] leading-[1.8] text-gray-700 space-y-4">
+          <div className="text-[1.1rem] leading-[1.8] text-muted-foreground space-y-4">
             <p>{addTooltips(metric.definition)}</p>
           </div>
         </section>
@@ -110,7 +110,7 @@ export default function MetricDetail() {
             <Target className="w-7 h-7 text-primary" />
             <h2 className="text-3xl font-bold text-primary">Why It Matters</h2>
           </div>
-          <div className="text-[1.1rem] leading-[1.8] text-gray-700">
+          <div className="text-[1.1rem] leading-[1.8] text-muted-foreground">
             <p>{addTooltips(metric.whyItMatters)}</p>
           </div>
         </section>
@@ -118,21 +118,21 @@ export default function MetricDetail() {
         {/* Formula Section */}
         <section className="mb-12" data-testid="section-formula">
           <h2 className="text-3xl font-bold text-primary mb-5">The Formula</h2>
-          <Card className="bg-gray-100 border-l-4 border-primary p-6">
-            <div className="font-mono text-xl text-blue-900 font-semibold mb-3" data-testid="formula">
+          <Card className="bg-muted border-l-4 border-primary p-6">
+            <div className="font-mono text-xl text-primary font-semibold mb-3" data-testid="formula">
               {metric.formula}
             </div>
-            <p className="text-gray-700 text-base leading-relaxed">
+            <p className="text-muted-foreground text-base leading-relaxed">
               {metric.formulaPlain}
             </p>
           </Card>
           
           <div className="mt-6">
-            <h3 className="text-xl font-bold text-gray-800 mb-3">Sample Calculation:</h3>
-            <p className="text-gray-700 mb-3">{metric.sampleCalculation.description}</p>
+            <h3 className="text-xl font-bold text-foreground mb-3">Sample Calculation:</h3>
+            <p className="text-muted-foreground mb-3">{metric.sampleCalculation.description}</p>
             <ul className="space-y-2">
               {metric.sampleCalculation.steps.map((step, index) => (
-                <li key={index} className="text-gray-700 pl-4 border-l-2 border-gray-300">
+                <li key={index} className="text-muted-foreground pl-4 border-l-2 border">
                   {step}
                 </li>
               ))}
@@ -146,7 +146,7 @@ export default function MetricDetail() {
             <CalcIcon className="w-7 h-7 text-primary" />
             <h2 className="text-3xl font-bold text-primary">Interactive Calculator</h2>
           </div>
-          <Card className="bg-gray-50 border-2 border-gray-200 p-8">
+          <Card className="bg-card border-2 border-card-border p-8">
             <Calculator
               inputs={metric.calculator.inputs}
               onCalculate={handleCalculate}
@@ -185,11 +185,11 @@ export default function MetricDetail() {
             {metric.tips.map((tip, index) => (
               <li
                 key={index}
-                className="bg-gray-100 rounded-lg border-l-4 border-success p-4 text-[1.05rem] leading-relaxed flex items-start gap-3"
+                className="bg-success-light dark:bg-success-dark/20 rounded-lg border-l-4 border-success p-4 text-[1.05rem] leading-relaxed flex items-start gap-3"
                 data-testid={`tip-${index}`}
               >
-                <Lightbulb className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
-                <span>{addTooltips(tip)}</span>
+                <Lightbulb className="w-5 h-5 text-success dark:text-success-light flex-shrink-0 mt-0.5" />
+                <span className="text-foreground">{addTooltips(tip)}</span>
               </li>
             ))}
           </ul>
@@ -205,11 +205,11 @@ export default function MetricDetail() {
             {metric.commonMistakes.map((mistake, index) => (
               <li
                 key={index}
-                className="bg-warning-light rounded-lg border-l-4 border-warning p-4 text-[1.05rem] leading-relaxed flex items-start gap-3"
+                className="bg-warning-light dark:bg-warning-dark/20 rounded-lg border-l-4 border-warning p-4 text-[1.05rem] leading-relaxed flex items-start gap-3"
                 data-testid={`mistake-${index}`}
               >
-                <AlertTriangle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
-                <span>{addTooltips(mistake)}</span>
+                <AlertTriangle className="w-5 h-5 text-warning dark:text-warning-light flex-shrink-0 mt-0.5" />
+                <span className="text-foreground">{addTooltips(mistake)}</span>
               </li>
             ))}
           </ul>
