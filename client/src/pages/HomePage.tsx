@@ -26,7 +26,7 @@ export default function HomePage() {
         {/* Hero Section */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-12 px-8 rounded-xl shadow-lg mb-12">
           <h1 className="text-5xl font-bold text-center mb-4" data-testid="hero-title">
-            Startup Metrics Explained
+            Startup Metrics 101
           </h1>
           <p className="text-xl text-center max-w-3xl mx-auto opacity-90 leading-relaxed">
             Master the 15 essential business metrics every startup professional should know. 

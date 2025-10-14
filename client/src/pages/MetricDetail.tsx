@@ -162,19 +162,6 @@ export default function MetricDetail() {
           </Card>
         </section>
 
-        {/* Chart Section */}
-        {metric.hasChart && result !== null && chartData.data.length > 0 && (
-          <section className="mb-12" data-testid="section-chart">
-            <h2 className="text-3xl font-bold text-primary mb-5">Visualization</h2>
-            <MetricChart
-              type={metric.chartType!}
-              data={chartData.data}
-              labels={chartData.labels}
-              title={`${metric.name} Trend`}
-            />
-          </section>
-        )}
-
         {/* Tips Section */}
         <section className="mb-12" data-testid="section-tips">
           <div className="flex items-center gap-3 mb-5">
