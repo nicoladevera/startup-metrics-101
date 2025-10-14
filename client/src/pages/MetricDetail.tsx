@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRoute, Link } from "wouter";
 import { getMetricById } from "@shared/metrics";
 import { Calculator } from "@/components/Calculator";
@@ -16,6 +16,12 @@ export default function MetricDetail() {
   
   const [calculatorValues, setCalculatorValues] = useState<Record<string, number>>({});
   const [result, setResult] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (metric) {
+      document.title = `Startup Metrics 101 - ${metric.name}`;
+    }
+  }, [metric]);
 
   const handleCalculate = useCallback((values: Record<string, number>) => {
     if (!metric) return;

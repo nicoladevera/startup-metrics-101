@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { METRICS } from "@shared/metrics";
 import { Card } from "@/components/ui/card";
@@ -9,6 +9,10 @@ import { Search } from "lucide-react";
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    document.title = "Startup Metrics 101 - Interactive Learning Platform";
+  }, []);
 
   const filteredMetrics = METRICS.filter(metric =>
     metric.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
