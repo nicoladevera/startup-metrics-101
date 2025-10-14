@@ -213,6 +213,38 @@ Each metric includes:
 ✅ Title persists when navigating between pages
 ✅ Direct navigation to metrics shows correct title
 
+### Session 4: UX and Mobile Optimization
+**Issues Reported**:
+1. Metric pages opening at random scroll positions (middle/bottom) instead of top
+2. Calculator values cut off on mobile (e.g., "$70,000/month" on Burn Rate page)
+
+**Fixes Applied**:
+
+1. **Scroll-to-Top Fix** (MetricDetail.tsx):
+   - Added `window.scrollTo(0, 0)` in useEffect when metric loads
+   - Ensures all metric pages always open at the top of the page
+   - Works on both desktop and mobile viewports
+
+2. **Mobile Calculator Responsiveness** (Calculator.tsx):
+   - Changed layout from horizontal-only to responsive stack:
+     - Mobile: Vertical stack (`flex-col`) - input on top, slider below
+     - Desktop: Horizontal layout (`sm:flex-row`)
+   - Input width optimization:
+     - Mobile: Full width (`w-full`) to accommodate long values
+     - Desktop: Auto width with minimum 180px (`sm:w-auto sm:min-w-[180px]`)
+   - Improved suffix handling:
+     - Adjusted padding for better spacing (`pr-16 sm:pr-20`)
+     - Made suffix text slightly smaller (`text-sm`)
+   - Prevents text overflow and ensures values like "$70,000/month" display fully
+
+**E2E Test Results** (18/18 steps passed):
+✅ Mobile viewport: Page scrolls to top when opening Burn Rate from homepage
+✅ Mobile: Calculator input "$70,000/month" fully visible without cutoff
+✅ Desktop viewport: Page scrolls to top when opening MRR from homepage  
+✅ Desktop: All calculator inputs properly visible and formatted
+✅ Navigation between metrics maintains scroll-to-top behavior
+✅ Responsive layout adapts correctly between mobile and desktop
+
 ### Architect Reviews
 - **Session 1 - Review 1**: Identified emoji icons, missing dark mode, missing data-testids
 - **Session 1 - Review 2**: Confirmed all fixes applied correctly
