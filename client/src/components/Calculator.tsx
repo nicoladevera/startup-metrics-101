@@ -30,13 +30,13 @@ export function Calculator({ inputs, onCalculate }: CalculatorProps) {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {inputs.map((input) => (
         <div key={input.name} className="space-y-3" data-testid={`input-group-${input.name}`}>
-          <Label className="text-base font-semibold text-gray-700">
+          <Label className="text-base font-semibold text-foreground">
             {input.label}
           </Label>
           <div className="flex items-center gap-4">
             <div className="relative">
               {input.prefix && (
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
                   {input.prefix}
                 </span>
               )}
@@ -53,7 +53,7 @@ export function Calculator({ inputs, onCalculate }: CalculatorProps) {
                 data-testid={`input-${input.name}`}
               />
               {input.suffix && (
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
                   {input.suffix}
                 </span>
               )}
