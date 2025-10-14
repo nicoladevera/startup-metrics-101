@@ -144,7 +144,7 @@ Each metric includes:
 ## Recent Changes (Latest Session)
 **Date**: October 14, 2025
 
-### Critical Fixes Applied
+### Session 1: Initial Production Release
 1. **Icon System Overhaul**:
    - Replaced ALL emoji icons with Lucide React icons
    - Updated metrics.ts: changed `icon` field to `iconName` with proper Lucide names
@@ -157,18 +157,45 @@ Each metric includes:
    - Created ThemeProvider component with localStorage persistence
    - Added ThemeToggle component
    - Integrated theme system in App.tsx
-   - All colors now adapt to light/dark mode
 
 3. **Test Coverage Enhancement**:
    - Added data-testid to all Link components
    - Verified all interactive elements are testable
    - Ran comprehensive e2e test suite (30/30 steps passed)
-   - Targeted icon verification tests (all passed)
+
+### Session 2: Dark Mode Fixes
+**Issue**: Dark mode working on homepage but metric detail pages had unreadable content
+
+**Root Cause**: Hard-coded color classes (text-gray-*, bg-gray-*, etc.) that don't adapt to theme changes
+
+**Fixes Applied**:
+
+1. **MetricDetail.tsx** - Replaced all hard-coded colors with semantic tokens:
+   - Text: text-gray-700/800/900 → text-foreground/text-muted-foreground
+   - Backgrounds: bg-gray-50/100 → bg-card/bg-muted
+   - Borders: border-gray-200/300 → border
+   - Tips section: Added dark:bg-success-dark/20 and dark:text-success-light
+   - Mistakes section: Added dark:bg-warning-dark/20 and dark:text-warning-light
+
+2. **Calculator.tsx** - Fixed input labels and prefix/suffix colors:
+   - Labels: text-gray-700 → text-foreground
+   - Prefix/suffix: text-gray-500 → text-muted-foreground
+
+3. **ResultDisplay.tsx** - Added dark mode variants:
+   - Result label: text-gray-600 → text-muted-foreground
+   - Added dark mode variants for success/warning/error backgrounds
+
+**E2E Test Results** (26/26 steps passed):
+✅ All text readable in dark mode on all metric detail pages
+✅ Calculator inputs, labels, and results readable
+✅ Tips and mistakes sections with proper contrast
+✅ Seamless light/dark mode switching
 
 ### Architect Reviews
-- **Review 1**: Identified emoji icons, missing dark mode, missing data-testids
-- **Review 2**: Confirmed all fixes applied correctly
-- **Final Review**: Approved for production deployment
+- **Session 1 - Review 1**: Identified emoji icons, missing dark mode, missing data-testids
+- **Session 1 - Review 2**: Confirmed all fixes applied correctly
+- **Session 1 - Final Review**: Approved for production deployment
+- **Session 2 - Review**: Confirmed dark mode fixes complete, production-ready
 
 ## Running the Application
 The workflow "Start application" runs `npm run dev` which:
