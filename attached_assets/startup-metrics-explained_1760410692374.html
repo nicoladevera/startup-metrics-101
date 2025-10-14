@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Metrics Explained</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: #F9FAFB;
+            color: #111827;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            margin: 30px auto;
+            max-width: 600px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1em;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #2563EB;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            border-color: #2563EB;
+        }
+
+        .metric-card-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .metric-card-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #2563EB;
+            margin-bottom: 10px;
+        }
+
+        .metric-card-description {
+            color: #6B7280;
+            font-size: 0.95em;
+        }
+
+        .metric-detail {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2563EB;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: background 0.3s;
+        }
+
+        .back-button:hover {
+            background: #1E40AF;
+        }
+
+        .metric-title {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #2563EB;
+            padding-bottom: 15px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #2563EB;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-content {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #374151;
+        }
+
+        .formula-box {
+            background: #F3F4F6;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #2563EB;
+            margin: 20px 0;
+        }
+
+        .formula {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            color: #1E40AF;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .calculator-section {
+            background: #F9FAFB;
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #E5E7EB;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .input-field {
+            flex: 0 0 150px;
+            padding: 12px;
+            font-size: 1em;
+            border: 2px solid #E5E7EB;
+            border-radius: 6px;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #2563EB;
+        }
+
+        .slider {
+            flex: 1;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #E5E7EB;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #2563EB;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            background: #1E40AF;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #2563EB;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        .result-display {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .result-label {
+            font-size: 1.2em;
+            color: #6B7280;
+            margin-bottom: 10px;
+        }
+
+        .result-value {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .result-value.green {
+            color: #10B981;
+        }
+
+        .result-value.yellow {
+            color: #F59E0B;
+        }
+
+        .result-value.red {
+            color: #EF4444;
+        }
+
+        .result-feedback {
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            margin-top: 15px;
+        }
+
+        .result-feedback.green {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .result-feedback.yellow {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .result-feedback.red {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-list li {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #F3F4F6;
+            border-radius: 8px;
+            border-left: 4px solid #10B981;
+            font-size: 1.05em;
+        }
+
+        .tips-list li:before {
+            content: "💡 ";
+            margin-right: 10px;
+        }
+
+        .mistakes-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mistakes-list li {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #FEF3C7;
+            border-radius: 8px;
+            border-left: 4px solid #F59E0B;
+            font-size: 1.05em;
+        }
+
+        .mistakes-list li:before {
+            content: "⚠️ ";
+            margin-right: 10px;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 2px dotted #2563EB;
+            cursor: help;
+            color: #2563EB;
+            font-weight: 600;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 300px;
+            background-color: #1F2937;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 12px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -150px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9em;
+            line-height: 1.5;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1F2937 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .chart-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .header p {
+                font-size: 1em;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metric-detail {
+                padding: 20px;
+            }
+
+            .metric-title {
+                font-size: 1.8em;
+            }
+
+            .section-title {
+                font-size: 1.4em;
+            }
+
+            .input-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .input-field {
+                flex: 1;
+            }
+
+            .result-value {
+                font-size: 2em;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2em;
+            color: #6B7280;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Tooltip component
+        const Tooltip = ({ term, definition }) => (
+            <span className="tooltip">
+                {term}
+                <span className="tooltiptext">{definition}</span>
+            </span>
+        );
+
+        // Definitions for tooltips
+        const TOOLTIPS = {
+            'COGS': 'Cost of Goods Sold: The direct costs of producing the goods or services you sell',
+            'Variable costs': 'Costs that change in proportion to your business activity (e.g., materials, shipping)',
+            'Fixed costs': 'Costs that stay the same regardless of business activity (e.g., rent, salaries)',
+            'Churn': 'The rate at which customers stop using your product or service',
+            'Expansion revenue': 'Additional revenue from existing customers through upgrades or add-ons',
+            'Upsell': 'Selling a more expensive version or add-ons to existing customers',
+            'Downsell': 'When customers downgrade to a cheaper plan',
+            'ARR': 'Annual Recurring Revenue: The yearly value of recurring subscriptions',
+            'MRR': 'Monthly Recurring Revenue: The monthly value of recurring subscriptions',
+            'CAC Payback Period': 'How long it takes to recover the cost of acquiring a customer',
+            'Gross profit': 'Revenue minus the direct costs of producing your product/service',
+            'Net profit': 'Total revenue minus all expenses (both direct and indirect)',
+            'SaaS': 'Software as a Service: Software delivered online as a subscription',
+            'Unit economics': 'The revenue and costs associated with a single unit of your business'
+        };
+
+        // Helper function to add tooltips to text
+        const addTooltips = (text) => {
+            let result = text;
+            Object.keys(TOOLTIPS).forEach(term => {
+                const regex = new RegExp(`\\b${term}\\b`, 'gi');
+                if (text.match(regex)) {
+                    result = result.replace(
+                        regex,
+                        `<span class="tooltip">${term}<span class="tooltiptext">${TOOLTIPS[term]}</span></span>`
+                    );
+                }
+            });
+            return result;
+        };
+
+        // Input component with label, number input, and slider
+        const InputControl = ({ label, value, onChange, min, max, step, unit }) => (
+            <div className="input-group">
+                <label className="input-label">{label}</label>
+                <div className="input-wrapper">
+                    <input
+                        type="number"
+                        className="input-field"
+                        value={value}
+                        onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
+                        min={min}
+                        max={max}
+                        step={step}
+                    />
+                    <input
+                        type="range"
+                        className="slider"
+                        value={value}
+                        onChange={(e) => onChange(parseFloat(e.target.value))}
+                        min={min}
+                        max={max}
+                        step={step}
+                    />
+                    {unit && <span style={{ minWidth: '40px', fontWeight: '600' }}>{unit}</span>}
+                </div>
+            </div>
+        );
+
+        // Result display with color coding
+        const ResultDisplay = ({ label, value, status, feedback, unit = '' }) => (
+            <div className="result-display">
+                <div className="result-label">{label}</div>
+                <div className={`result-value ${status}`}>
+                    {typeof value === 'number' ? value.toLocaleString() : value}{unit}
+                </div>
+                <div className={`result-feedback ${status}`}>
+                    {feedback}
+                </div>
+            </div>
+        );
+
+        // Chart component wrapper
+        const ChartComponent = ({ type, data, options }) => {
+            const chartRef = useRef(null);
+            const chartInstance = useRef(null);
+
+            useEffect(() => {
+                if (chartRef.current) {
+                    const ctx = chartRef.current.getContext('2d');
+                    
+                    if (chartInstance.current) {
+                        chartInstance.current.destroy();
+                    }
+
+                    chartInstance.current = new Chart(ctx, {
+                        type: type,
+                        data: data,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            ...options
+                        }
+                    });
+                }
+
+                return () => {
+                    if (chartInstance.current) {
+                        chartInstance.current.destroy();
+                    }
+                };
+            }, [type, data, options]);
+
+            return (
+                <div className="chart-container">
+                    <canvas ref={chartRef}></canvas>
+                </div>
+            );
+        };
+
+        // Metrics data
+        const METRICS_DATA = [
+            {
+                id: 'mrr',
+                icon: '💰',
+                title: 'Monthly Recurring Revenue (MRR)',
+                shortDescription: 'The predictable revenue your business generates each month from subscriptions.',
+                definition: 'MRR is the total amount of predictable revenue your business expects to receive every month from active subscriptions. Think of it like a monthly allowance your business receives - it\'s the steady, reliable income you can count on.',
+                analogy: 'Imagine you have a lemonade stand with a subscription service. If 10 customers pay you $5 every month for unlimited lemonade, your MRR is $50. It\'s your baseline income before any one-time sales.',
+                whyItMatters: 'MRR is the heartbeat of subscription businesses. Investors and founders care about it because it shows predictable, recurring income. Unlike one-time sales, MRR indicates business sustainability. Growing MRR means your business is healthy and expanding. Flat or declining MRR signals trouble ahead.',
+                formula: 'MRR = Number of Customers × Average Revenue Per Customer Per Month',
+                sampleCalculation: {
+                    description: 'A SaaS company has 100 customers. 50 pay $10/month, 30 pay $20/month, and 20 pay $50/month.',
+                    steps: [
+                        'Calculate revenue from each tier: (50 × $10) + (30 × $20) + (20 × $50)',
+                        'Add them up: $500 + $600 + $1,000 = $2,100',
+                        'Your MRR is $2,100'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'customers', label: 'Number of Customers', min: 0, max: 10000, step: 1, default: 100 },
+                        { key: 'avgRevenue', label: 'Average Revenue Per Customer ($/month)', min: 0, max: 1000, step: 1, default: 50, unit: '$' }
+                    ],
+                    calculate: (inputs) => inputs.customers * inputs.avgRevenue,
+                    evaluate: (result) => {
+                        if (result >= 10000) return { status: 'green', feedback: 'Excellent! You have strong recurring revenue.' };
+                        if (result >= 1000) return { status: 'yellow', feedback: 'Good start! Focus on growing this number.' };
+                        return { status: 'red', feedback: 'Early stage. Work on acquiring more customers or increasing prices.' };
+                    },
+                    unit: '$'
+                },
+                tips: [
+                    'Track MRR growth month-over-month - consistent 10-15% monthly growth is excellent for early-stage startups',
+                    'Break down MRR into New MRR (new customers), Expansion MRR (upgrades), and Churned MRR (lost customers) to understand what\'s driving changes',
+                    'For B2B SaaS, $10K-$100K MRR is often the sweet spot for seed funding; $100K+ MRR shows product-market fit',
+                    'Don\'t confuse MRR with cash collected - some customers pay annually but you should still count monthly value',
+                    'If you have annual plans, divide the annual amount by 12 to normalize it into MRR'
+                ],
+                mistakes: [
+                    'Including one-time setup fees or professional services revenue in MRR (it should only be recurring subscription revenue)',
+                    'Counting the full value of annual contracts as MRR instead of dividing by 12',
+                    'Not accounting for customers who are in free trials - only count paying customers',
+                    'Forgetting to subtract churned MRR when calculating month-over-month growth'
+                ]
+            },
+            {
+                id: 'arr',
+                icon: '📊',
+                title: 'Annual Recurring Revenue (ARR)',
+                shortDescription: 'The yearly value of your subscription revenue, normalized to an annual figure.',
+                definition: 'ARR is your monthly recurring revenue multiplied by 12, representing the yearly value of your subscription business. It\'s the standard metric for measuring the size of subscription businesses.',
+                analogy: 'If MRR is your monthly allowance, ARR is your yearly salary. It\'s used to talk about the scale of a business - a "$1 million ARR business" means they generate $1M annually from subscriptions.',
+                whyItMatters: 'ARR is the universal language investors use to size up subscription businesses. Reaching $1M ARR is considered product-market fit for B2B SaaS. Reaching $10M ARR makes you series B ready. It\'s easier to compare businesses using ARR than MRR, and it\'s the metric VCs use in valuations (typically 5-15x ARR for SaaS companies).',
+                formula: 'ARR = MRR × 12',
+                sampleCalculation: {
+                    description: 'Your SaaS company has an MRR of $50,000.',
+                    steps: [
+                        'Take your MRR: $50,000',
+                        'Multiply by 12: $50,000 × 12',
+                        'Your ARR is $600,000'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'mrr', label: 'Monthly Recurring Revenue (MRR)', min: 0, max: 1000000, step: 1000, default: 10000, unit: '$' }
+                    ],
+                    calculate: (inputs) => inputs.mrr * 12,
+                    evaluate: (result) => {
+                        if (result >= 10000000) return { status: 'green', feedback: 'Excellent! You\'re at scale with $10M+ ARR.' };
+                        if (result >= 1000000) return { status: 'green', feedback: 'Great! You\'ve achieved product-market fit ($1M+ ARR).' };
+                        if (result >= 100000) return { status: 'yellow', feedback: 'Good progress! Working toward $1M ARR milestone.' };
+                        return { status: 'yellow', feedback: 'Early stage. Focus on reaching $100K ARR first.' };
+                    },
+                    unit: '$'
+                },
+                tips: [
+                    '$1M ARR is the magic number for proving product-market fit in B2B SaaS',
+                    '$10M ARR is typically when you\'re ready for Series B funding',
+                    'Enterprise companies often use ARR, while consumer companies may stick with MRR',
+                    'ARR helps you think about the business at scale and set annual goals',
+                    'When pitching investors, always talk in ARR terms - it\'s what they understand'
+                ],
+                mistakes: [
+                    'Using ARR for businesses without predictable recurring revenue (it doesn\'t work for marketplaces or e-commerce)',
+                    'Confusing bookings (signed contracts) with ARR (actual recurring revenue)',
+                    'Including non-recurring revenue like one-time fees or professional services',
+                    'Talking about ARR when you\'re below $100K (just use MRR instead - it sounds better)'
+                ]
+            },
+            {
+                id: 'burn-rate',
+                icon: '🔥',
+                title: 'Burn Rate',
+                shortDescription: 'How much cash your company spends each month beyond what it brings in.',
+                definition: 'Burn rate is the amount of money your company loses each month, calculated as monthly expenses minus monthly revenue. It tells you how quickly you\'re spending your cash reserves.',
+                analogy: 'Imagine your company\'s bank account is a gas tank. Burn rate is how fast you\'re using up that gas. If you have $100K in the bank and burn $10K/month, you have 10 months of fuel left.',
+                whyItMatters: 'Burn rate determines how long you can survive before running out of money. Investors care deeply because high burn with slow growth means you\'ll need more funding sooner. Founders need to watch it like a hawk - running out of cash is the #1 reason startups die. Lower burn gives you more runway to find product-market fit.',
+                formula: 'Burn Rate = Monthly Expenses - Monthly Revenue',
+                sampleCalculation: {
+                    description: 'Your startup spends $50,000/month on salaries, rent, and tools, but only makes $15,000 in revenue.',
+                    steps: [
+                        'Monthly expenses: $50,000',
+                        'Monthly revenue: $15,000',
+                        'Burn rate: $50,000 - $15,000 = $35,000/month'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'expenses', label: 'Monthly Expenses', min: 0, max: 1000000, step: 1000, default: 50000, unit: '$' },
+                        { key: 'revenue', label: 'Monthly Revenue', min: 0, max: 1000000, step: 1000, default: 15000, unit: '$' }
+                    ],
+                    calculate: (inputs) => inputs.expenses - inputs.revenue,
+                    evaluate: (result) => {
+                        if (result <= 0) return { status: 'green', feedback: 'Excellent! You\'re profitable or break-even.' };
+                        if (result <= 25000) return { status: 'yellow', feedback: 'Reasonable burn for an early-stage startup.' };
+                        return { status: 'red', feedback: 'High burn! Make sure you have enough runway or grow revenue fast.' };
+                    },
+                    unit: '$/month'
+                },
+                tips: [
+                    'Track gross burn (total spend) and net burn (spend minus revenue) separately',
+                    'For pre-revenue startups, gross burn = net burn since revenue is zero',
+                    'Aim to decrease burn rate as a % of revenue raised (e.g., don\'t burn 50% of your seed round in 3 months)',
+                    'Early-stage startups typically have 12-18 months of runway; start fundraising when you have 6-9 months left',
+                    'The best way to decrease burn isn\'t always cutting costs - growing revenue faster can be more effective'
+                ],
+                mistakes: [
+                    'Not accounting for irregular expenses (annual software subscriptions, quarterly taxes, etc.)',
+                    'Ignoring upcoming expenses like new hires you\'ve already committed to',
+                    'Burning cash too quickly without milestones to show for it - investors hate "capital inefficiency"',
+                    'Waiting too long to cut burn when revenue growth stalls'
+                ]
+            },
+            {
+                id: 'runway',
+                icon: '✈️',
+                title: 'Runway',
+                shortDescription: 'How many months your startup can survive before running out of cash.',
+                definition: 'Runway is the number of months your company can operate before depleting its cash reserves, assuming your burn rate stays constant. It\'s your financial lifeline.',
+                analogy: 'Think of runway like the fuel gauge on a road trip. If you have a full tank ($120K) and burn fuel at 1 gallon per mile ($10K/month), you can travel 12 miles (12 months) before running out of gas.',
+                whyItMatters: 'Runway is your startup\'s oxygen. It determines your urgency for fundraising, how much risk you can take, and your negotiating position with investors. Too little runway (< 6 months) means desperation. Too much runway with no progress means you\'re not moving fast enough. The sweet spot is 12-18 months, giving you time to hit milestones without rushing.',
+                formula: 'Runway (months) = Cash in Bank ÷ Monthly Burn Rate',
+                sampleCalculation: {
+                    description: 'You have $180,000 in the bank and burn $15,000/month.',
+                    steps: [
+                        'Cash in bank: $180,000',
+                        'Monthly burn: $15,000',
+                        'Runway: $180,000 ÷ $15,000 = 12 months'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'cash', label: 'Cash in Bank', min: 0, max: 10000000, step: 10000, default: 180000, unit: '$' },
+                        { key: 'burn', label: 'Monthly Burn Rate', min: 1, max: 500000, step: 1000, default: 15000, unit: '$' }
+                    ],
+                    calculate: (inputs) => inputs.burn > 0 ? inputs.cash / inputs.burn : 0,
+                    evaluate: (result) => {
+                        if (result >= 18) return { status: 'green', feedback: 'Excellent! You have plenty of runway.' };
+                        if (result >= 12) return { status: 'green', feedback: 'Healthy runway. You have time to execute.' };
+                        if (result >= 6) return { status: 'yellow', feedback: 'Acceptable, but start thinking about fundraising or reducing burn.' };
+                        return { status: 'red', feedback: 'Critical! Start fundraising immediately or cut costs.' };
+                    },
+                    unit: ' months'
+                },
+                tips: [
+                    'Start fundraising when you have 6-9 months of runway left - raising takes 3-6 months',
+                    'Runway isn\'t just about survival - it\'s about giving yourself time to hit milestones that increase valuation',
+                    'Always have a "plan B" to extend runway (cutting costs, bridge financing, or revenue initiatives)',
+                    'Growing revenue is the best way to extend runway - each dollar of MRR directly reduces burn',
+                    'Investors love seeing startups extend runway through resourcefulness, not just cost-cutting'
+                ],
+                mistakes: [
+                    'Not accounting for upcoming large expenses (hiring, office lease, equipment)',
+                    'Assuming burn rate will stay constant when you\'re planning to hire or increase spending',
+                    'Letting runway drop below 6 months before starting to fundraise',
+                    'Extending runway by cutting everything - sometimes you need to spend to grow'
+                ],
+                chartType: 'line',
+                generateChartData: (inputs) => {
+                    const months = [];
+                    const cashData = [];
+                    const currentCash = inputs.cash;
+                    const monthlyBurn = inputs.burn;
+                    
+                    for (let i = 0; i <= Math.min(24, Math.ceil(currentCash / monthlyBurn)); i++) {
+                        months.push(`Month ${i}`);
+                        cashData.push(Math.max(0, currentCash - (monthlyBurn * i)));
+                    }
+                    
+                    return {
+                        labels: months,
+                        datasets: [{
+                            label: 'Cash Remaining ($)',
+                            data: cashData,
+                            borderColor: '#2563EB',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            tension: 0.1,
+                            fill: true
+                        }]
+                    };
+                }
+            },
+            {
+                id: 'cac',
+                icon: '💸',
+                title: 'Customer Acquisition Cost (CAC)',
+                shortDescription: 'The total cost to acquire a single new customer, including all sales and marketing expenses.',
+                definition: 'CAC is the average amount you spend on sales and marketing to acquire one new customer. It includes ad spend, salaries, tools, and any other costs directly related to customer acquisition.',
+                analogy: 'Imagine you\'re running a lemonade stand. You spend $50 on flyers and $50 on a sign to attract customers. If you get 10 new customers from that effort, your CAC is $100 ÷ 10 = $10 per customer.',
+                whyItMatters: 'CAC determines whether your business model is sustainable. If you spend $500 to acquire a customer who only pays you $300 total, you\'re in trouble. Investors obsess over CAC because it shows how efficiently you grow. Lower CAC means you can scale faster with less capital. The key is comparing CAC to LTV (lifetime value) - you want to make at least 3x what you spend to acquire a customer.',
+                formula: 'CAC = Total Sales & Marketing Expenses ÷ Number of New Customers Acquired',
+                sampleCalculation: {
+                    description: 'Your startup spent $30,000 on marketing and $20,000 on sales salaries last month, and acquired 100 new customers.',
+                    steps: [
+                        'Total S&M expenses: $30,000 + $20,000 = $50,000',
+                        'New customers: 100',
+                        'CAC: $50,000 ÷ 100 = $500 per customer'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'smExpenses', label: 'Total Sales & Marketing Expenses', min: 0, max: 1000000, step: 1000, default: 50000, unit: '$' },
+                        { key: 'newCustomers', label: 'Number of New Customers Acquired', min: 1, max: 10000, step: 1, default: 100 }
+                    ],
+                    calculate: (inputs) => inputs.newCustomers > 0 ? inputs.smExpenses / inputs.newCustomers : 0,
+                    evaluate: (result) => {
+                        if (result <= 100) return { status: 'green', feedback: 'Excellent! Very efficient customer acquisition.' };
+                        if (result <= 500) return { status: 'yellow', feedback: 'Reasonable CAC. Compare to LTV to ensure profitability.' };
+                        return { status: 'red', feedback: 'High CAC! Make sure your LTV is significantly higher (3x+).' };
+                    },
+                    unit: '$'
+                },
+                tips: [
+                    'Always calculate CAC over the same period as customer acquisition (usually monthly or quarterly)',
+                    'Include ALL sales and marketing costs: salaries, ads, software, agencies, etc.',
+                    'Track CAC by channel (paid ads, organic, referrals) to find your most efficient sources',
+                    'CAC typically increases as you scale - the easiest customers come first',
+                    'Aim for a CAC payback period of < 12 months (time to recover acquisition cost from customer revenue)'
+                ],
+                mistakes: [
+                    'Not including sales and marketing salaries in CAC calculation',
+                    'Excluding overhead like software tools (CRM, email marketing, analytics)',
+                    'Comparing CAC across different time periods without accounting for lag between spend and customer acquisition',
+                    'Ignoring that organic and referral channels have hidden costs (time, incentives, etc.)'
+                ]
+            },
+            {
+                id: 'ltv',
+                icon: '💎',
+                title: 'Lifetime Value (LTV)',
+                shortDescription: 'The total revenue you expect from a customer over their entire relationship with your company.',
+                definition: 'LTV (or CLV - Customer Lifetime Value) is the total amount of money a customer will pay you over the entire time they remain a customer. It\'s your average revenue per customer multiplied by how long they typically stay.',
+                analogy: 'Think of a gym membership. If a member pays $50/month and typically stays for 24 months before canceling, their lifetime value is $50 × 24 = $1,200. That\'s how much the gym can expect to earn from each member.',
+                whyItMatters: 'LTV is the other half of the unit economics equation (the first half being CAC). It tells you how much you can afford to spend acquiring customers. If LTV is $1,000, you can spend up to $333 on acquisition and still maintain a healthy 3:1 LTV:CAC ratio. High LTV businesses can spend aggressively on growth. Low LTV businesses must be extremely efficient or increase prices/retention.',
+                formula: 'LTV = Average Revenue Per Customer Per Month × Average Customer Lifespan (months)',
+                sampleCalculation: {
+                    description: 'Your SaaS customers pay an average of $100/month and stay for an average of 36 months.',
+                    steps: [
+                        'Monthly revenue per customer: $100',
+                        'Average customer lifespan: 36 months',
+                        'LTV: $100 × 36 = $3,600'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'avgRevenue', label: 'Average Revenue Per Customer ($/month)', min: 0, max: 10000, step: 10, default: 100, unit: '$' },
+                        { key: 'lifespan', label: 'Average Customer Lifespan (months)', min: 1, max: 120, step: 1, default: 36 }
+                    ],
+                    calculate: (inputs) => inputs.avgRevenue * inputs.lifespan,
+                    evaluate: (result) => {
+                        if (result >= 5000) return { status: 'green', feedback: 'Excellent! High LTV gives you room for aggressive growth.' };
+                        if (result >= 1000) return { status: 'yellow', feedback: 'Decent LTV. Focus on retention to increase this number.' };
+                        return { status: 'red', feedback: 'Low LTV. Increase prices, reduce churn, or add upsells.' };
+                    },
+                    unit: '$'
+                },
+                tips: [
+                    'Calculate LTV as: (Average Revenue per Customer per Month) × (1 / Monthly Churn Rate)',
+                    'For more accuracy, account for gross margin: LTV = (ARPC × Customer Lifespan × Gross Margin %)',
+                    'Track cohort-based LTV - customers acquired in different months may have different values',
+                    'Include expansion revenue from upsells and cross-sells in your LTV calculation',
+                    'LTV can grow over time as you reduce churn and increase upsells - track it monthly'
+                ],
+                mistakes: [
+                    'Using too short of a time horizon - calculate actual long-term value, not just 12-month value',
+                    'Not accounting for gross margin - you should use gross profit per customer, not just revenue',
+                    'Ignoring that early customers may have very different LTV than later customers',
+                    'Calculating LTV on too small a sample size (need at least 100+ customers for accuracy)'
+                ],
+                chartType: 'bar',
+                generateChartData: (inputs) => {
+                    const months = [];
+                    const cumulativeValue = [];
+                    
+                    for (let i = 1; i <= Math.min(inputs.lifespan, 48); i++) {
+                        months.push(`Month ${i}`);
+                        cumulativeValue.push(inputs.avgRevenue * i);
+                    }
+                    
+                    return {
+                        labels: months.filter((_, i) => i % Math.ceil(months.length / 12) === 0),
+                        datasets: [{
+                            label: 'Cumulative Customer Value ($)',
+                            data: cumulativeValue.filter((_, i) => i % Math.ceil(cumulativeValue.length / 12) === 0),
+                            backgroundColor: '#10B981',
+                        }]
+                    };
+                }
+            },
+            {
+                id: 'ltv-cac',
+                icon: '⚖️',
+                title: 'LTV:CAC Ratio',
+                shortDescription: 'Compares how much value a customer brings versus how much you spent to acquire them.',
+                definition: 'The LTV:CAC ratio divides your customer lifetime value by your customer acquisition cost. It\'s the ultimate test of your unit economics - are you making more than you\'re spending on each customer?',
+                analogy: 'Imagine you buy a vending machine (CAC) for $3,000, and over its lifetime, it generates $9,000 in profit (LTV). Your LTV:CAC ratio is 3:1, meaning you made $3 for every $1 invested. That\'s a good investment.',
+                whyItMatters: 'This ratio is the single most important metric for investors evaluating a startup\'s business model. A ratio of 3:1 or higher means you have healthy unit economics and can scale profitably. Below 1:1 means you\'re losing money on every customer. Between 1-3 is acceptable for early-stage but needs improvement. This metric determines whether your business can sustainably grow.',
+                formula: 'LTV:CAC Ratio = Lifetime Value ÷ Customer Acquisition Cost',
+                sampleCalculation: {
+                    description: 'Your LTV is $3,600 per customer, and your CAC is $600.',
+                    steps: [
+                        'LTV: $3,600',
+                        'CAC: $600',
+                        'LTV:CAC ratio: $3,600 ÷ $600 = 6:1'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'ltv', label: 'Lifetime Value (LTV)', min: 0, max: 100000, step: 100, default: 3600, unit: '$' },
+                        { key: 'cac', label: 'Customer Acquisition Cost (CAC)', min: 1, max: 10000, step: 10, default: 600, unit: '$' }
+                    ],
+                    calculate: (inputs) => inputs.cac > 0 ? inputs.ltv / inputs.cac : 0,
+                    evaluate: (result) => {
+                        if (result >= 3) return { status: 'green', feedback: 'Excellent! Your unit economics are healthy and scalable.' };
+                        if (result >= 1.5) return { status: 'yellow', feedback: 'Acceptable, but aim for 3:1 or better to prove strong unit economics.' };
+                        return { status: 'red', feedback: 'Warning: You\'re spending too much to acquire customers relative to their value.' };
+                    },
+                    unit: ':1'
+                },
+                tips: [
+                    '3:1 is the gold standard - it means you make $3 for every $1 spent on acquisition',
+                    'Above 5:1 might mean you\'re not spending enough on growth and leaving money on the table',
+                    'Enterprise SaaS typically has higher ratios (5-7:1) than consumer products (3-4:1)',
+                    'Track this ratio monthly - it should improve over time as you optimize CAC and reduce churn',
+                    'Don\'t just improve CAC - increasing LTV through upsells and retention is often easier'
+                ],
+                mistakes: [
+                    'Celebrating a high ratio that\'s only high because you\'re not spending enough on customer acquisition',
+                    'Not accounting for gross margin in LTV (should use profit, not revenue)',
+                    'Comparing yourself to mature companies - early-stage startups can have worse ratios while figuring things out',
+                    'Focusing only on the ratio without considering absolute values (a 3:1 ratio on $10 CAC and $30 LTV is very different from $1,000 and $3,000)'
+                ],
+                chartType: 'bar',
+                generateChartData: (inputs) => {
+                    return {
+                        labels: ['CAC', 'LTV'],
+                        datasets: [{
+                            label: 'Value ($)',
+                            data: [inputs.cac, inputs.ltv],
+                            backgroundColor: ['#EF4444', '#10B981'],
+                        }]
+                    };
+                }
+            },
+            {
+                id: 'churn',
+                icon: '📉',
+                title: 'Churn Rate',
+                shortDescription: 'The percentage of customers who stop using your product in a given time period.',
+                definition: 'Churn rate is the percentage of customers who cancel or stop paying for your product in a specific time period (usually measured monthly). It\'s the opposite of retention.',
+                analogy: 'Imagine you run a gym. You start the month with 100 members. By month\'s end, 5 people canceled their memberships. Your monthly churn rate is 5/100 = 5%. You\'re "leaking" 5% of your members each month.',
+                whyItMatters: 'Churn is the silent killer of subscription businesses. Even a "small" 5% monthly churn means you lose half your customers in a year. Low churn (< 2% monthly) means customers love your product. High churn (> 7% monthly) means you have a leaky bucket - no matter how many customers you acquire, they\'re leaving just as fast. Retention is cheaper than acquisition, so reducing churn is often the highest-ROI activity.',
+                formula: 'Monthly Churn Rate = (Customers Lost in Month ÷ Customers at Start of Month) × 100',
+                sampleCalculation: {
+                    description: 'You started January with 200 customers. During January, 8 customers canceled.',
+                    steps: [
+                        'Customers at start: 200',
+                        'Customers lost: 8',
+                        'Churn rate: (8 ÷ 200) × 100 = 4%'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'startCustomers', label: 'Customers at Start of Month', min: 1, max: 100000, step: 1, default: 200 },
+                        { key: 'lostCustomers', label: 'Customers Lost This Month', min: 0, max: 10000, step: 1, default: 8 }
+                    ],
+                    calculate: (inputs) => inputs.startCustomers > 0 ? (inputs.lostCustomers / inputs.startCustomers) * 100 : 0,
+                    evaluate: (result) => {
+                        if (result <= 2) return { status: 'green', feedback: 'Excellent retention! Your customers love your product.' };
+                        if (result <= 5) return { status: 'yellow', feedback: 'Acceptable for early-stage, but work on improving retention.' };
+                        return { status: 'red', feedback: 'High churn - you have a retention problem. Fix this before focusing on growth.' };
+                    },
+                    unit: '%'
+                },
+                tips: [
+                    'Aim for < 2% monthly churn (< 25% annually) for SaaS businesses',
+                    'Consumer products typically have higher churn (5-7% monthly) than B2B (2-3% monthly)',
+                    'Track both customer churn and revenue churn (sometimes you lose small customers but retain big ones)',
+                    'Negative churn is possible if expansion revenue from existing customers exceeds lost revenue from churned customers',
+                    'Cohort analysis helps identify if certain customer segments or acquisition channels have higher churn'
+                ],
+                mistakes: [
+                    'Only tracking churn rate without understanding why customers are leaving (do exit surveys!)',
+                    'Not distinguishing between voluntary churn (customers choose to leave) and involuntary churn (credit card failures)',
+                    'Celebrating low churn when it\'s only low because you haven\'t been in business long enough to see it',
+                    'Focusing entirely on new customer acquisition when your churn is above 5% - fix retention first'
+                ],
+                chartType: 'line',
+                generateChartData: (inputs) => {
+                    const months = [];
+                    const customers = [];
+                    let currentCustomers = inputs.startCustomers;
+                    const churnRate = inputs.lostCustomers / inputs.startCustomers;
+                    
+                    for (let i = 0; i <= 12; i++) {
+                        months.push(`Month ${i}`);
+                        customers.push(Math.round(currentCustomers));
+                        currentCustomers = currentCustomers * (1 - churnRate);
+                    }
+                    
+                    return {
+                        labels: months,
+                        datasets: [{
+                            label: 'Customer Count',
+                            data: customers,
+                            borderColor: '#EF4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            tension: 0.1,
+                            fill: true
+                        }]
+                    };
+                }
+            },
+            {
+                id: 'nrr',
+                icon: '📈',
+                title: 'Net Revenue Retention (NRR)',
+                shortDescription: 'Measures how much revenue you retain from existing customers, including upgrades and downgrades.',
+                definition: 'NRR shows what percentage of revenue you keep from your existing customer base over time, accounting for churn, downgrades, and expansions (upsells/cross-sells). An NRR above 100% means your existing customers are paying you more over time, even without adding new customers.',
+                analogy: 'Imagine you rent out 10 apartments generating $10,000/month. Over the year: 2 tenants leave (-$2,000), 1 downgrade to a cheaper unit (-$500), but 3 others upgrade to premium units (+$3,000). Your NRR is 105% - you\'re making more from the same buildings.',
+                whyItMatters: 'NRR is the gold standard metric for subscription businesses. Above 120% NRR is considered world-class - it means your business can grow even with zero new customers. VCs love high NRR because it shows you\'re not just acquiring customers, but expanding relationships. Low NRR (< 90%) means you have a leaky bucket - you\'re losing more from churn than you\'re gaining from expansion.',
+                formula: 'NRR = [(Starting MRR + Expansion - Downgrades - Churn) ÷ Starting MRR] × 100',
+                sampleCalculation: {
+                    description: 'Starting MRR: $100,000. During the year: $20,000 in expansions, $5,000 in downgrades, $10,000 in churn.',
+                    steps: [
+                        'Starting MRR: $100,000',
+                        'Add expansion: +$20,000',
+                        'Subtract downgrades: -$5,000',
+                        'Subtract churn: -$10,000',
+                        'Ending MRR: $100,000 + $20,000 - $5,000 - $10,000 = $105,000',
+                        'NRR: ($105,000 ÷ $100,000) × 100 = 105%'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'startMRR', label: 'Starting MRR', min: 0, max: 10000000, step: 1000, default: 100000, unit: '$' },
+                        { key: 'expansion', label: 'Expansion Revenue', min: 0, max: 1000000, step: 1000, default: 20000, unit: '$' },
+                        { key: 'downgrades', label: 'Downgrade Revenue Lost', min: 0, max: 1000000, step: 1000, default: 5000, unit: '$' },
+                        { key: 'churnRevenue', label: 'Churned Revenue', min: 0, max: 1000000, step: 1000, default: 10000, unit: '$' }
+                    ],
+                    calculate: (inputs) => {
+                        if (inputs.startMRR === 0) return 0;
+                        const endingMRR = inputs.startMRR + inputs.expansion - inputs.downgrades - inputs.churnRevenue;
+                        return (endingMRR / inputs.startMRR) * 100;
+                    },
+                    evaluate: (result) => {
+                        if (result >= 120) return { status: 'green', feedback: 'World-class! Your existing customers are expanding significantly.' };
+                        if (result >= 100) return { status: 'green', feedback: 'Excellent! You\'re retaining and growing revenue from existing customers.' };
+                        if (result >= 90) return { status: 'yellow', feedback: 'Acceptable, but work on reducing churn or increasing expansion.' };
+                        return { status: 'red', feedback: 'Warning: You\'re losing revenue from existing customers faster than you can replace it.' };
+                    },
+                    unit: '%'
+                },
+                tips: [
+                    'Best-in-class SaaS companies have NRR of 120-130%',
+                    'NRR above 100% means you can grow without adding new customers (though you should still add them!)',
+                    'Focus on three levers: reduce churn, reduce downgrades, increase upsells/expansions',
+                    'Calculate NRR on a cohort basis (e.g., all customers acquired in Q1 2023) for more actionable insights',
+                    'Track expansion revenue as a separate metric - it\'s often easier to grow existing customers than acquire new ones'
+                ],
+                mistakes: [
+                    'Including new customer revenue in NRR calculation (it should only measure existing customer cohorts)',
+                    'Not tracking expansion revenue separately - you need to know what\'s driving your NRR',
+                    'Comparing early-stage NRR to mature companies (expansion takes time to develop)',
+                    'Ignoring that low NRR makes customer acquisition much more expensive - you need to replace lost revenue'
+                ]
+            },
+            {
+                id: 'gross-margin',
+                icon: '💵',
+                title: 'Gross Margin',
+                shortDescription: 'The percentage of revenue left after subtracting the direct costs of delivering your product.',
+                definition: 'Gross margin is the percentage of revenue remaining after you subtract the direct costs of producing or delivering your product (COGS - Cost of Goods Sold). It shows how much profit you make on each sale before accounting for operating expenses like salaries and rent.',
+                analogy: 'You sell lemonade for $5 a cup. The lemons, sugar, and cup cost you $2. Your gross profit is $3 per cup ($5 - $2), and your gross margin is 60% ($3 ÷ $5). This $3 has to cover your stand rental, your time, and still leave some profit.',
+                whyItMatters: 'Gross margin determines your business model\'s scalability and profitability potential. High-margin businesses (70%+) like SaaS can afford to spend more on growth. Low-margin businesses (< 40%) like hardware or retail have less room for error. Investors use gross margin to categorize business models - software margins (80-90%) vs. service margins (50-60%) vs. physical goods (30-50%).',
+                formula: 'Gross Margin = [(Revenue - COGS) ÷ Revenue] × 100',
+                sampleCalculation: {
+                    description: 'Your SaaS company generates $100,000 in revenue. Server costs, customer support, and payment processing fees total $20,000.',
+                    steps: [
+                        'Revenue: $100,000',
+                        'COGS (direct costs): $20,000',
+                        'Gross profit: $100,000 - $20,000 = $80,000',
+                        'Gross margin: ($80,000 ÷ $100,000) × 100 = 80%'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'revenue', label: 'Total Revenue', min: 0, max: 10000000, step: 1000, default: 100000, unit: '$' },
+                        { key: 'cogs', label: 'Cost of Goods Sold (COGS)', min: 0, max: 10000000, step: 1000, default: 20000, unit: '$' }
+                    ],
+                    calculate: (inputs) => {
+                        if (inputs.revenue === 0) return 0;
+                        return ((inputs.revenue - inputs.cogs) / inputs.revenue) * 100;
+                    },
+                    evaluate: (result) => {
+                        if (result >= 70) return { status: 'green', feedback: 'Excellent! High-margin business with room to invest in growth.' };
+                        if (result >= 50) return { status: 'yellow', feedback: 'Decent margins. Look for ways to reduce COGS or increase prices.' };
+                        return { status: 'red', feedback: 'Low margins. Harder to achieve profitability - optimize costs or pricing.' };
+                    },
+                    unit: '%'
+                },
+                tips: [
+                    'SaaS companies should target 70-85% gross margin',
+                    'Hardware companies typically see 30-50% gross margins',
+                    'Service businesses usually have 50-70% gross margins',
+                    'Include all variable costs in COGS: hosting, customer support, payment processing, shipping',
+                    'As you scale, gross margin should improve due to economies of scale and pricing power'
+                ],
+                mistakes: [
+                    'Not including all variable costs in COGS (e.g., forgetting payment processing fees, customer support)',
+                    'Including fixed costs like rent and executive salaries in COGS (those are operating expenses)',
+                    'Comparing your margin to a different type of business (don\'t compare hardware margins to SaaS margins)',
+                    'Not tracking margin by product or customer segment - some might be much more profitable than others'
+                ]
+            },
+            {
+                id: 'contribution-margin',
+                icon: '🎯',
+                title: 'Contribution Margin',
+                shortDescription: 'Profit per unit after covering variable costs, before fixed costs.',
+                definition: 'Contribution margin is the amount of money left from each sale after paying all variable costs (including COGS and variable marketing/sales costs). Unlike gross margin, it includes variable sales and marketing expenses. It shows how much each sale contributes to covering fixed costs and profit.',
+                analogy: 'You sell a product for $100. It costs $30 to make (COGS) and $20 to sell (ads, commissions). Your contribution margin is $50 per unit. This $50 goes toward paying fixed costs like rent and salaries. Once those are covered, the rest is profit.',
+                whyItMatters: 'Contribution margin is critical for understanding unit economics and making growth decisions. It tells you how much each additional sale contributes to profitability. Positive contribution margin means every sale brings you closer to profitability. Negative contribution margin means you\'re losing money on every sale - no amount of scale will make you profitable. It\'s the key to understanding if you can "lose money on each sale but make it up in volume" (spoiler: you can\'t).',
+                formula: 'Contribution Margin = Revenue - Variable Costs (COGS + Variable Sales & Marketing)',
+                sampleCalculation: {
+                    description: 'You sell software for $100/month per customer. COGS is $15, and variable sales costs (mostly ads) are $25 per customer.',
+                    steps: [
+                        'Revenue per customer: $100',
+                        'COGS: $15',
+                        'Variable sales costs: $25',
+                        'Total variable costs: $15 + $25 = $40',
+                        'Contribution margin: $100 - $40 = $60 per customer'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'revenuePerUnit', label: 'Revenue Per Unit', min: 0, max: 10000, step: 10, default: 100, unit: '$' },
+                        { key: 'cogs', label: 'COGS Per Unit', min: 0, max: 10000, step: 5, default: 15, unit: '$' },
+                        { key: 'variableSalesMarketing', label: 'Variable Sales & Marketing Per Unit', min: 0, max: 10000, step: 5, default: 25, unit: '$' }
+                    ],
+                    calculate: (inputs) => inputs.revenuePerUnit - inputs.cogs - inputs.variableSalesMarketing,
+                    evaluate: (result) => {
+                        if (result > 0 && result >= inputs.revenuePerUnit * 0.4) return { status: 'green', feedback: 'Excellent! Strong unit economics with healthy contribution margin.' };
+                        if (result > 0) return { status: 'yellow', feedback: 'Positive but thin margins. Look to reduce variable costs or increase prices.' };
+                        return { status: 'red', feedback: 'Negative contribution margin! You lose money on each sale - this is unsustainable.' };
+                    },
+                    unit: '$'
+                },
+                tips: [
+                    'Contribution margin > 40% of revenue is healthy for most businesses',
+                    'Use contribution margin to calculate break-even point: Fixed Costs ÷ Contribution Margin per Unit',
+                    'Track contribution margin by customer segment or product - some may be much more profitable',
+                    'Include ALL variable costs: COGS, variable marketing, sales commissions, payment processing, shipping',
+                    'As you scale, contribution margin per unit should increase (lower COGS, more efficient marketing)'
+                ],
+                mistakes: [
+                    'Confusing contribution margin with gross margin (contribution margin includes variable marketing/sales costs)',
+                    'Treating fixed costs as variable costs - only include costs that vary with each additional sale',
+                    'Not separating fixed and variable marketing costs (brand advertising is fixed; performance marketing is variable)',
+                    'Celebrating positive contribution margin without checking if it\'s enough to cover fixed costs'
+                ]
+            },
+            {
+                id: 'net-profit-margin',
+                icon: '💰',
+                title: 'Net Profit Margin',
+                shortDescription: 'The percentage of revenue that becomes actual profit after all expenses.',
+                definition: 'Net profit margin is the percentage of revenue that remains as profit after paying all expenses - COGS, operating expenses, taxes, interest, and everything else. It\'s the bottom line - what you actually keep.',
+                analogy: 'You run a lemonade stand. You make $1,000 in sales. After paying for lemons ($200), rent for the stand ($300), wages ($300), and other expenses ($100), you have $100 left. Your net profit margin is 10% ($100 ÷ $1,000).',
+                whyItMatters: 'Net profit margin is the ultimate measure of profitability. While early-stage startups often operate at a loss to grow quickly, mature businesses need positive net margins to be sustainable. Public SaaS companies typically have 10-20% net margins. Higher margins mean more money to reinvest in growth or return to shareholders. It shows whether your business model actually works at scale.',
+                formula: 'Net Profit Margin = [(Revenue - All Expenses) ÷ Revenue] × 100',
+                sampleCalculation: {
+                    description: 'Revenue: $500,000. COGS: $100,000. Operating expenses: $350,000. Interest and taxes: $20,000.',
+                    steps: [
+                        'Revenue: $500,000',
+                        'Total expenses: $100,000 + $350,000 + $20,000 = $470,000',
+                        'Net profit: $500,000 - $470,000 = $30,000',
+                        'Net profit margin: ($30,000 ÷ $500,000) × 100 = 6%'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'revenue', label: 'Total Revenue', min: 0, max: 100000000, step: 10000, default: 500000, unit: '$' },
+                        { key: 'allExpenses', label: 'Total Expenses (All)', min: 0, max: 100000000, step: 10000, default: 470000, unit: '$' }
+                    ],
+                    calculate: (inputs) => {
+                        if (inputs.revenue === 0) return 0;
+                        return ((inputs.revenue - inputs.allExpenses) / inputs.revenue) * 100;
+                    },
+                    evaluate: (result) => {
+                        if (result >= 20) return { status: 'green', feedback: 'Excellent! Very healthy profitability.' };
+                        if (result >= 10) return { status: 'green', feedback: 'Good profitability. Standard for mature tech companies.' };
+                        if (result >= 0) return { status: 'yellow', feedback: 'Break-even or slight profit. Room for improvement.' };
+                        return { status: 'yellow', feedback: 'Operating at a loss. Normal for growth-stage startups, but track path to profitability.' };
+                    },
+                    unit: '%'
+                },
+                tips: [
+                    'Early-stage startups often have negative net margins while prioritizing growth over profit',
+                    'Public SaaS companies typically target 10-20% net profit margins',
+                    'Amazon famously operated at near-zero margins for years while building market share',
+                    'Don\'t confuse revenue growth with profitability - you can grow quickly and still lose money',
+                    'Track the path to profitability: when will expenses as a % of revenue decline enough to turn profitable?'
+                ],
+                mistakes: [
+                    'Comparing early-stage startup margins to mature public companies',
+                    'Sacrificing profitability for growth without a clear plan to become profitable',
+                    'Not understanding your unit economics - if contribution margin is negative, scale makes things worse',
+                    'Confusing cash flow with profitability (cash flow includes financing and timing differences)'
+                ]
+            },
+            {
+                id: 'growth-rate',
+                icon: '🚀',
+                title: 'Growth Rate',
+                shortDescription: 'How fast your key metrics (usually revenue or users) are increasing month-over-month.',
+                definition: 'Growth rate measures the percentage increase in a key metric (usually revenue, users, or MRR) from one period to the next. It\'s typically calculated month-over-month (MoM) or year-over-year (YoY).',
+                analogy: 'You have 100 customers in January and 120 customers in February. Your growth rate is 20% MoM - you grew by 20 customers, which is 20% of your starting base.',
+                whyItMatters: 'Growth rate is the #1 metric for early-stage startups. VCs want to see 10-20% monthly growth (which compounds to 3-7x annually). High, consistent growth proves product-market fit and attracts investor attention. Decelerating growth is a red flag. Growth rate matters more than absolute size in the early days - investors bet on trajectory, not scale.',
+                formula: 'Growth Rate = [(Current Period - Previous Period) ÷ Previous Period] × 100',
+                sampleCalculation: {
+                    description: 'January MRR: $10,000. February MRR: $12,000.',
+                    steps: [
+                        'Current period (February): $12,000',
+                        'Previous period (January): $10,000',
+                        'Growth: $12,000 - $10,000 = $2,000',
+                        'Growth rate: ($2,000 ÷ $10,000) × 100 = 20% MoM'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'previousPeriod', label: 'Previous Period Value', min: 0, max: 100000000, step: 1000, default: 10000, unit: '$' },
+                        { key: 'currentPeriod', label: 'Current Period Value', min: 0, max: 100000000, step: 1000, default: 12000, unit: '$' }
+                    ],
+                    calculate: (inputs) => {
+                        if (inputs.previousPeriod === 0) return 0;
+                        return ((inputs.currentPeriod - inputs.previousPeriod) / inputs.previousPeriod) * 100;
+                    },
+                    evaluate: (result) => {
+                        if (result >= 15) return { status: 'green', feedback: 'Excellent! Very strong month-over-month growth.' };
+                        if (result >= 10) return { status: 'green', feedback: 'Great! Healthy growth rate, especially if sustained.' };
+                        if (result >= 5) return { status: 'yellow', feedback: 'Decent growth, but aim for 10%+ monthly for venture scale.' };
+                        if (result >= 0) return { status: 'yellow', feedback: 'Slow growth. Focus on finding product-market fit.' };
+                        return { status: 'red', feedback: 'Negative growth (decline). Investigate and fix immediately.' };
+                    },
+                    unit: '%'
+                },
+                tips: [
+                    'Track both month-over-month (MoM) and year-over-year (YoY) growth',
+                    'For early-stage, aim for 10-20% monthly growth (MoM)',
+                    'As you scale, MoM growth will naturally slow - a $1M company growing 20% MoM becomes a $6M company in 12 months',
+                    'Break down growth into new customers, expansion revenue, and churn to understand what\'s driving changes',
+                    'Consistent growth matters more than one big month - smooth 10% MoM beats sporadic 30%/5%/15% MoM'
+                ],
+                mistakes: [
+                    'Cherry-picking the best months to show growth without showing the trend',
+                    'Not clarifying whether you\'re talking about MoM, YoY, or cumulative growth',
+                    'Celebrating high percentage growth on a tiny base ($100 to $200 is 100% growth but still only $100)',
+                    'Ignoring growth rate deceleration - slowing growth is often an early warning sign'
+                ],
+                chartType: 'bar',
+                generateChartData: (inputs) => {
+                    const months = [];
+                    const values = [];
+                    const growthRate = (inputs.currentPeriod - inputs.previousPeriod) / inputs.previousPeriod;
+                    
+                    let value = inputs.previousPeriod;
+                    for (let i = 0; i <= 12; i++) {
+                        months.push(`Month ${i}`);
+                        values.push(Math.round(value));
+                        value = value * (1 + growthRate);
+                    }
+                    
+                    return {
+                        labels: months,
+                        datasets: [{
+                            label: 'Value ($)',
+                            data: values,
+                            backgroundColor: '#10B981',
+                        }]
+                    };
+                }
+            },
+            {
+                id: 'rule-of-40',
+                icon: '📏',
+                title: 'Rule of 40',
+                shortDescription: 'A measure of SaaS company health: growth rate + profit margin should exceed 40%.',
+                definition: 'The Rule of 40 states that a healthy SaaS company\'s growth rate plus profit margin should equal or exceed 40%. It balances growth and profitability - you can grow quickly with low margins, or grow slowly with high margins, but the sum should be 40%+.',
+                analogy: 'Think of it like a video game where you have 40 points to allocate between speed and defense. You could go 30 speed + 10 defense, or 20 speed + 20 defense, or 5 speed + 35 defense. As long as the total is 40+, you\'re in good shape.',
+                whyItMatters: 'The Rule of 40 is the gold standard for evaluating SaaS company health at scale. It recognizes the tradeoff between growth and profitability - high-growth companies can sacrifice margins, while slower-growth companies need strong margins. Investors and public markets use it to compare SaaS companies. Below 40% suggests operational inefficiency. Above 40% indicates a well-run business.',
+                formula: 'Rule of 40 Score = Revenue Growth Rate (%) + Profit Margin (%)',
+                sampleCalculation: {
+                    description: 'Your SaaS company is growing revenue at 35% annually and has a 10% profit margin.',
+                    steps: [
+                        'Annual revenue growth rate: 35%',
+                        'Profit margin: 10%',
+                        'Rule of 40 score: 35% + 10% = 45%',
+                        'Result: Above 40%, indicating a healthy business'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'growthRate', label: 'Annual Revenue Growth Rate (%)', min: -50, max: 200, step: 1, default: 35, unit: '%' },
+                        { key: 'profitMargin', label: 'Profit Margin (%)', min: -100, max: 100, step: 1, default: 10, unit: '%' }
+                    ],
+                    calculate: (inputs) => inputs.growthRate + inputs.profitMargin,
+                    evaluate: (result) => {
+                        if (result >= 50) return { status: 'green', feedback: 'Excellent! Exceptional SaaS business performance.' };
+                        if (result >= 40) return { status: 'green', feedback: 'Great! You\'re meeting the Rule of 40 benchmark.' };
+                        if (result >= 30) return { status: 'yellow', feedback: 'Below benchmark. Work on improving growth or profitability.' };
+                        return { status: 'red', feedback: 'Well below 40%. Need to significantly improve operational efficiency.' };
+                    },
+                    unit: '%'
+                },
+                tips: [
+                    'Use annual growth rate (YoY), not monthly (MoM) for Rule of 40 calculations',
+                    'You can use EBITDA margin, operating margin, or free cash flow margin for the profit component',
+                    'Early-stage companies (< $10M ARR) often score below 40% and that\'s okay - focus on growth',
+                    'As companies mature, they typically trade growth for profitability while maintaining 40%+',
+                    'Public SaaS companies average around 45% on the Rule of 40'
+                ],
+                mistakes: [
+                    'Using monthly growth rate instead of annual - this inflates the score incorrectly',
+                    'Applying Rule of 40 to early-stage startups (it\'s meant for companies at $10M+ ARR)',
+                    'Not adjusting for different profit margin definitions (gross vs. operating vs. net)',
+                    'Thinking 40% is a hard requirement - some great businesses score below 40%, it\'s a guideline not a law'
+                ]
+            },
+            {
+                id: 'unit-economics',
+                icon: '🧮',
+                title: 'Unit Economics',
+                shortDescription: 'The revenue and costs associated with a single unit of your business model.',
+                definition: 'Unit economics examines whether your business makes money on each individual "unit" - whether that\'s a customer, product, transaction, or ride. It compares what you earn from one unit (LTV) to what it costs to acquire and serve that unit (CAC + COGS). Positive unit economics means profit per unit; negative means loss per unit.',
+                analogy: 'You run a food delivery service. For each delivery (one "unit"), you charge $10. It costs you $3 for the driver, $1 for customer support, and $2 for marketing to acquire orders. Your unit economics are $10 - $6 = $4 profit per delivery. Scaling to 1,000 deliveries means $4,000 profit.',
+                whyItMatters: 'Unit economics is the most fundamental test of a business model. If you lose money on each unit, you can\'t "make it up in volume" - scale makes things worse, not better. Positive unit economics means your business can be profitable at scale. It\'s why investors ask about LTV:CAC ratios and contribution margins. Without positive unit economics, you\'re building a house on sand.',
+                formula: 'Unit Profit = Revenue per Unit - (COGS per Unit + CAC per Unit + Variable Operating Costs per Unit)',
+                sampleCalculation: {
+                    description: 'E-commerce business: Sell product for $100. COGS: $30. Shipping: $10. CAC: $25. Transaction fees: $5.',
+                    steps: [
+                        'Revenue per unit: $100',
+                        'Total costs per unit: $30 + $10 + $25 + $5 = $70',
+                        'Unit economics: $100 - $70 = $30 profit per unit'
+                    ]
+                },
+                calculator: {
+                    inputs: [
+                        { key: 'revenuePerUnit', label: 'Revenue Per Unit', min: 0, max: 10000, step: 10, default: 100, unit: '$' },
+                        { key: 'cogsPerUnit', label: 'COGS Per Unit', min: 0, max: 10000, step: 5, default: 30, unit: '$' },
+                        { key: 'cacPerUnit', label: 'CAC Per Unit', min: 0, max: 10000, step: 5, default: 25, unit: '$' },
+                        { key: 'variableCostsPerUnit', label: 'Other Variable Costs Per Unit', min: 0, max: 10000, step: 5, default: 15, unit: '$' }
+                    ],
+                    calculate: (inputs) => inputs.revenuePerUnit - inputs.cogsPerUnit - inputs.cacPerUnit - inputs.variableCostsPerUnit,
+                    evaluate: (result) => {
+                        if (result > 0 && result >= inputs.revenuePerUnit * 0.3) return { status: 'green', feedback: 'Excellent! Strong positive unit economics with healthy margins.' };
+                        if (result > 0) return { status: 'yellow', feedback: 'Positive but thin unit economics. Look to improve margins or reduce costs.' };
+                        return { status: 'red', feedback: 'Negative unit economics! You lose money on each sale - unsustainable business model.' };
+                    },
+                    unit: '$'
+                },
+                tips: [
+                    'Unit economics must be positive for your business to be scalable and sustainable',
+                    'Different business models have different "units": customers (SaaS), transactions (marketplaces), products (e-commerce)',
+                    'For subscription businesses, use LTV (lifetime value) as the revenue side of unit economics',
+                    'Include all variable costs: COGS, CAC, payment processing, shipping, customer support, etc.',
+                    'Track unit economics by cohort, channel, or customer segment - they often vary significantly'
+                ],
+                mistakes: [
+                    'Only looking at first transaction and ignoring lifetime value (especially for subscription businesses)',
+                    'Not including all variable costs - forgetting things like payment fees, returns, customer support',
+                    'Confusing contribution margin with unit economics (contribution margin excludes CAC)',
+                    'Assuming economies of scale will fix negative unit economics - if the fundamentals are broken, scale makes it worse'
+                ]
+            }
+        ];
+
+        // Home component
+        const Home = ({ onSelectMetric, searchTerm, setSearchTerm }) => {
+            const filteredMetrics = METRICS_DATA.filter(metric =>
+                metric.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                metric.shortDescription.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            return (
+                <div>
+                    <div className="header">
+                        <h1>📊 Startup Metrics Explained</h1>
+                        <p>Master the 15 essential business metrics every startup employee should understand. Interactive calculators and clear explanations help you learn by doing.</p>
+                    </div>
+
+                    <div className="container">
+                        <div className="search-box">
+                            <input
+                                type="text"
+                                placeholder="🔍 Search metrics... (e.g., 'revenue', 'churn', 'profit')"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="metrics-grid">
+                            {filteredMetrics.map(metric => (
+                                <div
+                                    key={metric.id}
+                                    className="metric-card"
+                                    onClick={() => onSelectMetric(metric)}
+                                >
+                                    <div className="metric-card-icon">{metric.icon}</div>
+                                    <div className="metric-card-title">{metric.title}</div>
+                                    <div className="metric-card-description">{metric.shortDescription}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Metric Detail component
+        const MetricDetail = ({ metric, onBack }) => {
+            const [inputs, setInputs] = useState(() => {
+                const initial = {};
+                metric.calculator.inputs.forEach(input => {
+                    initial[input.key] = input.default;
+                });
+                return initial;
+            });
+
+            const handleInputChange = (key, value) => {
+                setInputs(prev => ({ ...prev, [key]: value }));
+            };
+
+            const result = metric.calculator.calculate(inputs);
+            const evaluation = metric.calculator.evaluate(result, inputs);
+
+            return (
+                <div className="container">
+                    <button className="back-button" onClick={onBack}>
+                        ← Back to All Metrics
+                    </button>
+
+                    <div className="metric-detail">
+                        <h1 className="metric-title">
+                            {metric.icon} {metric.title}
+                        </h1>
+
+                        {/* Definition Section */}
+                        <div className="section">
+                            <h2 className="section-title">📖 What Is It?</h2>
+                            <div className="section-content">
+                                <p><strong>Definition:</strong> {metric.definition}</p>
+                                {metric.analogy && (
+                                    <p style={{ marginTop: '15px' }}><strong>Simple Analogy:</strong> {metric.analogy}</p>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Why It Matters */}
+                        <div className="section">
+                            <h2 className="section-title">❓ Why It Matters</h2>
+                            <div className="section-content">
+                                <p>{metric.whyItMatters}</p>
+                            </div>
+                        </div>
+
+                        {/* Sample Calculation */}
+                        <div className="section">
+                            <h2 className="section-title">🧮 How to Calculate It</h2>
+                            <div className="formula-box">
+                                <div className="formula">{metric.formula}</div>
+                            </div>
+                            <div className="section-content">
+                                <p><strong>Example:</strong> {metric.sampleCalculation.description}</p>
+                                <ol style={{ marginTop: '10px', paddingLeft: '20px' }}>
+                                    {metric.sampleCalculation.steps.map((step, idx) => (
+                                        <li key={idx} style={{ marginBottom: '5px' }}>{step}</li>
+                                    ))}
+                                </ol>
+                            </div>
+                        </div>
+
+                        {/* Interactive Calculator */}
+                        <div className="section">
+                            <h2 className="section-title">🎮 Try It Yourself</h2>
+                            <div className="calculator-section">
+                                {metric.calculator.inputs.map(input => (
+                                    <InputControl
+                                        key={input.key}
+                                        label={input.label}
+                                        value={inputs[input.key]}
+                                        onChange={(value) => handleInputChange(input.key, value)}
+                                        min={input.min}
+                                        max={input.max}
+                                        step={input.step}
+                                        unit={input.unit}
+                                    />
+                                ))}
+                                <ResultDisplay
+                                    label="Your Result"
+                                    value={result.toFixed(2)}
+                                    status={evaluation.status}
+                                    feedback={evaluation.feedback}
+                                    unit={metric.calculator.unit}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Visualization (if applicable) */}
+                        {metric.chartType && metric.generateChartData && (
+                            <div className="section">
+                                <h2 className="section-title">📊 Visualization</h2>
+                                <ChartComponent
+                                    type={metric.chartType}
+                                    data={metric.generateChartData(inputs)}
+                                    options={{
+                                        plugins: {
+                                            legend: {
+                                                display: true
+                                            }
+                                        },
+                                        scales: metric.chartType === 'bar' || metric.chartType === 'line' ? {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        } : undefined
+                                    }}
+                                />
+                            </div>
+                        )}
+
+                        {/* Beginner Tips */}
+                        <div className="section">
+                            <h2 className="section-title">💡 Beginner Tips</h2>
+                            <ul className="tips-list">
+                                {metric.tips.map((tip, idx) => (
+                                    <li key={idx}>{tip}</li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Common Mistakes */}
+                        <div className="section">
+                            <h2 className="section-title">⚠️ Common Mistakes</h2>
+                            <ul className="mistakes-list">
+                                {metric.mistakes.map((mistake, idx) => (
+                                    <li key={idx}>{mistake}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Main App component
+        const App = () => {
+            const [selectedMetric, setSelectedMetric] = useState(null);
+            const [searchTerm, setSearchTerm] = useState('');
+
+            const handleSelectMetric = (metric) => {
+                setSelectedMetric(metric);
+                window.scrollTo(0, 0);
+            };
+
+            const handleBack = () => {
+                setSelectedMetric(null);
+                window.scrollTo(0, 0);
+            };
+
+            return (
+                <div>
+                    {selectedMetric ? (
+                        <MetricDetail metric={selectedMetric} onBack={handleBack} />
+                    ) : (
+                        <Home 
+                            onSelectMetric={handleSelectMetric}
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                        />
+                    )}
+                </div>
+            );
+        };
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

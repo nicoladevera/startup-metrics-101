@@ -1,0 +1,196 @@
+Create a responsive, browser-based educational web application called "Startup Metrics Explained" (or similar) that helps startup employees and aspiring startup workers understand 15 key business metrics through interactive calculators and clear explanations.
+Design Requirements
+Visual Style
+
+Professional yet approachable aesthetic
+Clean, modern interface with good use of whitespace
+Color scheme: Use a professional palette with strategic use of color for feedback (green for healthy metrics, amber/yellow for warning, red for concerning)
+Typography: Clear, readable fonts suitable for both explanatory text and numbers
+Not gamified or childish, but not corporate/dry either
+Responsive design that works on both desktop and mobile devices
+
+Navigation Structure
+Homepage:
+
+Display all 15 metrics as an organized grid or list
+Each metric should show:
+
+Metric name
+One-sentence description
+Icon or visual identifier
+Clickable to navigate to dedicated metric page
+
+
+Include a brief introduction explaining what the app is for
+Optional: Search or filter functionality to find specific metrics
+
+Individual Metric Pages:
+
+Clear header with metric name
+Back button to return to homepage
+Organized into sections (see Content Structure below)
+Smooth scrolling for longer pages
+Sticky/fixed navigation element to return to homepage
+
+Content Structure (for each of the 15 metrics)
+Each metric page should contain the following sections in this order:
+1. Definition Section
+Content to include:
+- Clear, jargon-free definition (use the definitions we created)
+- Simple analogy where applicable
+- Add tooltips/hover definitions for any technical terms (like "COGS", "variable costs", "churn", etc.)
+2. Why It Matters Section
+Content to include:
+- Explanation of why founders, VCs, and board members care about this metric
+- What insights it provides about business health
+- What good vs. bad values typically look like
+3. Sample Calculation Section
+Content to include:
+- The formula written clearly (both in mathematical notation and plain language)
+- A worked example with realistic numbers
+- Step-by-step breakdown of the calculation
+4. Interactive Calculator Section
+User Experience:
+
+Input fields for each variable in the formula
+Each input should have:
+
+Label clearly indicating what the input represents
+Number input field (allow decimal values where appropriate)
+Slider control that syncs with the number input (define appropriate min/max ranges)
+Unit indicator (e.g., "$", "%", "months")
+
+
+Real-time calculation that updates as user types or moves sliders
+Large, prominent display of the calculated result
+Visual indicator showing if the result is:
+
+Green zone: Healthy/good metric
+Yellow zone: Acceptable but could be better
+Red zone: Concerning/needs improvement
+
+
+Include a brief explanation below the result explaining why it falls in that zone
+
+Visual Feedback Examples:
+For LTV:CAC Ratio:
+- Green: ≥ 3.0 ("Excellent! Your unit economics are healthy")
+- Yellow: 1.5 - 2.9 ("Acceptable, but aim for 3:1 or better")
+- Red: < 1.5 ("Warning: You're spending too much to acquire customers")
+
+For Monthly Churn Rate:
+- Green: ≤ 2% ("Excellent retention!")
+- Yellow: 2-5% ("Acceptable for early-stage")
+- Red: > 5% ("High churn - focus on retention")
+5. Visualization Section (where relevant)
+Include charts/graphs for metrics where visualization adds value:
+
+MRR/ARR: Line chart showing growth over time based on user inputs
+Burn Rate + Runway: Visual "runway" gauge or bar chart
+Churn Rate: Visual representation of customer retention/loss
+Growth Rate: Bar chart or line chart showing month-over-month or year-over-year growth
+LTV vs CAC: Side-by-side bar comparison
+Use a charting library like Chart.js, Recharts, or similar
+
+6. Beginner Tips Section
+Content to include:
+- 3-5 practical tips for understanding or improving this metric
+- Common benchmarks for different types of startups (SaaS, hardware, marketplace, etc.)
+- When to focus on this metric (early stage vs. growth stage)
+7. Common Mistakes Section
+Content to include:
+- 3-4 common errors or misconceptions about this metric
+- What to avoid when calculating or interpreting
+- Pitfalls in trying to optimize this metric
+The 15 Metrics to Include
+Include these metrics in this order, with all content structured as specified above:
+
+Monthly Recurring Revenue (MRR)
+Annual Recurring Revenue (ARR)
+Burn Rate
+Runway
+Customer Acquisition Cost (CAC)
+Lifetime Value (LTV)
+LTV:CAC Ratio
+Churn Rate
+Net Revenue Retention (NRR)
+Gross Margin
+Contribution Margin
+Net Profit Margin
+Growth Rate (Month-over-Month)
+Rule of 40
+Unit Economics
+
+Technical Requirements
+Technology Stack Recommendations
+
+Frontend Framework: React, Vue, or vanilla JavaScript
+Styling: Tailwind CSS, Material-UI, or custom CSS
+Charts: Chart.js, Recharts, or D3.js
+Tooltips: Tippy.js or native CSS tooltips
+State Management: React hooks or Vue Composition API (no need for Redux/Vuex for this scope)
+No backend required - fully client-side application
+No user authentication or database
+
+Functionality Requirements
+
+All calculations happen in real-time on the client side
+Input validation (prevent negative numbers where inappropriate, handle division by zero)
+Browser local storage to temporarily save user inputs (optional, but nice to have)
+Smooth animations and transitions between pages
+Keyboard accessible
+Mobile responsive (touch-friendly sliders and inputs)
+
+Performance
+
+Fast load times
+Smooth interactions with no lag when typing or moving sliders
+Optimized for mobile performance
+
+Tooltip Terms to Define
+Include hover tooltips for these terms wherever they appear:
+
+COGS (Cost of Goods Sold)
+Variable costs
+Fixed costs
+Churn
+Expansion revenue
+Upsell
+Downsell
+ARR (Annual Recurring Revenue)
+MRR (Monthly Recurring Revenue)
+CAC Payback Period
+Gross profit
+Net profit
+SaaS (Software as a Service)
+Unit economics
+
+Example Color Scheme (optional, adjust as needed)
+
+Primary: Deep blue (#2563EB)
+Success/Green: #10B981
+Warning/Yellow: #F59E0B
+Error/Red: #EF4444
+Background: Off-white (#F9FAFB)
+Text: Dark gray (#111827)
+Borders: Light gray (#E5E7EB)
+
+Accessibility Requirements
+
+Semantic HTML
+ARIA labels where appropriate
+Keyboard navigation support
+Sufficient color contrast ratios
+Alt text for any icons or images
+Focus indicators for interactive elements
+
+Success Criteria
+The web app should:
+
+Load quickly on both desktop and mobile
+Allow users to easily navigate between all 15 metrics
+Provide clear, educational explanations suitable for startup newcomers
+Offer interactive, real-time calculators that help users understand how metrics change
+Give visual feedback that helps users understand if their inputs represent healthy or concerning metrics
+Be intuitive enough that a college-educated person needs no instructions to use it
+Serve as both a learning tool (first-time users) and reference tool (returning users)
