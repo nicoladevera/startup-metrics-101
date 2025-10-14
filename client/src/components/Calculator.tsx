@@ -33,8 +33,8 @@ export function Calculator({ inputs, onCalculate }: CalculatorProps) {
           <Label className="text-base font-semibold text-foreground">
             {input.label}
           </Label>
-          <div className="flex items-center gap-4">
-            <div className="relative">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+            <div className="relative w-full sm:w-auto sm:min-w-[180px]">
               {input.prefix && (
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
                   {input.prefix}
@@ -47,13 +47,13 @@ export function Calculator({ inputs, onCalculate }: CalculatorProps) {
                 min={input.min}
                 max={input.max}
                 step={input.step}
-                className={`w-36 px-4 py-3 text-base border-2 focus:border-primary transition-colors ${
+                className={`w-full px-4 py-3 text-base border-2 focus:border-primary transition-colors ${
                   input.prefix ? 'pl-7' : ''
-                } ${input.suffix ? 'pr-10' : ''}`}
+                } ${input.suffix ? 'pr-16 sm:pr-20' : ''}`}
                 data-testid={`input-${input.name}`}
               />
               {input.suffix && (
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none text-sm">
                   {input.suffix}
                 </span>
               )}

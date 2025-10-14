@@ -20,6 +20,7 @@ export default function MetricDetail() {
   useEffect(() => {
     if (metric) {
       document.title = `Startup Metrics 101 - ${metric.name}`;
+      window.scrollTo(0, 0);
     }
   }, [metric]);
 
