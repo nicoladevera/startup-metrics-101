@@ -185,11 +185,11 @@ export default function MetricDetail() {
             {metric.tips.map((tip, index) => (
               <li
                 key={index}
-                className="bg-gray-100 rounded-lg border-l-4 border-success p-4 text-[1.05rem] leading-relaxed"
+                className="bg-gray-100 rounded-lg border-l-4 border-success p-4 text-[1.05rem] leading-relaxed flex items-start gap-3"
                 data-testid={`tip-${index}`}
               >
-                <span className="mr-2">💡</span>
-                {addTooltips(tip)}
+                <Lightbulb className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
+                <span>{addTooltips(tip)}</span>
               </li>
             ))}
           </ul>
@@ -205,11 +205,11 @@ export default function MetricDetail() {
             {metric.commonMistakes.map((mistake, index) => (
               <li
                 key={index}
-                className="bg-warning-light rounded-lg border-l-4 border-warning p-4 text-[1.05rem] leading-relaxed"
+                className="bg-warning-light rounded-lg border-l-4 border-warning p-4 text-[1.05rem] leading-relaxed flex items-start gap-3"
                 data-testid={`mistake-${index}`}
               >
-                <span className="mr-2">⚠️</span>
-                {addTooltips(mistake)}
+                <AlertTriangle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
+                <span>{addTooltips(mistake)}</span>
               </li>
             ))}
           </ul>
