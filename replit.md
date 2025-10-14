@@ -1,106 +1,192 @@
 # Startup Metrics Explained
 
-## Overview
+## Project Overview
+**Startup Metrics Explained** is a responsive, browser-based educational web application that teaches 15 key startup financial metrics through interactive calculators, real-time visualizations, and comprehensive educational content.
 
-Startup Metrics Explained is an educational web application designed to help startup employees and aspiring entrepreneurs understand 15 essential business metrics. The platform provides interactive calculators, clear explanations, real-world examples, and visual feedback to make complex startup metrics accessible and understandable. The application features a clean, modern interface that balances professionalism with approachability, drawing inspiration from educational platforms like Khan Academy while maintaining the polish of professional dashboard tools.
+**Status**: ✅ Production Ready (Architect Approved)
+
+## Key Features
+- **15 Essential Metrics**: MRR, ARR, Burn Rate, Runway, CAC, LTV, LTV:CAC Ratio, Churn Rate, NRR, Gross Margin, Contribution Margin, Net Profit Margin, Growth Rate, Rule of 40, Unit Economics
+- **Interactive Calculators**: Real-time calculations with synchronized number inputs and range sliders
+- **Color-Coded Feedback**: Green (healthy), Yellow (acceptable), Red (concerning) with contextual explanations
+- **Visual Analytics**: Chart.js visualizations (line, bar, gauge charts)
+- **Educational Content**: Definitions, formulas, why it matters, pro tips, common mistakes, benchmarks
+- **Dark Mode**: Full theme support with localStorage persistence
+- **Responsive Design**: Mobile-first approach with professional blue color scheme (#2563EB)
+- **Searchable Interface**: Real-time search filtering on homepage
+
+## Technology Stack
+- **Frontend**: React 18 with TypeScript
+- **Routing**: Wouter (lightweight React router)
+- **Styling**: Tailwind CSS + Shadcn/UI components
+- **Charts**: Chart.js with react-chartjs-2
+- **Icons**: Lucide React (100% icon-based, NO emojis)
+- **Theme**: Custom ThemeProvider with dark mode support
+- **Build**: Vite + Express backend for serving
+
+## Architecture
+
+### File Structure
+```
+client/src/
+├── components/
+│   ├── ui/              # Shadcn/UI base components
+│   ├── Calculator.tsx   # Reusable calculator with synchronized inputs
+│   ├── ResultDisplay.tsx # Color-coded result feedback
+│   ├── MetricChart.tsx  # Chart.js wrapper component
+│   ├── MetricTooltip.tsx # Educational tooltips
+│   ├── ThemeProvider.tsx # Dark mode provider
+│   └── ThemeToggle.tsx  # Theme toggle button
+├── pages/
+│   ├── HomePage.tsx     # Metric grid with search
+│   └── MetricDetail.tsx # Individual metric pages
+├── lib/
+│   ├── icons.tsx        # Icon utility (getIcon)
+│   └── queryClient.ts   # TanStack Query setup
+└── App.tsx              # Main app with routing
+
+shared/
+└── metrics.ts           # All 15 metrics data structure
+
+server/
+├── index.ts             # Express server
+└── routes.ts            # API routes (currently minimal)
+```
+
+### Key Components
+
+#### Metrics Data (`shared/metrics.ts`)
+Each metric includes:
+- `id`: Unique identifier
+- `name`: Display name
+- `iconName`: Lucide icon name (e.g., 'TrendingUp', 'DollarSign')
+- `shortDescription`: Brief summary
+- `definition`: Detailed explanation
+- `whyItMatters`: Business importance
+- `formula`: Mathematical formula
+- `formulaPlain`: Plain English formula
+- `sampleCalculation`: Example with steps
+- `calculator`: Interactive calculator config with inputs, calculateFn, formatResult, getBenchmark
+- `tips`: Pro tips array
+- `commonMistakes`: Common mistakes array
+- `hasChart`: Boolean for chart display
+- `chartType`: 'line' | 'bar' | 'gauge'
+
+#### Calculator Component
+- Synchronized number inputs and range sliders
+- Real-time calculation on value change
+- Validation and formatting
+- Responsive grid layout
+
+#### Color-Coded Feedback System
+- **Green** (text-green-600): Healthy/excellent metrics
+- **Yellow** (text-yellow-600): Acceptable/moderate metrics
+- **Red** (text-red-600): Concerning/poor metrics
+- Each benchmark includes status and explanation
+
+#### Theme System
+- ThemeProvider manages light/dark state
+- localStorage persistence ('theme' key)
+- Toggles 'light'/'dark' class on document.documentElement
+- All components use semantic color tokens that adapt to theme
+
+## Design System
+
+### Color Palette
+- **Primary**: #2563EB (Professional Blue)
+- **Success**: Green tones for positive feedback
+- **Warning**: Yellow/orange for moderate feedback
+- **Destructive**: Red tones for concerning feedback
+- All colors configured in `tailwind.config.ts` with HSL values
+
+### Typography
+- Headings: Bold, large sizes with proper hierarchy
+- Body: 1.1rem with 1.8 line-height for readability
+- Formula: Monospace font for code/formulas
+- Responsive scaling across breakpoints
+
+### Design Principles
+- **NO Emojis**: 100% Lucide React icons only
+- **Spacing**: Consistent padding and gaps (p-4, p-6, p-8, gap-3, gap-4)
+- **Borders**: Subtle borders with primary color accents
+- **Animations**: Smooth hover transitions on cards
+- **Accessibility**: Proper semantic HTML, data-testid on all interactive elements
+
+## Testing
+
+### E2E Test Coverage
+✅ Homepage search functionality
+✅ Navigation between pages
+✅ Calculator inputs and sliders synchronization
+✅ Color-coded feedback display
+✅ Theme toggle (light/dark)
+✅ Chart rendering
+✅ Responsive layout
+✅ All 15 metrics verified
+
+### Test IDs
+- `hero-title`: Main homepage title
+- `input-search`: Search input field
+- `button-theme-toggle`: Theme toggle button
+- `link-metric-{id}`: Metric card links (e.g., link-metric-mrr)
+- `metric-card-{id}`: Metric cards
+- `button-back`: Back to homepage button
+- `metric-title`: Metric detail page title
+- `section-definition`, `section-calculator`, etc.: Page sections
+- `tip-{index}`, `mistake-{index}`: Individual tips/mistakes
 
 ## User Preferences
+- **Design Style**: Professional, clean, educational
+- **Color Scheme**: Blue (#2563EB) with semantic colors
+- **Interactivity**: Real-time calculations, synchronized inputs
+- **Educational Focus**: Comprehensive learning with examples, tips, and mistakes
 
-Preferred communication style: Simple, everyday language.
+## Recent Changes (Latest Session)
+**Date**: October 14, 2025
 
-## System Architecture
+### Critical Fixes Applied
+1. **Icon System Overhaul**:
+   - Replaced ALL emoji icons with Lucide React icons
+   - Updated metrics.ts: changed `icon` field to `iconName` with proper Lucide names
+   - Created getIcon() utility in `lib/icons.tsx`
+   - Updated HomePage and MetricDetail to render Lucide icons
+   - Replaced 💡 with `<Lightbulb>` in tips section
+   - Replaced ⚠️ with `<AlertTriangle>` in mistakes section
 
-### Frontend Architecture
+2. **Dark Mode Implementation**:
+   - Created ThemeProvider component with localStorage persistence
+   - Added ThemeToggle component
+   - Integrated theme system in App.tsx
+   - All colors now adapt to light/dark mode
 
-**Framework & Build System:**
-- React 18 with TypeScript for type-safe component development
-- Vite as the build tool and development server, configured with custom plugins for Replit integration
-- Wouter for client-side routing (lightweight alternative to React Router)
+3. **Test Coverage Enhancement**:
+   - Added data-testid to all Link components
+   - Verified all interactive elements are testable
+   - Ran comprehensive e2e test suite (30/30 steps passed)
+   - Targeted icon verification tests (all passed)
 
-**UI Component System:**
-- Shadcn/ui component library with Radix UI primitives for accessible, customizable components
-- Tailwind CSS for utility-first styling with custom design tokens
-- Class Variance Authority (CVA) for component variant management
-- Design system follows the "new-york" Shadcn style with custom color palette and spacing system
+### Architect Reviews
+- **Review 1**: Identified emoji icons, missing dark mode, missing data-testids
+- **Review 2**: Confirmed all fixes applied correctly
+- **Final Review**: Approved for production deployment
 
-**State Management:**
-- TanStack Query (React Query) for server state management and caching
-- React hooks and local component state for UI state
-- Custom TooltipProvider and ThemeProvider contexts for global UI state
+## Running the Application
+The workflow "Start application" runs `npm run dev` which:
+1. Starts Express server on port 5000 (backend)
+2. Starts Vite dev server (frontend)
+3. Hot module reloading enabled
+4. Serves on http://localhost:5000
 
-**Key Frontend Features:**
-- Interactive metric calculators with real-time feedback
-- Dynamic tooltip system for technical term definitions
-- Chart.js integration for data visualization (line, bar, and gauge charts)
-- Responsive design supporting both desktop and mobile viewports
-- Dark/light theme support with persistent user preference
+## Deployment
+Application is ready for publishing to Replit's deployment platform. All features tested and approved.
 
-**Design System:**
-- Color palette: Deep blue primary (#2563EB), semantic colors for feedback (green/success, amber/warning, red/error)
-- Typography: System font stack with monospace fonts for formulas
-- Spacing: Consistent 4px-based scale (4, 8, 12, 20, 30, 40, 50)
-- Component styling includes hover/active elevation states for interactive feedback
+## Known Non-Issues
+- Fast Refresh warning on MetricTooltip.tsx: Non-critical, causes full reload instead of hot reload due to `addTooltips` utility export (not a component)
+- Browserslist data notice: Cosmetic warning, doesn't affect functionality
 
-### Backend Architecture
-
-**Server Framework:**
-- Express.js with TypeScript running on Node.js
-- Development/production mode switching via NODE_ENV
-- Custom middleware for request logging and error handling
-- Vite middleware integration in development mode for HMR
-
-**Application Structure:**
-- Monorepo-style architecture with shared types between client and server
-- `/server` directory: Express application, routes, and storage layer
-- `/client` directory: React application and UI components
-- `/shared` directory: Shared TypeScript types, schemas, and business logic
-
-**Data Layer:**
-- In-memory storage implementation (MemStorage class) for development
-- Interface-based storage abstraction (IStorage) for easy database migration
-- Currently implements basic user CRUD operations
-- Prepared for Drizzle ORM integration with PostgreSQL (schema and config present)
-
-**API Design:**
-- RESTful API pattern with `/api` prefix for all endpoints
-- JSON request/response format
-- Centralized error handling middleware
-- Request/response logging for debugging
-
-### External Dependencies
-
-**Database:**
-- PostgreSQL configured via Drizzle ORM (ready for production use)
-- Neon serverless PostgreSQL driver (@neondatabase/serverless)
-- Database schema defined using Drizzle with Zod validation
-- Migration system configured (drizzle-kit) with migration files in `/migrations`
-
-**Third-Party Libraries:**
-- Chart.js for data visualization and metric charts
-- React Hook Form with Zod resolvers for form validation
-- date-fns for date manipulation and formatting
-- Lucide React for consistent iconography
-
-**UI Component Dependencies:**
-- @radix-ui/* packages for accessible UI primitives (25+ components including dialogs, dropdowns, tooltips, etc.)
-- cmdk for command palette functionality
-- vaul for drawer component
-- embla-carousel-react for carousel functionality
-- react-day-picker for calendar/date selection
-
-**Development Tools:**
-- TypeScript for type safety across the stack
-- ESBuild for production server bundling
-- PostCSS with Autoprefixer for CSS processing
-- Replit-specific plugins for development experience
-
-**Session Management:**
-- connect-pg-simple for PostgreSQL session store (configured but not yet active)
-- Express session middleware ready for authentication implementation
-
-**Notable Architecture Decisions:**
-- Metrics are defined as data structures (shared/metrics.ts) rather than hardcoded, allowing for easy extension
-- Calculator logic is colocated with metric definitions for maintainability
-- Tooltip definitions centralized in a dictionary for consistency
-- Theme system uses CSS variables for easy customization
-- Component path aliases (@/, @shared/, @assets/) for cleaner imports
+## Future Enhancements (Optional)
+- Add more metrics (e.g., Quick Ratio, Magic Number, Payback Period)
+- Add comparison tools to compare multiple metrics
+- Add export/save calculator results
+- Add metric favorites/bookmarks
+- Add metric relationships visualization
