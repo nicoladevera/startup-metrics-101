@@ -89,3 +89,22 @@
 ✅ Desktop (1920px): Text scales to maximum size (~48px)
 ✅ No overflow detected on any viewport size
 ✅ Smooth responsive scaling across all breakpoints
+
+### Follow-up: Single-Line Display Fix
+**Issue**: Large values like "$970,000/month" were breaking across two lines with the "h" from "month" wrapping to the second line
+
+**Root Cause**: The `break-words` class allowed text to wrap across multiple lines when it approached viewport width limits
+
+**Solution Implemented**:
+- Replaced `break-words` with `whitespace-nowrap` in ResultDisplay component
+- This ensures the result always displays on a single line
+- The CSS `clamp()` function automatically scales the text down to fit available width
+- Perfect synergy: clamp() handles responsive sizing, nowrap prevents line breaks
+
+**E2E Test Results** (20/20 steps passed):
+✅ Mobile (390px): "$970,000/month" displays on single line without wrapping
+✅ Mobile: "$4,970,000/month" (extremely large value) still single line
+✅ Tablet (768px): Single-line display with ~38.4px font size
+✅ Desktop (1920px): Single-line display at maximum 48px font size
+✅ `whitespace-nowrap` confirmed in computed styles across all viewports
+✅ Text scales down appropriately to maintain single-line display
