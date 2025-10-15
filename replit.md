@@ -54,3 +54,38 @@
 - **Lucide React**: Icon library.
 - **Vite**: Frontend build tool.
 - **Express**: Backend web framework for serving the application.
+
+## Recent Changes (Current Session)
+**Date**: October 15, 2025
+
+### Mobile Result Display Overflow Fix
+**Issue**: Calculator result values were cut off on mobile devices (e.g., "$102,000/month" on Burn Rate page had text truncated at screen edge)
+
+**Root Cause**: Fixed large font-size (`text-5xl` = 48px) didn't scale down for mobile viewports, causing overflow on narrow screens
+
+**Solution Implemented**:
+- Used CSS `clamp()` for fluid responsive text sizing instead of Tailwind breakpoint utilities
+- Formula: `fontSize: clamp(1.875rem, 5vw, 3rem)`
+  - Minimum: 1.875rem (30px) on narrow screens
+  - Preferred: 5vw (5% of viewport width) - scales smoothly
+  - Maximum: 3rem (48px) on wide screens
+- Applied as inline style to ensure it's not overridden
+- Added `break-words` class for additional overflow protection
+- Reduced card padding on mobile: `p-4 sm:p-6 lg:p-8`
+
+**Why Clamp() Over Responsive Classes**:
+- Provides smooth, continuous scaling vs. breakpoint jumps
+- Guarantees text fits on any viewport size
+- More predictable behavior across devices
+
+**Impact**: 
+- Fixes ALL 15 metric calculators (shared ResultDisplay component)
+- Universal benefit across MRR, ARR, Burn Rate, CAC, LTV, Churn Rate, etc.
+
+**E2E Test Results** (18/18 steps passed):
+✅ Mobile (390px): "$102,000/month" displays fully without cutoff
+✅ Mobile: "$170,000/month" (larger value) also displays correctly
+✅ Tablet (768px): Text scales appropriately (~38px)
+✅ Desktop (1920px): Text scales to maximum size (~48px)
+✅ No overflow detected on any viewport size
+✅ Smooth responsive scaling across all breakpoints
