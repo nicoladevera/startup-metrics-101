@@ -28,7 +28,7 @@ export default function HomePage() {
         </div>
 
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-12 px-8 rounded-xl shadow-lg mb-12">
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-slate-800 dark:to-slate-900 text-white py-12 px-8 rounded-xl shadow-lg mb-12">
           <h1 className="text-5xl font-bold text-center mb-4" data-testid="hero-title">
             Startup Metrics 101
           </h1>
@@ -40,13 +40,13 @@ export default function HomePage() {
           {/* Search Bar */}
           <div className="mt-8 max-w-2xl mx-auto relative">
             <div className="relative">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-300 w-5 h-5" />
               <Input
                 type="search"
                 placeholder="Search metrics (e.g., MRR, Churn, CAC...)"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-14 pr-5 py-4 text-base border-2 border-gray-200 focus:border-white bg-white text-gray-900 placeholder:text-gray-500"
+                className="w-full pl-14 pr-5 py-4 text-base border-2 border-gray-200 dark:border-gray-600 focus:border-white dark:focus:border-gray-400 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
                 data-testid="search-input"
               />
             </div>
@@ -68,7 +68,7 @@ export default function HomePage() {
                   <h3 className="text-xl font-bold text-primary" data-testid={`metric-name-${metric.id}`}>
                     {metric.name}
                   </h3>
-                  <p className="text-gray-600 text-[0.95rem] leading-relaxed" data-testid={`metric-description-${metric.id}`}>
+                  <p className="text-gray-600 dark:text-gray-400 text-[0.95rem] leading-relaxed" data-testid={`metric-description-${metric.id}`}>
                     {metric.shortDescription}
                   </p>
                 </div>
