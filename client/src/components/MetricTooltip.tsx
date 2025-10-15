@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { TOOLTIPS } from "@shared/metrics";
 import {
   Tooltip,
@@ -12,19 +13,30 @@ interface MetricTooltipProps {
 
 export function MetricTooltip({ term, children }: MetricTooltipProps) {
   const definition = TOOLTIPS[term];
+  const [open, setOpen] = useState(false);
   
   if (!definition) {
     return <>{children || term}</>;
   }
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setOpen(!open);
+  };
+
   return (
-    <Tooltip delayDuration={200}>
+    <Tooltip open={open} onOpenChange={setOpen} delayDuration={200}>
       <TooltipTrigger asChild>
-        <span className="border-b-2 border-dotted border-primary cursor-help font-semibold text-primary">
+        <span 
+          className="border-b-2 border-dotted border-primary cursor-help font-semibold text-primary"
+          onClick={handleClick}
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+        >
           {children || term}
         </span>
       </TooltipTrigger>
-      <TooltipContent className="max-w-xs bg-gray-800 text-white">
+      <TooltipContent className="max-w-xs bg-gray-800 text-white dark:bg-gray-900">
         <p className="text-sm leading-relaxed">{definition}</p>
       </TooltipContent>
     </Tooltip>
