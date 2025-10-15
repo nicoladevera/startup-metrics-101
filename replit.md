@@ -108,3 +108,22 @@
 ✅ Desktop (1920px): Single-line display at maximum 48px font size
 ✅ `whitespace-nowrap` confirmed in computed styles across all viewports
 ✅ Text scales down appropriately to maintain single-line display
+
+### Follow-up: Mobile Overflow Fix (Reduced Minimum Font Size)
+**Issue**: Long values like "$1,000,000/month" extended slightly beyond the card boundaries on mobile, causing overflow
+
+**Root Cause**: The minimum font size (1.875rem = 30px) in the clamp() formula was still too large for very long text on narrow mobile screens
+
+**Solution Implemented**:
+- Reduced minimum font size in clamp() from `1.875rem` to `1.25rem` (30px → 20px)
+- Updated formula: `clamp(1.25rem, 5vw, 3rem)`
+- This allows more aggressive text scaling on mobile while maintaining readability
+- Text now fits completely within card bounds even for very large values
+
+**E2E Test Results** (20/20 steps passed):
+✅ Mobile (390px): "$1,000,000/month" fits completely within card (no overflow)
+✅ Mobile: "$10,000,000/month" (extreme value) also fits within bounds
+✅ Font size correctly scales to 20px minimum on mobile
+✅ Text remains readable at smaller size
+✅ Tablet (768px): Scales to ~38.4px appropriately
+✅ Desktop (1920px): Maximum 48px maintained
