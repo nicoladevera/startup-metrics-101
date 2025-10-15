@@ -34,7 +34,7 @@ export function ResultDisplay({ formattedResult, benchmark }: ResultDisplayProps
         <p className="text-lg text-muted-foreground font-medium">
           {benchmark.label} Result
         </p>
-        <div className={`font-bold ${colors.text} break-words`} style={{ fontSize: 'clamp(1.875rem, 5vw, 3rem)' }} data-testid="result-value">
+        <div className={`font-bold ${colors.text} whitespace-nowrap`} style={{ fontSize: 'clamp(1.875rem, 5vw, 3rem)' }} data-testid="result-value">
           {formattedResult}
         </div>
         <div className={`${colors.bg} ${colors.textColor} rounded-lg p-4 mt-4`} data-testid="result-feedback">
