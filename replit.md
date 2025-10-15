@@ -1,139 +1,7 @@
 # Startup Metrics Explained
 
-## Project Overview
-**Startup Metrics Explained** is a responsive, browser-based educational web application that teaches 15 key startup financial metrics through interactive calculators, real-time visualizations, and comprehensive educational content.
-
-**Status**: ✅ Production Ready (Architect Approved)
-
-## Key Features
-- **15 Essential Metrics**: MRR, ARR, Burn Rate, Runway, CAC, LTV, LTV:CAC Ratio, Churn Rate, NRR, Gross Margin, Contribution Margin, Net Profit Margin, Growth Rate, Rule of 40, Unit Economics
-- **Interactive Calculators**: Real-time calculations with synchronized number inputs and range sliders
-- **Color-Coded Feedback**: Green (healthy), Yellow (acceptable), Red (concerning) with contextual explanations
-- **Visual Analytics**: Chart.js visualizations (line, bar, gauge charts)
-- **Educational Content**: Definitions, formulas, why it matters, pro tips, common mistakes, benchmarks
-- **Dark Mode**: Full theme support with localStorage persistence
-- **Responsive Design**: Mobile-first approach with professional blue color scheme (#2563EB)
-- **Searchable Interface**: Real-time search filtering on homepage
-
-## Technology Stack
-- **Frontend**: React 18 with TypeScript
-- **Routing**: Wouter (lightweight React router)
-- **Styling**: Tailwind CSS + Shadcn/UI components
-- **Charts**: Chart.js with react-chartjs-2
-- **Icons**: Lucide React (100% icon-based, NO emojis)
-- **Theme**: Custom ThemeProvider with dark mode support
-- **Build**: Vite + Express backend for serving
-
-## Architecture
-
-### File Structure
-```
-client/src/
-├── components/
-│   ├── ui/              # Shadcn/UI base components
-│   ├── Calculator.tsx   # Reusable calculator with synchronized inputs
-│   ├── ResultDisplay.tsx # Color-coded result feedback
-│   ├── MetricChart.tsx  # Chart.js wrapper component
-│   ├── MetricTooltip.tsx # Educational tooltips
-│   ├── ThemeProvider.tsx # Dark mode provider
-│   └── ThemeToggle.tsx  # Theme toggle button
-├── pages/
-│   ├── HomePage.tsx     # Metric grid with search
-│   └── MetricDetail.tsx # Individual metric pages
-├── lib/
-│   ├── icons.tsx        # Icon utility (getIcon)
-│   └── queryClient.ts   # TanStack Query setup
-└── App.tsx              # Main app with routing
-
-shared/
-└── metrics.ts           # All 15 metrics data structure
-
-server/
-├── index.ts             # Express server
-└── routes.ts            # API routes (currently minimal)
-```
-
-### Key Components
-
-#### Metrics Data (`shared/metrics.ts`)
-Each metric includes:
-- `id`: Unique identifier
-- `name`: Display name
-- `iconName`: Lucide icon name (e.g., 'TrendingUp', 'DollarSign')
-- `shortDescription`: Brief summary
-- `definition`: Detailed explanation
-- `whyItMatters`: Business importance
-- `formula`: Mathematical formula
-- `formulaPlain`: Plain English formula
-- `sampleCalculation`: Example with steps
-- `calculator`: Interactive calculator config with inputs, calculateFn, formatResult, getBenchmark
-- `tips`: Pro tips array
-- `commonMistakes`: Common mistakes array
-- `hasChart`: Boolean for chart display
-- `chartType`: 'line' | 'bar' | 'gauge'
-
-#### Calculator Component
-- Synchronized number inputs and range sliders
-- Real-time calculation on value change
-- Validation and formatting
-- Responsive grid layout
-
-#### Color-Coded Feedback System
-- **Green** (text-green-600): Healthy/excellent metrics
-- **Yellow** (text-yellow-600): Acceptable/moderate metrics
-- **Red** (text-red-600): Concerning/poor metrics
-- Each benchmark includes status and explanation
-
-#### Theme System
-- ThemeProvider manages light/dark state
-- localStorage persistence ('theme' key)
-- Toggles 'light'/'dark' class on document.documentElement
-- All components use semantic color tokens that adapt to theme
-
-## Design System
-
-### Color Palette
-- **Primary**: #2563EB (Professional Blue)
-- **Success**: Green tones for positive feedback
-- **Warning**: Yellow/orange for moderate feedback
-- **Destructive**: Red tones for concerning feedback
-- All colors configured in `tailwind.config.ts` with HSL values
-
-### Typography
-- Headings: Bold, large sizes with proper hierarchy
-- Body: 1.1rem with 1.8 line-height for readability
-- Formula: Monospace font for code/formulas
-- Responsive scaling across breakpoints
-
-### Design Principles
-- **NO Emojis**: 100% Lucide React icons only
-- **Spacing**: Consistent padding and gaps (p-4, p-6, p-8, gap-3, gap-4)
-- **Borders**: Subtle borders with primary color accents
-- **Animations**: Smooth hover transitions on cards
-- **Accessibility**: Proper semantic HTML, data-testid on all interactive elements
-
-## Testing
-
-### E2E Test Coverage
-✅ Homepage search functionality
-✅ Navigation between pages
-✅ Calculator inputs and sliders synchronization
-✅ Color-coded feedback display
-✅ Theme toggle (light/dark)
-✅ Chart rendering
-✅ Responsive layout
-✅ All 15 metrics verified
-
-### Test IDs
-- `hero-title`: Main homepage title
-- `input-search`: Search input field
-- `button-theme-toggle`: Theme toggle button
-- `link-metric-{id}`: Metric card links (e.g., link-metric-mrr)
-- `metric-card-{id}`: Metric cards
-- `button-back`: Back to homepage button
-- `metric-title`: Metric detail page title
-- `section-definition`, `section-calculator`, etc.: Page sections
-- `tip-{index}`, `mistake-{index}`: Individual tips/mistakes
+## Overview
+**Startup Metrics Explained** is a responsive, browser-based educational web application designed to teach 15 key startup financial metrics. It provides interactive calculators, real-time visualizations, and comprehensive educational content to help users understand essential business performance indicators. The project's ambition is to offer a professional, clean, and interactive learning experience for startup founders, investors, and enthusiasts.
 
 ## User Preferences
 - **Design Style**: Professional, clean, educational
@@ -141,152 +9,48 @@ Each metric includes:
 - **Interactivity**: Real-time calculations, synchronized inputs
 - **Educational Focus**: Comprehensive learning with examples, tips, and mistakes
 
-## Recent Changes (Latest Session)
-**Date**: October 14, 2025
+## System Architecture
 
-### Session 1: Initial Production Release
-1. **Icon System Overhaul**:
-   - Replaced ALL emoji icons with Lucide React icons
-   - Updated metrics.ts: changed `icon` field to `iconName` with proper Lucide names
-   - Created getIcon() utility in `lib/icons.tsx`
-   - Updated HomePage and MetricDetail to render Lucide icons
-   - Replaced 💡 with `<Lightbulb>` in tips section
-   - Replaced ⚠️ with `<AlertTriangle>` in mistakes section
+### Key Features
+- **15 Essential Metrics**: Covers metrics like MRR, ARR, Burn Rate, CAC, LTV, Churn Rate, Rule of 40, and Unit Economics.
+- **Interactive Calculators**: Real-time calculations with synchronized number inputs and range sliders.
+- **Color-Coded Feedback**: Provides immediate feedback (Green: healthy, Yellow: acceptable, Red: concerning) with contextual explanations.
+- **Visual Analytics**: Utilizes Chart.js for data visualization (line, bar, gauge charts).
+- **Educational Content**: Includes definitions, formulas, business importance, pro tips, common mistakes, and benchmarks for each metric.
+- **Dark Mode**: Full theme support with localStorage persistence for user preference.
+- **Responsive Design**: Mobile-first approach with a professional blue color scheme.
+- **Searchable Interface**: Real-time search filtering on the homepage.
 
-2. **Dark Mode Implementation**:
-   - Created ThemeProvider component with localStorage persistence
-   - Added ThemeToggle component
-   - Integrated theme system in App.tsx
+### Technology Stack
+- **Frontend**: React 18 with TypeScript
+- **Routing**: Wouter
+- **Styling**: Tailwind CSS + Shadcn/UI components
+- **Charts**: Chart.js with react-chartjs-2
+- **Icons**: Lucide React (no emojis)
+- **Theme**: Custom ThemeProvider with dark mode support
+- **Build**: Vite + Express backend for serving
 
-3. **Test Coverage Enhancement**:
-   - Added data-testid to all Link components
-   - Verified all interactive elements are testable
-   - Ran comprehensive e2e test suite (30/30 steps passed)
+### Design System
+- **Color Palette**: Primary blue (#2563EB), with semantic greens, yellows, and reds for feedback. All colors are configured in `tailwind.config.ts` using HSL values and adapt to the theme.
+- **Typography**: Bold headings with proper hierarchy, 1.1rem body text with 1.8 line-height for readability, and monospace font for formulas. Responsive scaling is implemented across breakpoints.
+- **Design Principles**: Emphasis on Lucide React icons (no emojis), consistent spacing (p-4, p-6, p-8, gap-3, gap-4), subtle borders with primary color accents, smooth hover transitions, and accessibility with semantic HTML and `data-testid` on interactive elements.
 
-### Session 2: Dark Mode Fixes
-**Issue**: Dark mode working on homepage but metric detail pages had unreadable content
+### System Design Choices
+- **Metrics Data Structure**: Each metric in `shared/metrics.ts` includes `id`, `name`, `iconName`, `shortDescription`, `definition`, `whyItMatters`, `formula`, `formulaPlain`, `sampleCalculation`, `calculator` configuration, `tips`, `commonMistakes`, `hasChart`, and `chartType`.
+- **Calculator Component**: Features synchronized number inputs and range sliders, real-time calculation, validation, and responsive grid layout.
+- **Color-Coded Feedback System**: Utilizes Tailwind CSS classes (`text-green-600`, `text-yellow-600`, `text-red-600`) for visual feedback based on metric benchmarks.
+- **Theme System**: `ThemeProvider` manages light/dark state, persists choice in `localStorage`, and toggles 'light'/'dark' classes on `document.documentElement`, ensuring components adapt using semantic color tokens.
+- **Mobile Optimization**: Implements `window.scrollTo(0, 0)` for consistent scroll position on page load and responsive calculator layouts to prevent content cutoff on mobile devices.
+- **Accessibility**: Enhanced glossary term tooltips (`MetricTooltip`) to support both hover (desktop) and tap (mobile) interactions.
 
-**Root Cause**: Hard-coded color classes (text-gray-*, bg-gray-*, etc.) that don't adapt to theme changes
-
-**Fixes Applied**:
-
-1. **MetricDetail.tsx** - Replaced all hard-coded colors with semantic tokens:
-   - Text: text-gray-700/800/900 → text-foreground/text-muted-foreground
-   - Backgrounds: bg-gray-50/100 → bg-card/bg-muted
-   - Borders: border-gray-200/300 → border
-   - Tips section: Added dark:bg-success-dark/20 and dark:text-success-light
-   - Mistakes section: Added dark:bg-warning-dark/20 and dark:text-warning-light
-
-2. **Calculator.tsx** - Fixed input labels and prefix/suffix colors:
-   - Labels: text-gray-700 → text-foreground
-   - Prefix/suffix: text-gray-500 → text-muted-foreground
-
-3. **ResultDisplay.tsx** - Added dark mode variants:
-   - Result label: text-gray-600 → text-muted-foreground
-   - Added dark mode variants for success/warning/error backgrounds
-
-**E2E Test Results** (26/26 steps passed):
-✅ All text readable in dark mode on all metric detail pages
-✅ Calculator inputs, labels, and results readable
-✅ Tips and mistakes sections with proper contrast
-✅ Seamless light/dark mode switching
-
-### Session 3: Final Polish
-**Changes Applied**:
-
-1. **Title Update**:
-   - Changed homepage title from "Startup Metrics Explained" to "Startup Metrics 101"
-   
-2. **Visualization Section Removal**:
-   - Removed chart/visualization sections from all metric detail pages to reduce confusion
-   - Pages now flow from Interactive Calculator directly to Pro Tips section
-
-3. **Browser Tab Titles** (SEO Enhancement):
-   - Homepage: "Startup Metrics 101 - Interactive Learning Platform"
-   - Individual metric pages: "Startup Metrics 101 - [Metric Name]" (e.g., "Startup Metrics 101 - MRR")
-   - Implemented using useEffect in HomePage.tsx and MetricDetail.tsx
-   - Dynamic titles improve SEO and user navigation experience
-
-**E2E Test Results** (9/9 steps passed):
-✅ Homepage title displays correctly
-✅ Metric detail page titles dynamically show metric name
-✅ Title persists when navigating between pages
-✅ Direct navigation to metrics shows correct title
-
-### Session 4: UX and Mobile Optimization
-**Issues Reported**:
-1. Metric pages opening at random scroll positions (middle/bottom) instead of top
-2. Calculator values cut off on mobile (e.g., "$70,000/month" on Burn Rate page)
-
-**Fixes Applied**:
-
-1. **Scroll-to-Top Fix** (MetricDetail.tsx):
-   - Added `window.scrollTo(0, 0)` in useEffect when metric loads
-   - Ensures all metric pages always open at the top of the page
-   - Works on both desktop and mobile viewports
-
-2. **Mobile Calculator Responsiveness** (Calculator.tsx):
-   - Changed layout from horizontal-only to responsive stack:
-     - Mobile: Vertical stack (`flex-col`) - input on top, slider below
-     - Desktop: Horizontal layout (`sm:flex-row`)
-   - Input width optimization:
-     - Mobile: Full width (`w-full`) to accommodate long values
-     - Desktop: Auto width with minimum 180px (`sm:w-auto sm:min-w-[180px]`)
-   - Improved suffix handling:
-     - Adjusted padding for better spacing (`pr-16 sm:pr-20`)
-     - Made suffix text slightly smaller (`text-sm`)
-   - Prevents text overflow and ensures values like "$70,000/month" display fully
-
-**E2E Test Results** (18/18 steps passed):
-✅ Mobile viewport: Page scrolls to top when opening Burn Rate from homepage
-✅ Mobile: Calculator input "$70,000/month" fully visible without cutoff
-✅ Desktop viewport: Page scrolls to top when opening MRR from homepage  
-✅ Desktop: All calculator inputs properly visible and formatted
-✅ Navigation between metrics maintains scroll-to-top behavior
-✅ Responsive layout adapts correctly between mobile and desktop
-
-### Session 5: Mobile Tooltip Accessibility Fix
-**Issue**: Glossary term tooltips worked on desktop (hover) but not on mobile (tap did nothing)
-
-**Root Cause**: Radix UI Tooltip components are designed for hover interactions only and don't respond to tap/click events on touch devices
-
-**Solution Implemented**:
-- Added controlled state management to MetricTooltip component (`open`, `setOpen`)
-- Added `onClick` handler to toggle tooltip visibility on tap/click (mobile support)
-- Retained `onMouseEnter`/`onMouseLeave` handlers for hover behavior (desktop)
-- Tooltip now responds to appropriate interaction patterns for each device type
-
-**E2E Test Results** (20/20 steps passed):
-✅ Mobile: Tap glossary term to show tooltip definition
-✅ Mobile: Tap again (or tap outside) to dismiss tooltip
-✅ Desktop: Hover glossary term to show tooltip definition
-✅ Desktop: Mouse leave to hide tooltip
-✅ Tooltips work across all metric pages (MRR, CAC, Burn Rate, etc.)
-✅ Both interaction patterns work seamlessly on their respective devices
-
-### Architect Reviews
-- **Session 1 - Review 1**: Identified emoji icons, missing dark mode, missing data-testids
-- **Session 1 - Review 2**: Confirmed all fixes applied correctly
-- **Session 1 - Final Review**: Approved for production deployment
-- **Session 2 - Review**: Confirmed dark mode fixes complete, production-ready
-
-## Running the Application
-The workflow "Start application" runs `npm run dev` which:
-1. Starts Express server on port 5000 (backend)
-2. Starts Vite dev server (frontend)
-3. Hot module reloading enabled
-4. Serves on http://localhost:5000
-
-## Deployment
-Application is ready for publishing to Replit's deployment platform. All features tested and approved.
-
-## Known Non-Issues
-- Fast Refresh warning on MetricTooltip.tsx: Non-critical, causes full reload instead of hot reload due to `addTooltips` utility export (not a component)
-- Browserslist data notice: Cosmetic warning, doesn't affect functionality
-
-## Future Enhancements (Optional)
-- Add more metrics (e.g., Quick Ratio, Magic Number, Payback Period)
-- Add comparison tools to compare multiple metrics
-- Add export/save calculator results
-- Add metric favorites/bookmarks
-- Add metric relationships visualization
+## External Dependencies
+- **React**: Frontend JavaScript library.
+- **TypeScript**: Superset of JavaScript for type safety.
+- **Wouter**: Lightweight React router for navigation.
+- **Tailwind CSS**: Utility-first CSS framework for styling.
+- **Shadcn/UI**: UI component library based on Tailwind CSS.
+- **Chart.js**: JavaScript charting library for data visualization.
+- **react-chartjs-2**: React wrapper for Chart.js.
+- **Lucide React**: Icon library.
+- **Vite**: Frontend build tool.
+- **Express**: Backend web framework for serving the application.
