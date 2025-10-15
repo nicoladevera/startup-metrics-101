@@ -245,6 +245,25 @@ Each metric includes:
 ✅ Navigation between metrics maintains scroll-to-top behavior
 ✅ Responsive layout adapts correctly between mobile and desktop
 
+### Session 5: Mobile Tooltip Accessibility Fix
+**Issue**: Glossary term tooltips worked on desktop (hover) but not on mobile (tap did nothing)
+
+**Root Cause**: Radix UI Tooltip components are designed for hover interactions only and don't respond to tap/click events on touch devices
+
+**Solution Implemented**:
+- Added controlled state management to MetricTooltip component (`open`, `setOpen`)
+- Added `onClick` handler to toggle tooltip visibility on tap/click (mobile support)
+- Retained `onMouseEnter`/`onMouseLeave` handlers for hover behavior (desktop)
+- Tooltip now responds to appropriate interaction patterns for each device type
+
+**E2E Test Results** (20/20 steps passed):
+✅ Mobile: Tap glossary term to show tooltip definition
+✅ Mobile: Tap again (or tap outside) to dismiss tooltip
+✅ Desktop: Hover glossary term to show tooltip definition
+✅ Desktop: Mouse leave to hide tooltip
+✅ Tooltips work across all metric pages (MRR, CAC, Burn Rate, etc.)
+✅ Both interaction patterns work seamlessly on their respective devices
+
 ### Architect Reviews
 - **Session 1 - Review 1**: Identified emoji icons, missing dark mode, missing data-testids
 - **Session 1 - Review 2**: Confirmed all fixes applied correctly
