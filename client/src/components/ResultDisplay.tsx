@@ -29,12 +29,12 @@ export function ResultDisplay({ formattedResult, benchmark }: ResultDisplayProps
   const colors = colorClasses[benchmark.color];
 
   return (
-    <Card className="p-8 text-center shadow-lg mt-8" data-testid="result-display">
+    <Card className="p-4 sm:p-6 lg:p-8 text-center shadow-lg mt-8" data-testid="result-display">
       <div className="space-y-4">
         <p className="text-lg text-muted-foreground font-medium">
           {benchmark.label} Result
         </p>
-        <div className={`text-5xl font-bold ${colors.text}`} data-testid="result-value">
+        <div className={`text-3xl sm:text-4xl lg:text-5xl font-bold ${colors.text} break-words`} data-testid="result-value">
           {formattedResult}
         </div>
         <div className={`${colors.bg} ${colors.textColor} rounded-lg p-4 mt-4`} data-testid="result-feedback">
