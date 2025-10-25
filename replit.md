@@ -14,6 +14,7 @@
 ### Key Features
 - **15 Essential Metrics**: Covers metrics like MRR, ARR, Burn Rate, CAC, LTV, Churn Rate, Rule of 40, and Unit Economics.
 - **Interactive Calculators**: Real-time calculations with synchronized number inputs and range sliders.
+- **B2B/B2C Business Type Toggle**: Dynamic benchmark differentiation for 4 metrics (CAC, LTV, Churn Rate, Gross Margin) with localStorage persistence for user preference.
 - **Color-Coded Feedback**: Provides immediate feedback (Green: healthy, Yellow: acceptable, Red: concerning) with contextual explanations.
 - **Visual Analytics**: Utilizes Chart.js for data visualization (line, bar, gauge charts).
 - **Educational Content**: Includes definitions, formulas, business importance, pro tips, common mistakes, and benchmarks for each metric.
@@ -36,7 +37,8 @@
 - **Design Principles**: Emphasis on Lucide React icons (no emojis), consistent spacing (p-4, p-6, p-8, gap-3, gap-4), subtle borders with primary color accents, smooth hover transitions, and accessibility with semantic HTML and `data-testid` on interactive elements.
 
 ### System Design Choices
-- **Metrics Data Structure**: Each metric in `shared/metrics.ts` includes `id`, `name`, `iconName`, `shortDescription`, `definition`, `whyItMatters`, `formula`, `formulaPlain`, `sampleCalculation`, `calculator` configuration, `tips`, `commonMistakes`, `hasChart`, and `chartType`.
+- **Metrics Data Structure**: Each metric in `shared/metrics.ts` includes `id`, `name`, `iconName`, `shortDescription`, `definition`, `whyItMatters`, `formula`, `formulaPlain`, `sampleCalculation`, `calculator` configuration, `tips`, `commonMistakes`, `hasChart`, `chartType`, and optional `supportsBusinessTypes` flag.
+- **Business Type Toggle System**: `BusinessTypeToggle` component with `useBusinessType` hook manages B2B/B2C state, persists choice in `localStorage`, and conditionally renders on metrics with `supportsBusinessTypes: true`. The `getBenchmark` function accepts an optional `businessType` parameter to return context-specific feedback.
 - **Calculator Component**: Features synchronized number inputs and range sliders, real-time calculation, validation, and responsive grid layout.
 - **Color-Coded Feedback System**: Utilizes Tailwind CSS classes (`text-green-600`, `text-yellow-600`, `text-red-600`) for visual feedback based on metric benchmarks.
 - **Theme System**: `ThemeProvider` manages light/dark state, persists choice in `localStorage`, and toggles 'light'/'dark' classes on `document.documentElement`, ensuring components adapt using semantic color tokens.
@@ -56,6 +58,65 @@
 - **Express**: Backend web framework for serving the application.
 
 ## Recent Changes (Current Session)
+**Date**: October 25, 2025
+
+### B2B/B2C Business Type Toggle Feature
+**Feature**: Added dynamic benchmark differentiation for metrics with significant B2B vs B2C performance variations
+
+**Implementation**:
+- Created `BusinessTypeToggle` component (`client/src/components/BusinessTypeToggle.tsx`) with:
+  - Toggle switch UI with Building2 (B2B) and ShoppingCart (B2C) icons
+  - `useBusinessType` custom hook for state management
+  - localStorage persistence (key: `'businessType'`, default: `'B2B'`)
+- Updated Metric type schema with:
+  - `BusinessType` type (`'B2B' | 'B2C'`)
+  - Optional `supportsBusinessTypes` flag on Metric interface
+  - `getBenchmark` function signature accepts optional `businessType` parameter
+- Integrated toggle into `MetricDetail.tsx` calculator section
+  - Conditionally renders only for metrics with `supportsBusinessTypes: true`
+  - Passes businessType to `getBenchmark()` for context-specific feedback
+
+**Metrics Supporting Business Type Toggle** (4 total):
+
+1. **CAC (Customer Acquisition Cost)**
+   - B2B: ≤$200 Excellent, ≤$500 Good, ≤$1000 High, >$1000 Very High
+   - B2C: ≤$50 Excellent, ≤$100 Good, ≤$150 High, >$150 Very High
+   - Rationale: B2C has shorter sales cycles and lower-touch acquisition
+
+2. **LTV (Lifetime Value)**
+   - B2B: ≥$5000 Excellent, ≥$2000 Good, ≥$500 Moderate, <$500 Low
+   - B2C: ≥$500 Excellent, ≥$200 Good, ≥$100 Moderate, <$100 Low
+   - Rationale: B2B commands higher prices and longer customer relationships
+
+3. **Churn Rate**
+   - B2B: ≤2% Excellent, ≤5% Acceptable, >5% High
+   - B2C: ≤2% Excellent, ≤5% Good, ≤7% Acceptable, >7% High
+   - Rationale: B2C has lower switching costs, making 3-7% churn more acceptable
+
+4. **Gross Margin**
+   - B2B: ≥70% Excellent, ≥50% Moderate, <50% Low
+   - B2C: ≥50% Excellent, ≥40% Good, ≥30% Acceptable, <30% Low
+   - Rationale: B2C ecommerce has physical goods costs; 40-60% is healthy
+
+**E2E Test Results** (31/31 steps passed):
+✅ Toggle appears on CAC, LTV, Churn Rate, and Gross Margin pages
+✅ Toggle does NOT appear on metrics like MRR (correct conditional rendering)
+✅ Default B2B selection on first visit
+✅ Toggle state persists across navigation (localStorage)
+✅ Benchmark feedback updates correctly when switching business types:
+  - CAC $500: B2B "Good" → B2C "Very High" ✓
+  - LTV $2,000: B2C "Excellent" → B2B "Good" ✓
+  - Churn 5.0%: B2B "Acceptable" → B2C "Good" ✓
+  - Gross Margin 50.0%: B2C "Excellent" → B2B "Moderate" ✓
+✅ User preference persists across sessions via localStorage
+
+**Impact**: 
+- Provides context-specific guidance for both B2B SaaS and B2C ecommerce founders
+- Eliminates confusion from one-size-fits-all benchmarks
+- Enhances educational value by acknowledging business model differences
+
+---
+
 **Date**: October 15, 2025
 
 ### Mobile Result Display Overflow Fix
