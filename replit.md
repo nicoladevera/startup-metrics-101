@@ -14,7 +14,7 @@
 ### Key Features
 - **15 Essential Metrics**: Covers metrics like MRR, ARR, Burn Rate, CAC, LTV, Churn Rate, Rule of 40, and Unit Economics.
 - **Interactive Calculators**: Real-time calculations with synchronized number inputs and range sliders.
-- **B2B/B2C Business Type Toggle**: Dynamic benchmark differentiation for 4 metrics (CAC, LTV, Churn Rate, Gross Margin) with localStorage persistence for user preference.
+- **B2B/B2C Business Type Toggle**: Dynamic benchmark differentiation for 5 metrics (CAC, LTV, Churn Rate, Gross Margin, Contribution Margin) with localStorage persistence for user preference.
 - **Color-Coded Feedback**: Provides immediate feedback (Green: healthy, Yellow: acceptable, Red: concerning) with contextual explanations.
 - **Visual Analytics**: Utilizes Chart.js for data visualization (line, bar, gauge charts).
 - **Educational Content**: Includes definitions, formulas, business importance, pro tips, common mistakes, and benchmarks for each metric.
@@ -76,7 +76,7 @@
   - Conditionally renders only for metrics with `supportsBusinessTypes: true`
   - Passes businessType to `getBenchmark()` for context-specific feedback
 
-**Metrics Supporting Business Type Toggle** (4 total):
+**Metrics Supporting Business Type Toggle** (5 total):
 
 1. **CAC (Customer Acquisition Cost)**
    - B2B: ≤$200 Excellent, ≤$500 Good, ≤$1000 High, >$1000 Very High
@@ -98,8 +98,13 @@
    - B2C: ≥50% Excellent, ≥40% Good, ≥30% Acceptable, <30% Low
    - Rationale: B2C ecommerce has physical goods costs; 40-60% is healthy
 
-**E2E Test Results** (31/31 steps passed):
-✅ Toggle appears on CAC, LTV, Churn Rate, and Gross Margin pages
+5. **Contribution Margin**
+   - B2B: ≥60% Excellent, ≥50% Good, ≥40% Moderate, <40% Low
+   - B2C: ≥40% Excellent, ≥30% Good, ≥20% Acceptable, <20% Low
+   - Rationale: B2C spends 40-60% of revenue on variable marketing (paid ads); B2B has lower variable costs
+
+**E2E Test Results** (51/51 steps passed):
+✅ Toggle appears on CAC, LTV, Churn Rate, Gross Margin, and Contribution Margin pages
 ✅ Toggle does NOT appear on metrics like MRR (correct conditional rendering)
 ✅ Default B2B selection on first visit
 ✅ Toggle state persists across navigation (localStorage)
@@ -108,6 +113,9 @@
   - LTV $2,000: B2C "Excellent" → B2B "Good" ✓
   - Churn 5.0%: B2B "Acceptable" → B2C "Good" ✓
   - Gross Margin 50.0%: B2C "Excellent" → B2B "Moderate" ✓
+  - Contribution Margin 50.0%: B2B "Good" → B2C "Excellent" ✓
+  - Contribution Margin 20.0%: B2C "Acceptable" → B2B "Low" ✓
+  - Contribution Margin 45.0%: B2B "Moderate" → B2C "Excellent" ✓
 ✅ User preference persists across sessions via localStorage
 
 **Impact**: 

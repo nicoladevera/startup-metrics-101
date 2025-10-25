@@ -594,16 +594,28 @@ export const METRICS: Metric[] = [
       ],
       calculateFn: (inputs) => ((inputs.revenue - inputs.cogs - inputs.variable) / inputs.revenue) * 100,
       formatResult: (result) => `${result.toFixed(1)}%`,
-      getBenchmark: (result) => {
-        if (result >= 40) return { threshold: 40, color: 'success', label: 'Strong', feedback: 'Excellent contribution margin! Good unit economics.' };
-        if (result >= 20) return { threshold: 20, color: 'warning', label: 'Moderate', feedback: 'Decent margin. Focus on reducing variable costs or increasing prices.' };
-        if (result >= 0) return { threshold: 0, color: 'warning', label: 'Low', feedback: 'Positive but low. Each sale barely covers variable costs.' };
-        return { threshold: -1, color: 'error', label: 'Negative', feedback: 'Negative margin! You lose money on each sale. Urgent action needed.' };
+      getBenchmark: (result, businessType = 'B2B') => {
+        if (businessType === 'B2C') {
+          // B2C benchmarks: Lower margins due to higher variable marketing costs
+          if (result >= 40) return { threshold: 40, color: 'success', label: 'Excellent', feedback: 'Excellent contribution margin for B2C! Strong unit economics despite marketing costs.' };
+          if (result >= 30) return { threshold: 30, color: 'success', label: 'Good', feedback: 'Healthy B2C contribution margin. Good balance of growth and efficiency.' };
+          if (result >= 20) return { threshold: 20, color: 'warning', label: 'Acceptable', feedback: 'Acceptable for B2C. Focus on reducing variable costs or increasing prices.' };
+          if (result >= 0) return { threshold: 0, color: 'warning', label: 'Low', feedback: 'Positive but low for B2C. Each sale barely covers variable costs.' };
+          return { threshold: -1, color: 'error', label: 'Negative', feedback: 'Negative margin! You lose money on each sale. Urgent action needed.' };
+        } else {
+          // B2B benchmarks: Higher margins expected with lower variable marketing spend
+          if (result >= 60) return { threshold: 60, color: 'success', label: 'Excellent', feedback: 'Excellent contribution margin for B2B! Strong unit economics and efficiency.' };
+          if (result >= 50) return { threshold: 50, color: 'success', label: 'Good', feedback: 'Healthy B2B contribution margin. Good foundation for profitable growth.' };
+          if (result >= 40) return { threshold: 40, color: 'warning', label: 'Moderate', feedback: 'Moderate margin for B2B. Work on reducing variable costs or improving pricing.' };
+          if (result >= 0) return { threshold: 0, color: 'warning', label: 'Low', feedback: 'Positive but low for B2B. Each sale barely covers variable costs.' };
+          return { threshold: -1, color: 'error', label: 'Negative', feedback: 'Negative margin! You lose money on each sale. Urgent action needed.' };
+        }
       }
     },
     tips: [
       'Include all variable costs: COGS, commissions, payment fees, delivery',
-      'Contribution margin should be at least 30-40% for healthy SaaS',
+      'B2B should target 50-70% contribution margin (lower variable marketing costs)',
+      'B2C typically achieves 30-50% contribution margin (higher paid acquisition costs)',
       'Use contribution margin to set pricing and evaluate customer segments',
       'Higher contribution margin means faster path to profitability',
       'Track by product, channel, and customer type to optimize mix'
@@ -613,7 +625,8 @@ export const METRICS: Metric[] = [
       'Including fixed costs like rent and salaries in the calculation',
       'Not accounting for all sales commissions and variable marketing spend',
       'Forgetting shipping, payment processing, and referral fees'
-    ]
+    ],
+    supportsBusinessTypes: true
   },
   {
     id: 'net-profit-margin',
