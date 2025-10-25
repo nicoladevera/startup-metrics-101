@@ -86,7 +86,7 @@ export const METRICS: Metric[] = [
         { name: 'avgRevenue', label: 'Avg Monthly Revenue per Customer', unit: '$', min: 0, max: 1000, step: 1, defaultValue: 50, prefix: '$' }
       ],
       calculateFn: (inputs) => inputs.customers * inputs.avgRevenue,
-      formatResult: (result) => `$${result.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      formatResult: (result) => `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
       getBenchmark: (result) => {
         if (result >= 100000) return { threshold: 100000, color: 'success', label: 'Excellent', feedback: 'Strong MRR! You\'re at a scale that attracts serious investor attention.' };
         if (result >= 10000) return { threshold: 10000, color: 'success', label: 'Good', feedback: 'Healthy MRR showing solid traction and growth potential.' };
@@ -132,7 +132,7 @@ export const METRICS: Metric[] = [
         { name: 'mrr', label: 'Monthly Recurring Revenue (MRR)', unit: '$', min: 0, max: 1000000, step: 1000, defaultValue: 50000, prefix: '$' }
       ],
       calculateFn: (inputs) => inputs.mrr * 12,
-      formatResult: (result) => `$${result.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      formatResult: (result) => `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
       getBenchmark: (result) => {
         if (result >= 10000000) return { threshold: 10000000, color: 'success', label: 'Scale Stage', feedback: 'Excellent! You\'re at Series B/C scale with strong market position.' };
         if (result >= 1000000) return { threshold: 1000000, color: 'success', label: 'Growth Stage', feedback: 'Great milestone! You\'ve proven product-market fit at scale.' };
@@ -179,7 +179,7 @@ export const METRICS: Metric[] = [
         { name: 'revenue', label: 'Monthly Revenue', unit: '$', min: 0, max: 1000000, step: 1000, defaultValue: 30000, prefix: '$' }
       ],
       calculateFn: (inputs) => inputs.expenses - inputs.revenue,
-      formatResult: (result) => `$${result.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/month`,
+      formatResult: (result) => `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}/month`,
       getBenchmark: (result) => {
         const ratio = result / 100000;
         if (ratio <= 0.3) return { threshold: 30000, color: 'success', label: 'Low Burn', feedback: 'Excellent capital efficiency! You\'re managing expenses well.' };
@@ -273,7 +273,7 @@ export const METRICS: Metric[] = [
         { name: 'customers', label: 'New Customers Acquired', min: 1, max: 10000, step: 1, defaultValue: 100 }
       ],
       calculateFn: (inputs) => inputs.marketing / inputs.customers,
-      formatResult: (result) => `$${result.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      formatResult: (result) => `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
       getBenchmark: (result, businessType = 'B2B') => {
         if (businessType === 'B2C') {
           // B2C benchmarks: Much lower CAC due to shorter sales cycles
@@ -329,7 +329,7 @@ export const METRICS: Metric[] = [
         { name: 'churnRate', label: 'Monthly Churn Rate', unit: '%', min: 0.1, max: 50, step: 0.1, defaultValue: 5, suffix: '%' }
       ],
       calculateFn: (inputs) => inputs.avgRevenue / (inputs.churnRate / 100),
-      formatResult: (result) => `$${result.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      formatResult: (result) => `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
       getBenchmark: (result, businessType = 'B2B') => {
         if (businessType === 'B2C') {
           // B2C benchmarks: Lower LTV due to lower prices and higher churn

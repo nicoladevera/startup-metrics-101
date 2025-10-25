@@ -66,17 +66,19 @@
 **Root Cause**: Currency formatters used `.toLocaleString()` without decimal control, causing repeating decimals from division operations
 
 **Solution Implemented**:
-- Updated all 5 currency formatters (MRR, ARR, Burn Rate, CAC, LTV) to use `.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })`
-- Ensures exactly 2 decimal places for all monetary values
+- Updated all 5 currency formatters (MRR, ARR, Burn Rate, CAC, LTV) to use `.toLocaleString('en-US', { maximumFractionDigits: 2 })`
+- Shows decimals only when needed (smart formatting)
+- Caps at maximum 2 decimal places for fractional values
 - Maintains proper thousand-separator formatting with commas
 
-**E2E Test Results** (17/17 steps passed):
-✅ LTV ($100, 27.5% churn): Now shows "$363.64" (was "$363.636")
-✅ CAC ($10,000 / 3): Shows "$3,333.33" (was "$3,333.333...")
-✅ MRR (7 × $99): Shows "$693.00" (consistent .00 suffix)
-✅ Burn Rate ($55,555 - $22,222): Shows "$33,333.00/month"
+**E2E Test Results** (20/20 steps passed):
+✅ LTV ($100, 27.5% churn): Shows "$363.64" (was "$363.636")
+✅ CAC ($10,000 / 3): Shows "$3,333.33" (2 decimals for fractional)
+✅ MRR (200 × $50): Shows "$10,000" (no decimals for whole numbers)
+✅ CAC ($50,000 / 100): Shows "$500" (no decimals for whole numbers)
+✅ ARR ($50,000 × 12): Shows "$600,000" (no decimals for whole numbers)
 
-**Impact**: All currency values now display with professional, consistent 2-decimal formatting
+**Impact**: Currency values display professionally with decimals only when needed, never exceeding 2 decimal places
 
 ---
 
