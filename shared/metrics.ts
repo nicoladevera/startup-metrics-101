@@ -17,6 +17,8 @@ export interface BenchmarkZone {
   feedback: string;
 }
 
+export type BusinessType = 'B2B' | 'B2C';
+
 export interface Metric {
   id: string;
   name: string;
@@ -34,12 +36,13 @@ export interface Metric {
     inputs: CalculatorInput[];
     calculateFn: (inputs: Record<string, number>) => number;
     formatResult: (result: number) => string;
-    getBenchmark: (result: number) => BenchmarkZone;
+    getBenchmark: (result: number, businessType?: BusinessType) => BenchmarkZone;
   };
   tips: string[];
   commonMistakes: string[];
   hasChart?: boolean;
   chartType?: 'line' | 'bar' | 'gauge';
+  supportsBusinessTypes?: boolean;
 }
 
 export const TOOLTIPS: Record<string, string> = {
@@ -271,11 +274,20 @@ export const METRICS: Metric[] = [
       ],
       calculateFn: (inputs) => inputs.marketing / inputs.customers,
       formatResult: (result) => `$${result.toLocaleString()}`,
-      getBenchmark: (result) => {
-        if (result <= 200) return { threshold: 200, color: 'success', label: 'Efficient', feedback: 'Excellent CAC! You have efficient acquisition channels.' };
-        if (result <= 500) return { threshold: 500, color: 'success', label: 'Good', feedback: 'Healthy CAC. Ensure LTV is at least 3x this number.' };
-        if (result <= 1000) return { threshold: 1000, color: 'warning', label: 'High', feedback: 'CAC is elevated. Focus on improving conversion rates and channel efficiency.' };
-        return { threshold: 1001, color: 'error', label: 'Very High', feedback: 'CAC is too high. Revisit your acquisition strategy and channel mix.' };
+      getBenchmark: (result, businessType = 'B2B') => {
+        if (businessType === 'B2C') {
+          // B2C benchmarks: Much lower CAC due to shorter sales cycles
+          if (result <= 50) return { threshold: 50, color: 'success', label: 'Excellent', feedback: 'Excellent CAC for B2C! Very efficient acquisition channels.' };
+          if (result <= 100) return { threshold: 100, color: 'success', label: 'Good', feedback: 'Healthy B2C CAC. Ensure LTV is at least 3x this number.' };
+          if (result <= 150) return { threshold: 150, color: 'warning', label: 'High', feedback: 'CAC is elevated for B2C. Optimize conversion rates and channel efficiency.' };
+          return { threshold: 151, color: 'error', label: 'Very High', feedback: 'CAC is too high for B2C. Revisit your acquisition strategy and channel mix.' };
+        } else {
+          // B2B benchmarks: Higher CAC acceptable due to longer sales cycles and higher LTV
+          if (result <= 200) return { threshold: 200, color: 'success', label: 'Excellent', feedback: 'Excellent CAC for B2B! You have efficient acquisition channels.' };
+          if (result <= 500) return { threshold: 500, color: 'success', label: 'Good', feedback: 'Healthy B2B CAC. Ensure LTV is at least 3x this number.' };
+          if (result <= 1000) return { threshold: 1000, color: 'warning', label: 'High', feedback: 'CAC is elevated. Focus on improving conversion rates and channel efficiency.' };
+          return { threshold: 1001, color: 'error', label: 'Very High', feedback: 'CAC is too high. Revisit your acquisition strategy and channel mix.' };
+        }
       }
     },
     tips: [
@@ -283,14 +295,16 @@ export const METRICS: Metric[] = [
       'Calculate CAC by channel to identify most efficient acquisition sources',
       'Aim for CAC payback period under 12 months',
       'Track CAC trend over time - should decrease as you optimize',
-      'B2B SaaS CAC is typically $200-$500, Enterprise can be $5K-$50K+'
+      'B2B SaaS CAC is typically $200-$500, Enterprise can be $5K-$50K+',
+      'B2C CAC is typically $30-$100 due to shorter sales cycles and lower touch'
     ],
     commonMistakes: [
       'Excluding sales team salaries and overhead from CAC calculations',
       'Not accounting for marketing tools, agencies, and software costs',
       'Calculating CAC over too short a period (use at least quarterly data)',
       'Forgetting that CAC naturally increases as you move upmarket or expand'
-    ]
+    ],
+    supportsBusinessTypes: true
   },
   {
     id: 'ltv',
@@ -316,11 +330,20 @@ export const METRICS: Metric[] = [
       ],
       calculateFn: (inputs) => inputs.avgRevenue / (inputs.churnRate / 100),
       formatResult: (result) => `$${result.toLocaleString()}`,
-      getBenchmark: (result) => {
-        if (result >= 5000) return { threshold: 5000, color: 'success', label: 'Excellent', feedback: 'Strong LTV! Your customers are highly valuable.' };
-        if (result >= 2000) return { threshold: 2000, color: 'success', label: 'Good', feedback: 'Healthy LTV. Ensure CAC is under $667 for good unit economics.' };
-        if (result >= 500) return { threshold: 500, color: 'warning', label: 'Moderate', feedback: 'Decent LTV. Focus on reducing churn and increasing revenue per customer.' };
-        return { threshold: 0, color: 'error', label: 'Low', feedback: 'Low LTV is concerning. Work on retention and pricing strategy.' };
+      getBenchmark: (result, businessType = 'B2B') => {
+        if (businessType === 'B2C') {
+          // B2C benchmarks: Lower LTV due to lower prices and higher churn
+          if (result >= 500) return { threshold: 500, color: 'success', label: 'Excellent', feedback: 'Excellent LTV for B2C! Strong customer value.' };
+          if (result >= 200) return { threshold: 200, color: 'success', label: 'Good', feedback: 'Healthy B2C LTV. Ensure CAC is under $67 for good unit economics.' };
+          if (result >= 100) return { threshold: 100, color: 'warning', label: 'Moderate', feedback: 'Decent LTV. Focus on reducing churn and increasing revenue per customer.' };
+          return { threshold: 0, color: 'error', label: 'Low', feedback: 'Low LTV for B2C. Work on retention and pricing strategy.' };
+        } else {
+          // B2B benchmarks: Higher LTV due to higher prices and lower churn
+          if (result >= 5000) return { threshold: 5000, color: 'success', label: 'Excellent', feedback: 'Strong LTV for B2B! Your customers are highly valuable.' };
+          if (result >= 2000) return { threshold: 2000, color: 'success', label: 'Good', feedback: 'Healthy B2B LTV. Ensure CAC is under $667 for good unit economics.' };
+          if (result >= 500) return { threshold: 500, color: 'warning', label: 'Moderate', feedback: 'Decent LTV. Focus on reducing churn and increasing revenue per customer.' };
+          return { threshold: 0, color: 'error', label: 'Low', feedback: 'Low LTV is concerning. Work on retention and pricing strategy.' };
+        }
       }
     },
     tips: [
@@ -328,14 +351,16 @@ export const METRICS: Metric[] = [
       'Calculate LTV separately for different customer segments',
       'Include expansion revenue from upsells in LTV calculations',
       'Track LTV trends cohort-by-cohort to spot improvements',
-      'Consider using 3-year LTV for more conservative planning'
+      'Consider using 3-year LTV for more conservative planning',
+      'B2B LTV typically ranges from $2,000-$10,000+, B2C from $100-$500'
     ],
     commonMistakes: [
       'Using overall churn instead of cohort-specific churn rates',
       'Not including expansion revenue from upsells and cross-sells',
       'Calculating LTV on too small a sample size (wait for statistical significance)',
       'Ignoring gross margin when calculating LTV (should use gross profit LTV)'
-    ]
+    ],
+    supportsBusinessTypes: true
   },
   {
     id: 'ltv-cac-ratio',
@@ -407,14 +432,23 @@ export const METRICS: Metric[] = [
       ],
       calculateFn: (inputs) => (inputs.lost / inputs.starting) * 100,
       formatResult: (result) => `${result.toFixed(1)}%`,
-      getBenchmark: (result) => {
-        if (result <= 2) return { threshold: 2, color: 'success', label: 'Excellent', feedback: 'Excellent retention! Your customers love your product.' };
-        if (result <= 5) return { threshold: 5, color: 'warning', label: 'Acceptable', feedback: 'Acceptable for early-stage, but work on improving retention.' };
-        return { threshold: 5.1, color: 'error', label: 'High', feedback: 'High churn - focus on retention before scaling acquisition.' };
+      getBenchmark: (result, businessType = 'B2B') => {
+        if (businessType === 'B2C') {
+          // B2C benchmarks: Slightly higher churn acceptable due to lower prices
+          if (result <= 2) return { threshold: 2, color: 'success', label: 'Excellent', feedback: 'Excellent retention for B2C! Your customers love your product.' };
+          if (result <= 5) return { threshold: 5, color: 'success', label: 'Good', feedback: 'Good B2C churn rate. Continue focusing on retention.' };
+          if (result <= 7) return { threshold: 7, color: 'warning', label: 'Acceptable', feedback: 'Acceptable for B2C early-stage, but work on improving retention.' };
+          return { threshold: 7.1, color: 'error', label: 'High', feedback: 'High churn for B2C - focus on retention before scaling acquisition.' };
+        } else {
+          // B2B benchmarks: Lower churn expected due to higher switching costs
+          if (result <= 2) return { threshold: 2, color: 'success', label: 'Excellent', feedback: 'Excellent retention for B2B! Your customers love your product.' };
+          if (result <= 5) return { threshold: 5, color: 'warning', label: 'Acceptable', feedback: 'Acceptable for B2B early-stage, but work on improving retention.' };
+          return { threshold: 5.1, color: 'error', label: 'High', feedback: 'High churn for B2B - focus on retention before scaling acquisition.' };
+        }
       }
     },
     tips: [
-      'Aim for under 2% monthly churn for consumer SaaS, under 1% for enterprise',
+      'Aim for under 2% monthly churn for consumer products, under 1% for enterprise B2B',
       'Calculate churn cohort-by-cohort to identify trends',
       'Track both customer churn and revenue churn separately',
       'Focus on the first 90 days - most churn happens early',
@@ -427,7 +461,8 @@ export const METRICS: Metric[] = [
       'Not investigating why customers churn through exit interviews'
     ],
     hasChart: true,
-    chartType: 'line'
+    chartType: 'line',
+    supportsBusinessTypes: true
   },
   {
     id: 'nrr',
@@ -501,14 +536,24 @@ export const METRICS: Metric[] = [
       ],
       calculateFn: (inputs) => ((inputs.revenue - inputs.cogs) / inputs.revenue) * 100,
       formatResult: (result) => `${result.toFixed(1)}%`,
-      getBenchmark: (result) => {
-        if (result >= 70) return { threshold: 70, color: 'success', label: 'Excellent', feedback: 'Strong gross margin! Typical for healthy SaaS businesses.' };
-        if (result >= 50) return { threshold: 50, color: 'warning', label: 'Moderate', feedback: 'Decent margin but work on reducing COGS for better scalability.' };
-        return { threshold: 0, color: 'error', label: 'Low', feedback: 'Low margin limits growth. Focus on pricing and cost efficiency.' };
+      getBenchmark: (result, businessType = 'B2B') => {
+        if (businessType === 'B2C') {
+          // B2C benchmarks: Lower margins due to physical goods and competition
+          if (result >= 50) return { threshold: 50, color: 'success', label: 'Excellent', feedback: 'Excellent gross margin for B2C! Strong pricing power and efficiency.' };
+          if (result >= 40) return { threshold: 40, color: 'success', label: 'Good', feedback: 'Healthy B2C gross margin. Good foundation for sustainable growth.' };
+          if (result >= 30) return { threshold: 30, color: 'warning', label: 'Acceptable', feedback: 'Acceptable margin for B2C. Work on reducing COGS or premium positioning.' };
+          return { threshold: 0, color: 'error', label: 'Low', feedback: 'Low margin for B2C limits growth. Focus on pricing and cost efficiency.' };
+        } else {
+          // B2B benchmarks: Higher margins expected for software/services
+          if (result >= 70) return { threshold: 70, color: 'success', label: 'Excellent', feedback: 'Excellent gross margin for B2B! Typical for healthy SaaS businesses.' };
+          if (result >= 50) return { threshold: 50, color: 'warning', label: 'Moderate', feedback: 'Decent margin for B2B but work on reducing COGS for better scalability.' };
+          return { threshold: 0, color: 'error', label: 'Low', feedback: 'Low margin limits growth. Focus on pricing and cost efficiency.' };
+        }
       }
     },
     tips: [
-      'SaaS should target 70-90% gross margin',
+      'B2B SaaS should target 70-90% gross margin',
+      'B2C ecommerce typically achieves 40-60% margins',
       'Hardware/marketplace businesses typically have 30-50% margins',
       'Include hosting, support, and delivery costs in COGS',
       'Gross margin should improve as you scale due to efficiency gains',
@@ -519,7 +564,8 @@ export const METRICS: Metric[] = [
       'Not accounting for customer support and success costs',
       'Forgetting to include payment processing fees and hosting costs',
       'Not tracking margin by customer segment or product line'
-    ]
+    ],
+    supportsBusinessTypes: true
   },
   {
     id: 'contribution-margin',
