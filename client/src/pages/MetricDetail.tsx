@@ -8,6 +8,7 @@ import { addTooltips } from "@/components/MetricTooltip";
 import { getIcon } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { BusinessTypeToggle, useBusinessType } from "@/components/BusinessTypeToggle";
 import { ArrowLeft, BookOpen, Target, Calculator as CalcIcon, Lightbulb, AlertTriangle } from "lucide-react";
 
 export default function MetricDetail() {
@@ -16,6 +17,7 @@ export default function MetricDetail() {
   
   const [calculatorValues, setCalculatorValues] = useState<Record<string, number>>({});
   const [result, setResult] = useState<number | null>(null);
+  const [businessType, setBusinessType] = useBusinessType();
 
   useEffect(() => {
     if (metric) {
@@ -48,7 +50,7 @@ export default function MetricDetail() {
   }
 
   const formattedResult = result !== null ? metric.calculator.formatResult(result) : '';
-  const benchmark = result !== null ? metric.calculator.getBenchmark(result) : null;
+  const benchmark = result !== null ? metric.calculator.getBenchmark(result, businessType) : null;
 
   // Generate sample chart data
   const generateChartData = () => {
@@ -154,6 +156,15 @@ export default function MetricDetail() {
             <h2 className="text-3xl font-bold text-primary">Interactive Calculator</h2>
           </div>
           <Card className="bg-card border-2 border-card-border p-8">
+            {metric.supportsBusinessTypes && (
+              <div className="mb-6 pb-6 border-b border-border">
+                <BusinessTypeToggle 
+                  value={businessType} 
+                  onChange={setBusinessType}
+                />
+              </div>
+            )}
+            
             <Calculator
               inputs={metric.calculator.inputs}
               onCalculate={handleCalculate}
