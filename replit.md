@@ -60,6 +60,26 @@
 ## Recent Changes (Current Session)
 **Date**: October 25, 2025
 
+### Currency Formatting Fix (Maximum 2 Decimal Places)
+**Issue**: Currency values displayed excessive decimal places (e.g., LTV showing $363.636 instead of $363.64)
+
+**Root Cause**: Currency formatters used `.toLocaleString()` without decimal control, causing repeating decimals from division operations
+
+**Solution Implemented**:
+- Updated all 5 currency formatters (MRR, ARR, Burn Rate, CAC, LTV) to use `.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })`
+- Ensures exactly 2 decimal places for all monetary values
+- Maintains proper thousand-separator formatting with commas
+
+**E2E Test Results** (17/17 steps passed):
+✅ LTV ($100, 27.5% churn): Now shows "$363.64" (was "$363.636")
+✅ CAC ($10,000 / 3): Shows "$3,333.33" (was "$3,333.333...")
+✅ MRR (7 × $99): Shows "$693.00" (consistent .00 suffix)
+✅ Burn Rate ($55,555 - $22,222): Shows "$33,333.00/month"
+
+**Impact**: All currency values now display with professional, consistent 2-decimal formatting
+
+---
+
 ### B2B/B2C Business Type Toggle Feature
 **Feature**: Added dynamic benchmark differentiation for metrics with significant B2B vs B2C performance variations
 
