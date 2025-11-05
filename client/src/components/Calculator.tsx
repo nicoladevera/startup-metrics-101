@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { type CalculatorInput } from "@shared/metrics";
+import { sanitizeNumericInput } from "@shared/validation";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,7 +24,15 @@ export function Calculator({ inputs, onCalculate }: CalculatorProps) {
   }, [values, onCalculate]);
 
   const handleInputChange = (name: string, value: number) => {
-    setValues(prev => ({ ...prev, [name]: value }));
+    try {
+      // Sanitize and validate the input
+      const sanitizedValue = sanitizeNumericInput(value);
+      setValues(prev => ({ ...prev, [name]: sanitizedValue }));
+    } catch (error) {
+      // If validation fails, revert to previous value or use 0
+      console.warn('Invalid input value:', value, error);
+      setValues(prev => ({ ...prev, [name]: prev[name] || 0 }));
+    }
   };
 
   return (
