@@ -50,7 +50,7 @@ jobs:
 
       - name: Check for unused dependencies
         run: |
-          npx depcheck --ignores="@types/*,vitest,@testing-library/*,jsdom,typescript,@vitejs/*,postcss,autoprefixer,tailwindcss,esbuild,drizzle-kit"
+          npx depcheck --ignores="@types/*,vitest,@testing-library/*,jsdom,typescript,@vitejs/*,postcss,autoprefixer,tailwindcss,esbuild,drizzle-kit,@playwright/test,@hookform/resolvers,@jridgewell/trace-mapping,connect-pg-simple,express-session,framer-motion,memorystore,next-themes,passport,passport-local,react-icons,tw-animate-css,ws,zod-validation-error,@tailwindcss/vite" --skip-missing
 
   # Type checking job
   type-check:

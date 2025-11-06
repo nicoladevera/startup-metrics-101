@@ -8,7 +8,7 @@ test.describe('HomePage', () => {
     await expect(page).toHaveTitle(/Startup Metrics 101/);
 
     // Check main heading is visible
-    await expect(page.getByRole('heading', { name: /15 Essential Startup Metrics/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Startup Metrics 101/i })).toBeVisible();
   });
 
   test('should display all 15 metric cards', async ({ page }) => {

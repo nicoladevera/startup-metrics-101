@@ -131,7 +131,7 @@ test.describe('MetricDetail Page', () => {
     // Should show result of 3:1
     await expect(page.locator('text=/3\\.0:1/')).toBeVisible();
 
-    // Should show benchmark feedback
-    await expect(page.locator('text=/excellent|good|warning/i')).toBeVisible();
+    // Should show benchmark feedback (use .first() to avoid strict mode violation)
+    await expect(page.locator('text=/excellent|good|warning/i').first()).toBeVisible();
   });
 });
