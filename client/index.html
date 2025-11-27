@@ -1,9 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <title>Startup Metrics 101 - Interactive Learning Platform</title>
+    <script>
+      // Set theme immediately to prevent FOUC (Flash of Unstyled Content)
+      (function() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.classList.remove('light', 'dark');
+        document.documentElement.classList.add(theme);
+      })();
+    </script>
     <meta name="description" content="Learn 15 essential startup metrics through interactive calculators and clear explanations. Perfect for startup employees and aspiring entrepreneurs.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
