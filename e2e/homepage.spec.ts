@@ -9,6 +9,10 @@ test.describe('HomePage', () => {
 
     // Check main heading is visible
     await expect(page.getByRole('heading', { name: /Startup Metrics 101/i })).toBeVisible();
+
+    // Check default theme is dark (wait for theme to be applied)
+    const htmlElement = page.locator('html');
+    await expect(htmlElement).toHaveAttribute('class', /dark/);
   });
 
   test('should display all 15 metric cards', async ({ page }) => {
