@@ -27,14 +27,16 @@ export function MetricCalculatorSection({
   onBusinessTypeChange,
 }: MetricCalculatorSectionProps) {
   return (
-    <section className="mb-12" data-testid="section-calculator">
-      <div className="flex items-center gap-3 mb-5">
-        <CalcIcon className="w-7 h-7 text-primary" />
-        <h2 className="text-3xl font-bold text-primary">Interactive Calculator</h2>
+    <section className="mb-10" data-testid="section-calculator">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="bg-primary/10 dark:bg-primary/20 p-2.5 rounded-lg">
+          <CalcIcon className="w-6 h-6 text-primary" />
+        </div>
+        <h2 className="text-3xl font-bold text-foreground">Interactive Calculator</h2>
       </div>
-      <Card className="bg-card border-2 border-card-border p-8">
+      <Card className="bg-gradient-to-br from-card to-card/50 dark:from-card dark:to-card/80 border border-card-border dark:border-border p-10 shadow-lg rounded-xl">
         {supportsBusinessTypes && (
-          <div className="mb-6 pb-6 border-b border-border">
+          <div className="mb-8 pb-8 border-b border-border/50">
             <BusinessTypeToggle
               value={businessType}
               onChange={onBusinessTypeChange}

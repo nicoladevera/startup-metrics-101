@@ -28,47 +28,53 @@ export default function HomePage() {
         </div>
 
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-slate-800 dark:to-slate-900 text-white py-12 px-8 rounded-xl shadow-lg mb-12">
-          <h1 className="text-5xl font-bold text-center mb-4" data-testid="hero-title">
-            Startup Metrics 101
-          </h1>
-          <p className="text-xl text-center max-w-3xl mx-auto opacity-90 leading-relaxed">
-            Master the 15 essential business metrics every startup professional should know. 
-            Interactive calculators and clear explanations make learning easy.
-          </p>
-          
-          {/* Search Bar */}
-          <div className="mt-8 max-w-2xl mx-auto relative">
-            <div className="relative">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-300 w-5 h-5" />
-              <Input
-                type="search"
-                placeholder="Search metrics (e.g., MRR, Churn, CAC...)"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-14 pr-5 py-4 text-base border-2 border-gray-200 dark:border-gray-600 focus:border-white dark:focus:border-gray-400 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
-                data-testid="search-input"
-              />
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#0052CC] via-[#0066FF] to-[#0085FF] dark:from-[#0a1628] dark:via-[#0d1b2e] dark:to-[#0f2239] text-white py-16 px-8 rounded-2xl shadow-2xl mb-12 border border-white/10 dark:border-white/5">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent dark:from-white/[0.03] dark:to-transparent pointer-events-none"></div>
+          <div className="relative z-10">
+            <h1 className="text-6xl font-bold text-center mb-5 tracking-tight" data-testid="hero-title">
+              Startup Metrics 101
+            </h1>
+            <p className="text-xl text-center max-w-3xl mx-auto opacity-95 leading-relaxed font-normal">
+              Master the 15 essential business metrics every startup professional should know.
+              Interactive calculators and clear explanations make learning easy.
+            </p>
+
+            {/* Search Bar */}
+            <div className="mt-10 max-w-2xl mx-auto relative">
+              <div className="relative">
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
+                <Input
+                  type="search"
+                  placeholder="Search metrics (e.g., MRR, Churn, CAC...)"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-14 pr-5 py-4 text-base border border-white/20 dark:border-white/10 focus:border-white/40 dark:focus:border-white/20 bg-white/10 dark:bg-white/5 text-white placeholder:text-white/60 dark:placeholder:text-white/40 backdrop-blur-sm rounded-xl shadow-lg transition-all duration-200 focus:ring-2 focus:ring-white/20"
+                  data-testid="search-input"
+                />
+              </div>
             </div>
           </div>
         </div>
 
         {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
           {filteredMetrics.map((metric) => (
             <Link key={metric.id} href={`/metric/${metric.id}`} data-testid={`link-metric-${metric.id}`}>
               <Card
-                className="p-6 cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg hover:border-primary border-2 border-transparent hover-elevate"
+                className="group relative p-7 cursor-pointer transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl border border-card-border dark:border-border bg-card dark:bg-card backdrop-blur-sm"
                 data-testid={`metric-card-${metric.id}`}
               >
-                <div className="space-y-3">
-                  <div className="text-primary" data-testid={`metric-icon-${metric.id}`}>
-                    {getIcon(metric.iconName, "w-10 h-10")}
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:to-primary/10 transition-all duration-300 pointer-events-none"></div>
+                <div className="relative space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="text-primary transition-all duration-300 group-hover:scale-110" data-testid={`metric-icon-${metric.id}`}>
+                      {getIcon(metric.iconName, "w-11 h-11")}
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-primary" data-testid={`metric-name-${metric.id}`}>
+                  <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-200" data-testid={`metric-name-${metric.id}`}>
                     {metric.name}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-[0.95rem] leading-relaxed" data-testid={`metric-description-${metric.id}`}>
+                  <p className="text-muted-foreground text-[0.95rem] leading-relaxed" data-testid={`metric-description-${metric.id}`}>
                     {metric.shortDescription}
                   </p>
                 </div>

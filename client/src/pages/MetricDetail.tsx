@@ -55,26 +55,32 @@ export default function MetricDetail() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Button */}
         <div className="pt-8 mb-8">
           <Link href="/">
-            <Button variant="default" className="gap-2" data-testid="button-back">
+            <Button variant="default" className="gap-2 shadow-md hover:shadow-lg transition-all duration-200" data-testid="button-back">
               <ArrowLeft className="w-4 h-4" />
               Back to All Metrics
             </Button>
           </Link>
         </div>
 
-        {/* Page Title */}
-        <div className="mb-12">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="text-primary">
-              {getIcon(metric.iconName, "w-12 h-12")}
+        {/* Page Title - Enhanced Hero */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-transparent dark:from-primary/20 dark:via-primary/10 dark:to-transparent border border-primary/20 dark:border-primary/30 rounded-2xl p-10 mb-12 shadow-lg">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 dark:bg-primary/10 rounded-full blur-3xl"></div>
+          <div className="relative flex items-start gap-6">
+            <div className="text-primary bg-primary/10 dark:bg-primary/20 p-4 rounded-xl shadow-md">
+              {getIcon(metric.iconName, "w-14 h-14")}
             </div>
-            <h1 className="text-4xl font-bold text-foreground border-b-[3px] border-primary pb-3 flex-1" data-testid="metric-title">
-              {metric.name}
-            </h1>
+            <div className="flex-1">
+              <h1 className="text-5xl font-bold text-foreground mb-3 tracking-tight" data-testid="metric-title">
+                {metric.name}
+              </h1>
+              <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
+                {metric.shortDescription}
+              </p>
+            </div>
           </div>
         </div>
 
