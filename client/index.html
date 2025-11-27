@@ -9,37 +9,42 @@
     <!-- Set color-scheme to match theme for native browser UI elements -->
     <meta name="color-scheme" content="dark light">
     <style>
-      /* Critical CSS: Set dark mode immediately to prevent FOUC */
-      :root {
-        color-scheme: dark;
-      }
-      html.dark {
-        color-scheme: dark;
+      /* Critical CSS: Set dark mode BEFORE any content renders */
+      /* DEFAULT to dark mode - this ensures dark is applied immediately */
+      :root, html, body {
         background-color: hsl(222 47% 11%);
         color: hsl(210 40% 98%);
+        color-scheme: dark;
       }
-      html.light {
-        color-scheme: light;
+
+      /* Light mode overrides - only applied if .light class is present */
+      html.light, html.light body {
         background-color: hsl(220 16% 97%);
         color: hsl(220 15% 15%);
+        color-scheme: light;
       }
-      /* Prevent flash of unstyled content */
-      body {
-        opacity: 0;
-        transition: opacity 0.05s;
-      }
-      body.ready {
-        opacity: 1;
+
+      /* Explicit dark mode styles */
+      html.dark, html.dark body {
+        background-color: hsl(222 47% 11%);
+        color: hsl(210 40% 98%);
+        color-scheme: dark;
       }
     </style>
     <script>
       // Set theme immediately to prevent FOUC (Flash of Unstyled Content)
+      // This runs synchronously before any content renders
       (function() {
-        const theme = localStorage.getItem('theme') || 'dark';
-        const root = document.documentElement;
-        root.classList.remove('light', 'dark');
-        root.classList.add(theme);
-        root.style.colorScheme = theme;
+        try {
+          const theme = localStorage.getItem('theme') || 'dark';
+          const root = document.documentElement;
+          root.classList.remove('light', 'dark');
+          root.classList.add(theme);
+          root.style.colorScheme = theme;
+        } catch (e) {
+          // If localStorage fails, default to dark mode (already set in CSS)
+          console.error('Theme initialization error:', e);
+        }
       })();
     </script>
 
