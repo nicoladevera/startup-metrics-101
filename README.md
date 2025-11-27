@@ -92,8 +92,8 @@ For each metric, you get:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/startupmetrics101.git
-   cd startupmetrics101
+   git clone https://github.com/nicoladevera/startup-metrics-101.git
+   cd startup-metrics-101
    ```
 
 2. **Install dependencies**
