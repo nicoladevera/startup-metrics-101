@@ -67,17 +67,17 @@ export default function MetricDetail() {
         </div>
 
         {/* Page Title - Enhanced Hero */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-transparent dark:from-primary/20 dark:via-primary/10 dark:to-transparent border border-primary/20 dark:border-primary/30 rounded-2xl p-10 mb-12 shadow-lg">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 dark:bg-primary/10 rounded-full blur-3xl"></div>
-          <div className="relative flex items-start gap-6">
-            <div className="text-primary bg-primary/10 dark:bg-primary/20 p-4 rounded-xl shadow-md">
+        <div className="relative bg-gradient-to-br from-primary/10 via-primary/5 to-transparent dark:from-primary/20 dark:via-primary/10 dark:to-transparent border border-primary/20 dark:border-primary/30 rounded-2xl p-10 mb-12 shadow-lg">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 dark:bg-primary/10 rounded-full blur-3xl -z-10"></div>
+          <div className="relative flex flex-col sm:flex-row items-start gap-6">
+            <div className="text-primary bg-primary/10 dark:bg-primary/20 p-4 rounded-xl shadow-md flex-shrink-0">
               {getIcon(metric.iconName, "w-14 h-14")}
             </div>
-            <div className="flex-1">
-              <h1 className="text-5xl font-bold text-foreground mb-3 tracking-tight" data-testid="metric-title">
+            <div className="flex-1 w-full">
+              <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-3 leading-tight" data-testid="metric-title">
                 {metric.name}
               </h1>
-              <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
+              <p className="text-lg text-muted-foreground leading-relaxed">
                 {metric.shortDescription}
               </p>
             </div>
