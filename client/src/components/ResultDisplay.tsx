@@ -2,7 +2,7 @@ import { type BenchmarkZone } from "@shared/metrics";
 import { Card } from "@/components/ui/card";
 
 interface ResultDisplayProps {
-  result: number;
+  result: number | null;
   formattedResult: string;
   benchmark: BenchmarkZone;
 }
