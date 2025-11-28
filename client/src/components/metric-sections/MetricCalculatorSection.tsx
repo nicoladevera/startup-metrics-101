@@ -46,7 +46,7 @@ export function MetricCalculatorSection({
 
         <Calculator inputs={inputs} onCalculate={onCalculate} />
 
-        {result !== null && benchmark && (
+        {benchmark && (
           <ResultDisplay
             result={result}
             formattedResult={formattedResult}

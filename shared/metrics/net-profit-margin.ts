@@ -1,4 +1,5 @@
 import type { Metric } from './types';
+import { safeDivide } from '../utils/math';
 
 export const NET_PROFIT_MARGIN_METRIC: Metric = {
     id: 'net-profit-margin',
@@ -25,9 +26,10 @@ export const NET_PROFIT_MARGIN_METRIC: Metric = {
         { name: 'cogs', label: 'Cost of Goods Sold', unit: '$', min: 0, max: 5000000, step: 1000, defaultValue: 100000, prefix: '$' },
         { name: 'opex', label: 'Operating Expenses', unit: '$', min: 0, max: 5000000, step: 1000, defaultValue: 350000, prefix: '$' }
       ],
-      calculateFn: (inputs) => ((inputs.revenue - inputs.cogs - inputs.opex) / inputs.revenue) * 100,
-      formatResult: (result) => `${result.toFixed(1)}%`,
+      calculateFn: (inputs) => safeDivide((inputs.revenue - inputs.cogs - inputs.opex) * 100, inputs.revenue),
+      formatResult: (result) => result === null ? 'N/A' : `${result.toFixed(1)}%`,
       getBenchmark: (result) => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'Revenue is required to calculate this metric. Enter your revenue to see your net profit margin.' };
         if (result >= 20) return { threshold: 20, color: 'success', label: 'Excellent', feedback: 'Outstanding profitability! Strong business fundamentals.' };
         if (result >= 10) return { threshold: 10, color: 'success', label: 'Good', feedback: 'Healthy profit margin. You\'re operating efficiently.' };
         if (result >= 0) return { threshold: 0, color: 'warning', label: 'Breakeven', feedback: 'Breakeven or slight profit. Good for early-stage companies.' };

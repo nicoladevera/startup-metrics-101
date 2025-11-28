@@ -1,4 +1,5 @@
 import type { Metric } from './types';
+import { safeDivide } from '../utils/math';
 
 export const CAC_METRIC: Metric = {
     id: 'cac',
@@ -20,11 +21,13 @@ export const CAC_METRIC: Metric = {
     calculator: {
       inputs: [
         { name: 'marketing', label: 'Sales & Marketing Costs', unit: '$', min: 0, max: 500000, step: 1000, defaultValue: 50000, prefix: '$' },
-        { name: 'customers', label: 'New Customers Acquired', min: 1, max: 10000, step: 1, defaultValue: 100 }
+        { name: 'customers', label: 'New Customers Acquired', min: 0, max: 10000, step: 1, defaultValue: 100 }
       ],
-      calculateFn: (inputs) => inputs.marketing / inputs.customers,
-      formatResult: (result) => `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
+      calculateFn: (inputs) => safeDivide(inputs.marketing, inputs.customers),
+      formatResult: (result) => result === null ? 'N/A' : `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
       getBenchmark: (result, businessType = 'B2B') => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'Number of new customers is required to calculate CAC. Enter your new customer count to see your acquisition cost.' };
+
         if (businessType === 'B2C') {
           // B2C benchmarks: Much lower CAC due to shorter sales cycles
           if (result <= 50) return { threshold: 50, color: 'success', label: 'Excellent', feedback: 'Excellent CAC for B2C! Very efficient acquisition channels.' };

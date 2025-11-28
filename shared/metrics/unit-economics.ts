@@ -1,4 +1,5 @@
 import type { Metric } from './types';
+import { safeDivide } from '../utils/math';
 
 export const UNIT_ECONOMICS_METRIC: Metric = {
     id: 'unit-economics',
@@ -21,11 +22,12 @@ export const UNIT_ECONOMICS_METRIC: Metric = {
     calculator: {
       inputs: [
         { name: 'ltv', label: 'Lifetime Value (LTV)', unit: '$', min: 0, max: 50000, step: 100, defaultValue: 3000, prefix: '$' },
-        { name: 'cac', label: 'Customer Acquisition Cost', unit: '$', min: 1, max: 20000, step: 50, defaultValue: 1000, prefix: '$' }
+        { name: 'cac', label: 'Customer Acquisition Cost', unit: '$', min: 0, max: 20000, step: 50, defaultValue: 1000, prefix: '$' }
       ],
-      calculateFn: (inputs) => ((inputs.ltv - inputs.cac) / inputs.cac) * 100,
-      formatResult: (result) => `${result.toFixed(0)}% return`,
+      calculateFn: (inputs) => safeDivide((inputs.ltv - inputs.cac) * 100, inputs.cac),
+      formatResult: (result) => result === null ? 'N/A' : `${result.toFixed(0)}% return`,
       getBenchmark: (result) => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'CAC is required to calculate unit economics. Enter your customer acquisition cost to see your return per customer.' };
         if (result >= 200) return { threshold: 200, color: 'success', label: 'Excellent', feedback: 'Excellent unit economics! Each customer is highly profitable.' };
         if (result >= 50) return { threshold: 50, color: 'warning', label: 'Acceptable', feedback: 'Positive but aim for 200%+ return on acquisition investment.' };
         if (result >= 0) return { threshold: 0, color: 'warning', label: 'Marginal', feedback: 'Barely profitable per customer. Improve LTV or reduce CAC.' };

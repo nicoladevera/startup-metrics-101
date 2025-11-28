@@ -1,4 +1,5 @@
 import type { Metric } from './types';
+import { safeDivide } from '../utils/math';
 
 export const CHURN_RATE_METRIC: Metric = {
     id: 'churn-rate',
@@ -19,12 +20,14 @@ export const CHURN_RATE_METRIC: Metric = {
     },
     calculator: {
       inputs: [
-        { name: 'starting', label: 'Customers at Start of Month', min: 1, max: 100000, step: 1, defaultValue: 200 },
+        { name: 'starting', label: 'Customers at Start of Month', min: 0, max: 100000, step: 1, defaultValue: 200 },
         { name: 'lost', label: 'Customers Lost', min: 0, max: 50000, step: 1, defaultValue: 10 }
       ],
-      calculateFn: (inputs) => (inputs.lost / inputs.starting) * 100,
-      formatResult: (result) => `${result.toFixed(1)}%`,
+      calculateFn: (inputs) => safeDivide(inputs.lost * 100, inputs.starting),
+      formatResult: (result) => result === null ? 'N/A' : `${result.toFixed(1)}%`,
       getBenchmark: (result, businessType = 'B2B') => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'Starting customer count is required to calculate churn rate. Enter your number of customers at the start of the month to see your churn rate.' };
+
         if (businessType === 'B2C') {
           // B2C benchmarks: Slightly higher churn acceptable due to lower prices
           if (result <= 2) return { threshold: 2, color: 'success', label: 'Excellent', feedback: 'Excellent retention for B2C! Your customers love your product.' };

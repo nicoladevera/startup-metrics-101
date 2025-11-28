@@ -102,6 +102,11 @@ describe('Metric Calculator Functions', () => {
       expect(benchmark.color).toBe('success');
       expect(benchmark.label).toBe('Healthy');
     });
+
+    it('should return null when burn is 0', () => {
+      const result = metric.calculator.calculateFn({ cash: 500000, burn: 0 });
+      expect(result).toBe(null);
+    });
   });
 
   describe('CAC (Customer Acquisition Cost)', () => {
@@ -130,6 +135,11 @@ describe('Metric Calculator Functions', () => {
       expect(benchmark.color).toBe('success');
       expect(benchmark.label).toBe('Excellent');
     });
+
+    it('should return null when customers is 0', () => {
+      const result = metric.calculator.calculateFn({ marketing: 50000, customers: 0 });
+      expect(result).toBe(null);
+    });
   });
 
   describe('LTV (Lifetime Value)', () => {
@@ -157,6 +167,11 @@ describe('Metric Calculator Functions', () => {
       expect(b2bBenchmark.label).toBe('Good');
       expect(b2cBenchmark.label).toBe('Excellent');
     });
+
+    it('should return null when churn rate is 0', () => {
+      const result = metric.calculator.calculateFn({ avgRevenue: 100, churnRate: 0 });
+      expect(result).toBe(null);
+    });
   });
 
   describe('LTV:CAC Ratio', () => {
@@ -182,6 +197,11 @@ describe('Metric Calculator Functions', () => {
       const benchmark = metric.calculator.getBenchmark(1.2);
       expect(benchmark.color).toBe('error');
       expect(benchmark.label).toBe('Poor');
+    });
+
+    it('should return null when CAC is 0', () => {
+      const result = metric.calculator.calculateFn({ ltv: 3000, cac: 0 });
+      expect(result).toBe(null);
     });
   });
 
@@ -209,6 +229,11 @@ describe('Metric Calculator Functions', () => {
 
       expect(b2bBenchmark.color).toBe('warning');
       expect(b2cBenchmark.color).toBe('success');
+    });
+
+    it('should return null when starting customers is 0', () => {
+      const result = metric.calculator.calculateFn({ starting: 0, lost: 10 });
+      expect(result).toBe(null);
     });
   });
 
@@ -243,6 +268,15 @@ describe('Metric Calculator Functions', () => {
       expect(benchmark.color).toBe('success');
       expect(benchmark.label).toBe('Excellent');
     });
+
+    it('should return null when starting revenue is 0', () => {
+      const result = metric.calculator.calculateFn({
+        starting: 0,
+        expansion: 30000,
+        churn: 5000
+      });
+      expect(result).toBe(null);
+    });
   });
 
   describe('Gross Margin', () => {
@@ -269,6 +303,11 @@ describe('Metric Calculator Functions', () => {
 
       expect(b2bBenchmark.label).toBe('Excellent');
       expect(b2cBenchmark.label).toBe('Excellent');
+    });
+
+    it('should return null when revenue is 0', () => {
+      const result = metric.calculator.calculateFn({ revenue: 0, cogs: 20000 });
+      expect(result).toBe(null);
     });
   });
 
@@ -311,6 +350,15 @@ describe('Metric Calculator Functions', () => {
       expect(benchmark.color).toBe('error');
       expect(benchmark.label).toBe('Negative');
     });
+
+    it('should return null when revenue is 0', () => {
+      const result = metric.calculator.calculateFn({
+        revenue: 0,
+        cogs: 20000,
+        variable: 10000
+      });
+      expect(result).toBe(null);
+    });
   });
 
   describe('Net Profit Margin', () => {
@@ -344,6 +392,15 @@ describe('Metric Calculator Functions', () => {
       expect(benchmark.color).toBe('success');
       expect(benchmark.label).toBe('Excellent');
     });
+
+    it('should return null when revenue is 0', () => {
+      const result = metric.calculator.calculateFn({
+        revenue: 0,
+        cogs: 100000,
+        opex: 350000
+      });
+      expect(result).toBe(null);
+    });
   });
 
   describe('Growth Rate (MoM)', () => {
@@ -368,6 +425,11 @@ describe('Metric Calculator Functions', () => {
       const benchmark = metric.calculator.getBenchmark(18);
       expect(benchmark.color).toBe('success');
       expect(benchmark.label).toBe('Excellent');
+    });
+
+    it('should return null when last month revenue is 0', () => {
+      const result = metric.calculator.calculateFn({ lastMonth: 0, thisMonth: 50000 });
+      expect(result).toBe(null);
     });
   });
 
@@ -430,6 +492,11 @@ describe('Metric Calculator Functions', () => {
       const benchmark = metric.calculator.getBenchmark(-20);
       expect(benchmark.color).toBe('error');
       expect(benchmark.label).toBe('Negative');
+    });
+
+    it('should return null when CAC is 0', () => {
+      const result = metric.calculator.calculateFn({ ltv: 3000, cac: 0 });
+      expect(result).toBe(null);
     });
   });
 });

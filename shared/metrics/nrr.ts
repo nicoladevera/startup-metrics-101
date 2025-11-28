@@ -1,4 +1,5 @@
 import type { Metric } from './types';
+import { safeDivide } from '../utils/math';
 
 export const NRR_METRIC: Metric = {
     id: 'nrr',
@@ -24,9 +25,10 @@ export const NRR_METRIC: Metric = {
         { name: 'expansion', label: 'Expansion Revenue', unit: '$', min: 0, max: 500000, step: 1000, defaultValue: 30000, prefix: '$' },
         { name: 'churn', label: 'Churned Revenue', unit: '$', min: 0, max: 500000, step: 1000, defaultValue: 10000, prefix: '$' }
       ],
-      calculateFn: (inputs) => ((inputs.starting + inputs.expansion - inputs.churn) / inputs.starting) * 100,
-      formatResult: (result) => `${result.toFixed(0)}%`,
+      calculateFn: (inputs) => safeDivide((inputs.starting + inputs.expansion - inputs.churn) * 100, inputs.starting),
+      formatResult: (result) => result === null ? 'N/A' : `${result.toFixed(0)}%`,
       getBenchmark: (result) => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'Starting MRR is required to calculate NRR. Enter your starting monthly recurring revenue to see your net revenue retention.' };
         if (result >= 120) return { threshold: 120, color: 'success', label: 'Excellent', feedback: 'Exceptional! Your product has strong expansion and retention.' };
         if (result >= 100) return { threshold: 100, color: 'success', label: 'Good', feedback: 'Solid NRR. You\'re retaining and growing existing customer revenue.' };
         if (result >= 85) return { threshold: 85, color: 'warning', label: 'Fair', feedback: 'Acceptable but focus on expansion and reducing churn.' };

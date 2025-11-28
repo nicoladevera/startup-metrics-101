@@ -1,4 +1,5 @@
 import type { Metric } from './types';
+import { safeDivide } from '../utils/math';
 
 export const GROSS_MARGIN_METRIC: Metric = {
     id: 'gross-margin',
@@ -23,9 +24,11 @@ export const GROSS_MARGIN_METRIC: Metric = {
         { name: 'revenue', label: 'Total Revenue', unit: '$', min: 0, max: 10000000, step: 1000, defaultValue: 100000, prefix: '$' },
         { name: 'cogs', label: 'Cost of Goods Sold (COGS)', unit: '$', min: 0, max: 5000000, step: 1000, defaultValue: 20000, prefix: '$' }
       ],
-      calculateFn: (inputs) => ((inputs.revenue - inputs.cogs) / inputs.revenue) * 100,
-      formatResult: (result) => `${result.toFixed(1)}%`,
+      calculateFn: (inputs) => safeDivide((inputs.revenue - inputs.cogs) * 100, inputs.revenue),
+      formatResult: (result) => result === null ? 'N/A' : `${result.toFixed(1)}%`,
       getBenchmark: (result, businessType = 'B2B') => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'Revenue is required to calculate this metric. Enter your revenue to see your gross margin.' };
+
         if (businessType === 'B2C') {
           // B2C benchmarks: Lower margins due to physical goods and competition
           if (result >= 50) return { threshold: 50, color: 'success', label: 'Excellent', feedback: 'Excellent gross margin for B2C! Strong pricing power and efficiency.' };

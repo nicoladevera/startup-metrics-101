@@ -23,8 +23,9 @@ export const BURN_RATE_METRIC: Metric = {
         { name: 'revenue', label: 'Monthly Revenue', unit: '$', min: 0, max: 1000000, step: 1000, defaultValue: 30000, prefix: '$' }
       ],
       calculateFn: (inputs) => inputs.expenses - inputs.revenue,
-      formatResult: (result) => `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}/month`,
+      formatResult: (result) => result === null ? 'N/A' : `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}/month`,
       getBenchmark: (result) => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'Data is required to calculate burn rate.' };
         const ratio = result / 100000;
         if (ratio <= 0.3) return { threshold: 30000, color: 'success', label: 'Low Burn', feedback: 'Excellent capital efficiency! You\'re managing expenses well.' };
         if (ratio <= 0.7) return { threshold: 70000, color: 'warning', label: 'Moderate Burn', feedback: 'Manageable burn - ensure it\'s driving proportional growth.' };

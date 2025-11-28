@@ -22,8 +22,9 @@ export const ARR_METRIC: Metric = {
         { name: 'mrr', label: 'Monthly Recurring Revenue (MRR)', unit: '$', min: 0, max: 1000000, step: 1000, defaultValue: 50000, prefix: '$' }
       ],
       calculateFn: (inputs) => inputs.mrr * 12,
-      formatResult: (result) => `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
+      formatResult: (result) => result === null ? 'N/A' : `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
       getBenchmark: (result) => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'Data is required to calculate ARR.' };
         if (result >= 10000000) return { threshold: 10000000, color: 'success', label: 'Scale Stage', feedback: 'Excellent! You\'re at Series B/C scale with strong market position.' };
         if (result >= 1000000) return { threshold: 1000000, color: 'success', label: 'Growth Stage', feedback: 'Great milestone! You\'ve proven product-market fit at scale.' };
         if (result >= 100000) return { threshold: 100000, color: 'warning', label: 'Early Growth', feedback: 'Good progress - focus on scaling sales and marketing efficiently.' };

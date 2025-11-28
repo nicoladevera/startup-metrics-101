@@ -1,4 +1,5 @@
 import type { Metric } from './types';
+import { safeDivide } from '../utils/math';
 
 export const CONTRIBUTION_MARGIN_METRIC: Metric = {
     id: 'contribution-margin',
@@ -25,9 +26,11 @@ export const CONTRIBUTION_MARGIN_METRIC: Metric = {
         { name: 'cogs', label: 'Cost of Goods Sold', unit: '$', min: 0, max: 5000000, step: 1000, defaultValue: 20000, prefix: '$' },
         { name: 'variable', label: 'Variable Sales/Marketing', unit: '$', min: 0, max: 5000000, step: 1000, defaultValue: 30000, prefix: '$' }
       ],
-      calculateFn: (inputs) => ((inputs.revenue - inputs.cogs - inputs.variable) / inputs.revenue) * 100,
-      formatResult: (result) => `${result.toFixed(1)}%`,
+      calculateFn: (inputs) => safeDivide((inputs.revenue - inputs.cogs - inputs.variable) * 100, inputs.revenue),
+      formatResult: (result) => result === null ? 'N/A' : `${result.toFixed(1)}%`,
       getBenchmark: (result, businessType = 'B2B') => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'Revenue is required to calculate this metric. Enter your revenue to see your contribution margin.' };
+
         if (businessType === 'B2C') {
           // B2C benchmarks: Lower margins due to higher variable marketing costs
           if (result >= 40) return { threshold: 40, color: 'success', label: 'Excellent', feedback: 'Excellent contribution margin for B2C! Strong unit economics despite marketing costs.' };

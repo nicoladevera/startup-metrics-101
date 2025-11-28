@@ -23,8 +23,9 @@ export const MRR_METRIC: Metric = {
         { name: 'avgRevenue', label: 'Avg Monthly Revenue per Customer', unit: '$', min: 0, max: 1000, step: 1, defaultValue: 50, prefix: '$' }
       ],
       calculateFn: (inputs) => inputs.customers * inputs.avgRevenue,
-      formatResult: (result) => `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
+      formatResult: (result) => result === null ? 'N/A' : `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
       getBenchmark: (result) => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'Data is required to calculate MRR.' };
         if (result >= 100000) return { threshold: 100000, color: 'success', label: 'Excellent', feedback: 'Strong MRR! You\'re at a scale that attracts serious investor attention.' };
         if (result >= 10000) return { threshold: 10000, color: 'success', label: 'Good', feedback: 'Healthy MRR showing solid traction and growth potential.' };
         if (result >= 1000) return { threshold: 1000, color: 'warning', label: 'Early Stage', feedback: 'Promising start - focus on consistent growth and retention.' };

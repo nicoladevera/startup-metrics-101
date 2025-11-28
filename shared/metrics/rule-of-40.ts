@@ -23,8 +23,9 @@ export const RULE_OF_40_METRIC: Metric = {
         { name: 'profitMargin', label: 'Profit Margin', unit: '%', min: -100, max: 100, step: 1, defaultValue: -10, suffix: '%' }
       ],
       calculateFn: (inputs) => inputs.growthRate + inputs.profitMargin,
-      formatResult: (result) => `${result.toFixed(0)}%`,
+      formatResult: (result) => result === null ? 'N/A' : `${result.toFixed(0)}%`,
       getBenchmark: (result) => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'Data is required to calculate Rule of 40.' };
         if (result >= 40) return { threshold: 40, color: 'success', label: 'Excellent', feedback: 'Outstanding! You\'re balancing growth and profitability well.' };
         if (result >= 25) return { threshold: 25, color: 'warning', label: 'Fair', feedback: 'Acceptable but aim for 40%+. Optimize growth or profitability.' };
         return { threshold: 0, color: 'error', label: 'Below Target', feedback: 'Below target. You\'re either growing too slowly or burning too much cash.' };

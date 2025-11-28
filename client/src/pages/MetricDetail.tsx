@@ -50,8 +50,8 @@ export default function MetricDetail() {
     );
   }
 
-  const formattedResult = result !== null ? metric.calculator.formatResult(result) : '';
-  const benchmark = result !== null ? metric.calculator.getBenchmark(result, businessType) : null;
+  const formattedResult = metric.calculator.formatResult(result);
+  const benchmark = metric.calculator.getBenchmark(result, businessType);
 
   return (
     <div className="min-h-screen bg-background pb-20">

@@ -40,6 +40,9 @@ For each metric, you get:
 - **Sample Calculation** - Worked example with numbers
 - **Interactive Calculator** - Real-time calculation with inputs and sliders
 - **Benchmark Feedback** - Color-coded results (green/yellow/red) with actionable guidance
+  - Green: Excellent performance, meeting or exceeding industry standards
+  - Yellow: Acceptable but needs improvement
+  - Red: Below target or cannot calculate (missing required data)
 - **Best Practices** - Tips and strategies for improvement
 - **Common Mistakes** - Pitfalls to avoid
 - **Data Visualization** - Charts and graphs

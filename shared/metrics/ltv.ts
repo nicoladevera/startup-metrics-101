@@ -1,4 +1,5 @@
 import type { Metric } from './types';
+import { safeDivide } from '../utils/math';
 
 export const LTV_METRIC: Metric = {
     id: 'ltv',
@@ -20,11 +21,13 @@ export const LTV_METRIC: Metric = {
     calculator: {
       inputs: [
         { name: 'avgRevenue', label: 'Avg Monthly Revenue per Customer', unit: '$', min: 0, max: 1000, step: 10, defaultValue: 100, prefix: '$' },
-        { name: 'churnRate', label: 'Monthly Churn Rate', unit: '%', min: 0.1, max: 50, step: 0.1, defaultValue: 5, suffix: '%' }
+        { name: 'churnRate', label: 'Monthly Churn Rate', unit: '%', min: 0, max: 50, step: 0.1, defaultValue: 5, suffix: '%' }
       ],
-      calculateFn: (inputs) => inputs.avgRevenue / (inputs.churnRate / 100),
-      formatResult: (result) => `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
+      calculateFn: (inputs) => safeDivide(inputs.avgRevenue, inputs.churnRate / 100),
+      formatResult: (result) => result === null ? 'N/A' : `$${result.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
       getBenchmark: (result, businessType = 'B2B') => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'Churn rate is required to calculate LTV. Enter your monthly churn rate to see your lifetime value.' };
+
         if (businessType === 'B2C') {
           // B2C benchmarks: Lower LTV due to lower prices and higher churn
           if (result >= 500) return { threshold: 500, color: 'success', label: 'Excellent', feedback: 'Excellent LTV for B2C! Strong customer value.' };

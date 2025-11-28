@@ -1,4 +1,5 @@
 import type { Metric } from './types';
+import { safeDivide } from '../utils/math';
 
 export const LTV_CAC_RATIO_METRIC: Metric = {
     id: 'ltv-cac-ratio',
@@ -20,11 +21,12 @@ export const LTV_CAC_RATIO_METRIC: Metric = {
     calculator: {
       inputs: [
         { name: 'ltv', label: 'Lifetime Value (LTV)', unit: '$', min: 0, max: 50000, step: 100, defaultValue: 3000, prefix: '$' },
-        { name: 'cac', label: 'Customer Acquisition Cost (CAC)', unit: '$', min: 1, max: 20000, step: 50, defaultValue: 1000, prefix: '$' }
+        { name: 'cac', label: 'Customer Acquisition Cost (CAC)', unit: '$', min: 0, max: 20000, step: 50, defaultValue: 1000, prefix: '$' }
       ],
-      calculateFn: (inputs) => inputs.ltv / inputs.cac,
-      formatResult: (result) => `${result.toFixed(1)}:1`,
+      calculateFn: (inputs) => safeDivide(inputs.ltv, inputs.cac),
+      formatResult: (result) => result === null ? 'N/A' : `${result.toFixed(1)}:1`,
       getBenchmark: (result) => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'CAC is required to calculate LTV:CAC ratio. Enter your customer acquisition cost to see your unit economics.' };
         if (result >= 3) return { threshold: 3, color: 'success', label: 'Excellent', feedback: 'Excellent! Your unit economics are healthy and sustainable.' };
         if (result >= 1.5) return { threshold: 1.5, color: 'warning', label: 'Acceptable', feedback: 'Acceptable for early stage, but aim for 3:1 or better long-term.' };
         return { threshold: 0, color: 'error', label: 'Poor', feedback: 'Warning: You\'re spending too much to acquire customers relative to their value.' };

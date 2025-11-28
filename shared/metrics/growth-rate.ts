@@ -1,4 +1,5 @@
 import type { Metric } from './types';
+import { safeDivide } from '../utils/math';
 
 export const GROWTH_RATE_METRIC: Metric = {
     id: 'growth-rate',
@@ -23,9 +24,10 @@ export const GROWTH_RATE_METRIC: Metric = {
         { name: 'lastMonth', label: 'Last Month MRR', unit: '$', min: 0, max: 10000000, step: 1000, defaultValue: 50000, prefix: '$' },
         { name: 'thisMonth', label: 'This Month MRR', unit: '$', min: 0, max: 10000000, step: 1000, defaultValue: 60000, prefix: '$' }
       ],
-      calculateFn: (inputs) => ((inputs.thisMonth - inputs.lastMonth) / inputs.lastMonth) * 100,
-      formatResult: (result) => `${result.toFixed(1)}%`,
+      calculateFn: (inputs) => safeDivide((inputs.thisMonth - inputs.lastMonth) * 100, inputs.lastMonth),
+      formatResult: (result) => result === null ? 'N/A' : `${result.toFixed(1)}%`,
       getBenchmark: (result) => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'Last month MRR is required to calculate growth rate. Enter your previous month\'s revenue to see your growth rate.' };
         if (result >= 15) return { threshold: 15, color: 'success', label: 'Excellent', feedback: 'Outstanding growth! You\'re on a strong trajectory.' };
         if (result >= 10) return { threshold: 10, color: 'success', label: 'Good', feedback: 'Solid growth rate indicating healthy business momentum.' };
         if (result >= 5) return { threshold: 5, color: 'warning', label: 'Moderate', feedback: 'Moderate growth. Look for ways to accelerate.' };

@@ -1,4 +1,5 @@
 import type { Metric } from './types';
+import { safeDivide } from '../utils/math';
 
 export const RUNWAY_METRIC: Metric = {
     id: 'runway',
@@ -20,11 +21,12 @@ export const RUNWAY_METRIC: Metric = {
     calculator: {
       inputs: [
         { name: 'cash', label: 'Cash Balance', unit: '$', min: 0, max: 10000000, step: 10000, defaultValue: 500000, prefix: '$' },
-        { name: 'burn', label: 'Monthly Burn Rate', unit: '$', min: 1, max: 500000, step: 1000, defaultValue: 50000, prefix: '$' }
+        { name: 'burn', label: 'Monthly Burn Rate', unit: '$', min: 0, max: 500000, step: 1000, defaultValue: 50000, prefix: '$' }
       ],
-      calculateFn: (inputs) => inputs.cash / inputs.burn,
-      formatResult: (result) => `${result.toFixed(1)} months`,
+      calculateFn: (inputs) => safeDivide(inputs.cash, inputs.burn),
+      formatResult: (result) => result === null ? 'N/A' : `${result.toFixed(1)} months`,
       getBenchmark: (result) => {
+        if (result === null) return { threshold: 0, color: 'error', label: 'Cannot Calculate', feedback: 'Monthly burn rate is required to calculate runway. Enter your monthly burn rate to see how many months of runway you have.' };
         if (result >= 18) return { threshold: 18, color: 'success', label: 'Healthy', feedback: 'Excellent runway! You have plenty of time to execute and grow.' };
         if (result >= 12) return { threshold: 12, color: 'success', label: 'Good', feedback: 'Solid runway. Consider starting fundraising conversations soon.' };
         if (result >= 6) return { threshold: 6, color: 'warning', label: 'Caution', feedback: 'Start fundraising now! 6 months is the minimum safe runway.' };
