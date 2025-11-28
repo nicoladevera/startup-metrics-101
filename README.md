@@ -267,9 +267,64 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+3. Make your changes
+4. **Run appropriate checks before committing** (see Quality Checks section below)
+5. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+6. Push to the branch (`git push origin feature/AmazingFeature`)
+7. Open a Pull Request
+
+### Quality Checks Before Committing
+
+Run the appropriate checks based on your changes:
+
+#### For ALL changes:
+```bash
+npm run check           # TypeScript type checking
+npm run test            # Unit tests
+```
+
+#### Based on change type:
+
+**Metrics/Calculator Changes** (shared/metrics/, shared/utils/):
+```bash
+npm run check           # Type checking
+npm run test            # Unit tests (metrics.test.ts)
+npm run test:e2e        # E2E tests (calculator interactions)
+npm audit               # Security vulnerabilities
+```
+
+**UI/Component Changes** (client/src/components/, client/src/pages/):
+```bash
+npm run check           # Type checking
+npm run test:e2e        # E2E tests (user flows)
+npm run build           # Ensure production build works
+```
+
+**Backend/API Changes** (server/):
+```bash
+npm run check           # Type checking
+npm run test            # Unit tests
+npm run build           # Ensure production build works
+npm audit               # Security vulnerabilities
+```
+
+**Dependency Changes** (package.json, package-lock.json):
+```bash
+npm audit               # Security vulnerabilities
+npm run check           # Type checking
+npm run test            # All unit tests
+npm run test:e2e        # All E2E tests
+npm run build           # Production build
+```
+
+**Documentation Only** (README.md, comments):
+- No checks required, but verify markdown renders correctly
+
+#### Quick Check All
+For comprehensive validation before major commits:
+```bash
+npm audit && npm run check && npm run test && npm run test:e2e && npm run build
+```
 
 ## 📄 License
 
