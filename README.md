@@ -10,6 +10,19 @@ An interactive educational platform that teaches startup professionals about ess
 
 Startup Metrics 101 makes complex startup metrics understandable and actionable for founders, investors, and startup professionals. Learn about 15 essential business metrics with hands-on calculation tools, real-time feedback, and comprehensive educational content.
 
+## 📸 Screenshots
+
+### Homepage - Metric Dashboard
+Browse all 15 essential startup metrics with search and filtering capabilities.
+
+### Metric Detail Page
+Interactive calculators with real-time feedback, benchmarks, and educational content for each metric.
+
+### Dark Mode Support
+Seamlessly switch between light and dark themes for comfortable viewing in any environment.
+
+> **Note**: Add screenshots to a `/docs/screenshots/` folder and update image paths here, or link to a live demo deployment.
+
 ## ✨ Features
 
 ### 📊 15 Essential Startup Metrics
@@ -105,9 +118,17 @@ For each metric, you get:
    ```
 
 3. **Set up environment variables** (optional for database features)
+
+   Create a `.env` file in the root directory:
    ```bash
-   cp .env.example .env
-   # Edit .env with your database credentials
+   touch .env
+   ```
+
+   Add the following variables (see Environment Variables section below for details):
+   ```env
+   DATABASE_URL=postgresql://user:password@localhost:5432/startup_metrics
+   SESSION_SECRET=your-secret-key-here
+   PORT=5000
    ```
 
 4. **Push database schema** (if using database)
@@ -122,6 +143,38 @@ For each metric, you get:
 
 6. **Open your browser**
    Navigate to `http://localhost:5000`
+
+## 🔐 Environment Variables
+
+The application can run without a database (metrics work entirely client-side), but database features require the following environment variables:
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `DATABASE_URL` | No | - | PostgreSQL connection string. Format: `postgresql://user:password@host:port/database` |
+| `SESSION_SECRET` | No | - | Secret key for session management. Use a long random string in production. |
+| `PORT` | No | `5000` | Port number for the development/production server. |
+
+### Example .env file:
+
+```env
+# Database (optional - only needed for user accounts/saved data)
+DATABASE_URL=postgresql://postgres:password@localhost:5432/startup_metrics
+
+# Session security (optional - only needed with database)
+SESSION_SECRET=your-very-long-random-secret-key-change-this-in-production
+
+# Server configuration
+PORT=5000
+```
+
+### Running without a database:
+
+The app works perfectly without a database - all metrics and calculators function client-side. Simply skip the database setup steps and run:
+
+```bash
+npm install
+npm run dev
+```
 
 ## 📝 Available Scripts
 
@@ -195,6 +248,145 @@ E2E tests cover:
 - Metric detail pages
 - Calculator interactions
 - Theme toggling
+
+## 🔧 Troubleshooting
+
+### Common Issues and Solutions
+
+#### Port Already in Use
+
+**Problem**: `Error: listen EADDRINUSE: address already in use :::5000`
+
+**Solutions**:
+```bash
+# Option 1: Kill the process using port 5000
+lsof -ti:5000 | xargs kill
+
+# Option 2: Use a different port
+PORT=3000 npm run dev
+
+# Option 3: Find and stop the conflicting process
+lsof -i :5000  # See what's using the port
+# Then manually stop that process
+```
+
+**Note**: On macOS, port 5000 is sometimes used by AirPlay/Control Center. You can either disable AirPlay Receiver in System Settings or use a different port.
+
+#### Database Connection Issues
+
+**Problem**: `Error: connect ECONNREFUSED` or database connection failures
+
+**Solutions**:
+1. **Verify PostgreSQL is running**:
+   ```bash
+   # macOS
+   brew services list
+   brew services start postgresql
+
+   # Linux
+   sudo systemctl status postgresql
+   sudo systemctl start postgresql
+   ```
+
+2. **Check DATABASE_URL format**:
+   ```env
+   # Correct format
+   DATABASE_URL=postgresql://username:password@localhost:5432/database_name
+
+   # Common mistakes to avoid:
+   # ❌ Missing protocol: username:password@localhost:5432/database_name
+   # ❌ Wrong protocol: postgres:// (should be postgresql://)
+   # ❌ Missing port: postgresql://user:pass@localhost/db
+   ```
+
+3. **Test database connection**:
+   ```bash
+   psql $DATABASE_URL
+   # or
+   psql -U your_username -d startup_metrics
+   ```
+
+4. **Remember**: Database is optional! If you don't need user accounts or saved data, simply run without DATABASE_URL.
+
+#### Build/Type Check Failures
+
+**Problem**: TypeScript errors or build failures after pulling updates
+
+**Solutions**:
+```bash
+# Clean install dependencies
+rm -rf node_modules package-lock.json
+npm install
+
+# Clear build cache
+rm -rf dist
+
+# Run type check to see specific errors
+npm run check
+```
+
+#### Tests Failing
+
+**Problem**: Unit or E2E tests failing unexpectedly
+
+**Solutions**:
+
+1. **For E2E test failures**:
+   ```bash
+   # Install Playwright browsers
+   npx playwright install
+
+   # Run E2E tests in headed mode to see what's happening
+   npx playwright test --headed
+
+   # Run specific test file
+   npx playwright test e2e/homepage.spec.ts
+   ```
+
+2. **For unit test failures**:
+   ```bash
+   # Run tests in watch mode
+   npm run test
+
+   # Run specific test file
+   npx vitest test/metrics.test.ts
+   ```
+
+#### Dark Mode Not Working in Production
+
+**Problem**: Dark mode works in development but not in production build
+
+**Solution**: This was fixed in recent commits. Ensure you have the latest version:
+```bash
+git pull origin main
+npm install
+npm run build
+```
+
+The fix includes critical CSS injection to prevent FOUC (Flash of Unstyled Content) and ensures theme persistence.
+
+#### Calculator Shows "Cannot Calculate" / "N/A"
+
+**Problem**: Calculator displays "N/A" with red error badge instead of results
+
+**Explanation**: This is expected behavior when required inputs are zero or missing. For example:
+- Net Profit Margin requires non-zero revenue
+- Growth Rate requires non-zero previous period value
+- LTV:CAC ratio requires non-zero CAC
+
+**Solution**: Enter valid non-zero values for all required inputs. The error message will explain which data is needed.
+
+### Still Having Issues?
+
+If you're experiencing issues not covered here:
+
+1. Check the [GitHub Issues](https://github.com/nicoladevera/startup-metrics-101/issues) for similar problems
+2. Review recent commits for relevant fixes
+3. Open a new issue with:
+   - Your environment (OS, Node version, npm version)
+   - Steps to reproduce
+   - Error messages or screenshots
+   - What you've already tried
 
 ## 🎨 Customization
 
