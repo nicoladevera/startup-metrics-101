@@ -10,6 +10,52 @@ An interactive educational platform that teaches startup professionals about ess
 
 Startup Metrics 101 makes complex startup metrics understandable and actionable for founders, investors, and startup professionals. Learn about 15 essential business metrics with hands-on calculation tools, real-time feedback, and comprehensive educational content.
 
+## ✨ Features
+
+### 📊 15 Essential Startup Metrics
+
+- **MRR** (Monthly Recurring Revenue) - Predictable monthly subscription revenue
+- **ARR** (Annual Recurring Revenue) - Annualized version of MRR
+- **Burn Rate** - Monthly cash spending rate
+- **Runway** - Months of cash remaining
+- **CAC** (Customer Acquisition Cost) - Cost to acquire one customer
+- **LTV** (Lifetime Value) - Total revenue per customer over lifetime
+- **LTV:CAC Ratio** - Customer value vs. acquisition cost relationship
+- **Churn Rate** - Percentage of customers lost
+- **NRR** (Net Revenue Retention) - Revenue growth from existing customers
+- **Gross Margin** - Revenue minus cost of goods sold
+- **Contribution Margin** - Revenue after variable costs
+- **Net Profit Margin** - Final profit as percentage of revenue
+- **Growth Rate** - Month-over-month or period-over-period growth
+- **Rule of 40** - Growth rate + profit margin indicator
+- **Unit Economics** - LTV to CAC comparison
+
+### 🧮 Interactive Learning
+
+For each metric, you get:
+
+- **Clear Definition** - Easy-to-understand explanation
+- **Why It Matters** - Business impact and importance
+- **Visual Formula** - Mathematical formula display
+- **Sample Calculation** - Worked example with numbers
+- **Interactive Calculator** - Real-time calculation with inputs and sliders
+- **Benchmark Feedback** - Color-coded results (green/yellow/red) with actionable guidance
+  - Green: Excellent performance, meeting or exceeding industry standards
+  - Yellow: Acceptable but needs improvement
+  - Red: Below target or cannot calculate (missing required data)
+- **Best Practices** - Tips and strategies for improvement
+- **Common Mistakes** - Pitfalls to avoid
+- **Data Visualization** - Charts and graphs
+
+### 🎨 User Experience
+
+- **Modern UI** - Clean, professional dashboard design
+- **Responsive Design** - Works on mobile, tablet, and desktop
+- **Dark/Light Mode** - Theme toggle for comfortable viewing
+- **Search & Filter** - Quickly find the metrics you need
+- **Smooth Animations** - Polished, professional interactions
+- **Accessible** - High contrast and screen reader support
+
 ## 📸 Screenshots
 
 ### Homepage - Metric Dashboard
@@ -84,52 +130,6 @@ Feedback: "Healthy B2C gross margin. Good foundation for sustainable growth."
 ```
 
 The same 45% margin would be flagged as ⚠️ "Moderate" for B2B, but is ✅ "Good" for B2C - showcasing how the platform provides context-aware feedback.
-
-## ✨ Features
-
-### 📊 15 Essential Startup Metrics
-
-- **MRR** (Monthly Recurring Revenue) - Predictable monthly subscription revenue
-- **ARR** (Annual Recurring Revenue) - Annualized version of MRR
-- **Burn Rate** - Monthly cash spending rate
-- **Runway** - Months of cash remaining
-- **CAC** (Customer Acquisition Cost) - Cost to acquire one customer
-- **LTV** (Lifetime Value) - Total revenue per customer over lifetime
-- **LTV:CAC Ratio** - Customer value vs. acquisition cost relationship
-- **Churn Rate** - Percentage of customers lost
-- **NRR** (Net Revenue Retention) - Revenue growth from existing customers
-- **Gross Margin** - Revenue minus cost of goods sold
-- **Contribution Margin** - Revenue after variable costs
-- **Net Profit Margin** - Final profit as percentage of revenue
-- **Growth Rate** - Month-over-month or period-over-period growth
-- **Rule of 40** - Growth rate + profit margin indicator
-- **Unit Economics** - LTV to CAC comparison
-
-### 🧮 Interactive Learning
-
-For each metric, you get:
-
-- **Clear Definition** - Easy-to-understand explanation
-- **Why It Matters** - Business impact and importance
-- **Visual Formula** - Mathematical formula display
-- **Sample Calculation** - Worked example with numbers
-- **Interactive Calculator** - Real-time calculation with inputs and sliders
-- **Benchmark Feedback** - Color-coded results (green/yellow/red) with actionable guidance
-  - Green: Excellent performance, meeting or exceeding industry standards
-  - Yellow: Acceptable but needs improvement
-  - Red: Below target or cannot calculate (missing required data)
-- **Best Practices** - Tips and strategies for improvement
-- **Common Mistakes** - Pitfalls to avoid
-- **Data Visualization** - Charts and graphs
-
-### 🎨 User Experience
-
-- **Modern UI** - Clean, professional dashboard design
-- **Responsive Design** - Works on mobile, tablet, and desktop
-- **Dark/Light Mode** - Theme toggle for comfortable viewing
-- **Search & Filter** - Quickly find the metrics you need
-- **Smooth Animations** - Polished, professional interactions
-- **Accessible** - High contrast and screen reader support
 
 ## 🛠️ Tech Stack
 
