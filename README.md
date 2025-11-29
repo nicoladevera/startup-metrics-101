@@ -13,15 +13,14 @@ Startup Metrics 101 makes complex startup metrics understandable and actionable 
 ## 📸 Screenshots
 
 ### Homepage - Metric Dashboard
-Browse all 15 essential startup metrics with search and filtering capabilities.
+Browse all 15 essential startup metrics with search and filtering capabilities in a beautiful dark mode interface.
 
-### Metric Detail Page
-Interactive calculators with real-time feedback, benchmarks, and educational content for each metric.
+![Homepage](docs/screenshots/homepage.png)
 
-### Dark Mode Support
-Seamlessly switch between light and dark themes for comfortable viewing in any environment.
+### Interactive Calculator
+Real-time metric calculations with interactive sliders, instant feedback, and color-coded benchmarks showing performance levels.
 
-> **Note**: Add screenshots to a `/docs/screenshots/` folder and update image paths here, or link to a live demo deployment.
+![Interactive Calculator](docs/screenshots/interactive-calculator.png)
 
 ## ✨ Features
 
