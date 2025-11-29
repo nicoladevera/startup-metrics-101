@@ -22,6 +22,69 @@ Real-time metric calculations with interactive sliders, instant feedback, and co
 
 ![Interactive Calculator](docs/screenshots/interactive-calculator.png)
 
+## 🏢 Business Type Support (B2B vs B2C)
+
+Several metrics include **business type-specific benchmarks** to provide more accurate and relevant feedback based on your business model. The platform recognizes that B2B (Business-to-Business) and B2C (Business-to-Consumer) companies have fundamentally different economics.
+
+### Metrics with Business Type Differentiation
+
+The following 5 metrics support B2B/B2C toggle with tailored benchmarks:
+
+| Metric | B2B Benchmark | B2C Benchmark | Why It Differs |
+|--------|---------------|---------------|----------------|
+| **Gross Margin** | 70-90% (Excellent) | 40-60% (Good) | B2B software has minimal marginal costs; B2C often involves physical goods or inventory |
+| **Contribution Margin** | 60-80% (Excellent) | 30-50% (Good) | B2B has lower variable costs per customer; B2C has higher transaction and fulfillment costs |
+| **Customer Acquisition Cost (CAC)** | $500-5,000+ | $10-100 | B2B requires sales teams and longer cycles; B2C relies on digital marketing at scale |
+| **Lifetime Value (LTV)** | $5,000-50,000+ | $100-1,000 | B2B contracts are larger and longer-term; B2C purchases are smaller and more frequent |
+| **Churn Rate** | 5-7% annual (Good) | 30-40% annual (Acceptable) | B2B has contracts and switching costs; B2C has low friction and high competition |
+
+### How to Use Business Type Toggle
+
+1. **Navigate to a metric detail page** that supports business types (look for CAC, LTV, Gross Margin, Contribution Margin, or Churn Rate)
+2. **Toggle between B2B and B2C** using the selector above the calculator
+3. **Calculator benchmarks automatically adjust** - thresholds and feedback change to match your selected business model
+4. **Your selection persists** across the session for consistent analysis
+
+### Key Differences Explained
+
+**B2B (Business-to-Business)**:
+- Higher customer lifetime values ($5K-$50K+)
+- Higher customer acquisition costs ($500-$5K+)
+- Lower churn rates (5-7% annually is good)
+- Higher margins (70-90% gross margin expected)
+- Longer sales cycles, more deliberate purchases
+- Contract-based relationships with switching costs
+
+**B2C (Business-to-Consumer)**:
+- Lower customer lifetime values ($100-$1K)
+- Lower customer acquisition costs ($10-$100)
+- Higher churn rates (30-40% annually acceptable)
+- Lower margins (40-60% gross margin typical)
+- Shorter purchase cycles, impulse buying
+- Transactional relationships with easy switching
+
+### Example: Gross Margin Benchmarks
+
+**B2B SaaS Company**:
+```
+Revenue: $100,000
+COGS: $20,000
+Gross Margin: 80%
+Result: ✅ Excellent (meets 70%+ threshold)
+Feedback: "Excellent gross margin for B2B! Typical for healthy SaaS businesses."
+```
+
+**B2C E-commerce Company**:
+```
+Revenue: $100,000
+COGS: $55,000
+Gross Margin: 45%
+Result: ✅ Good (meets 40%+ threshold)
+Feedback: "Healthy B2C gross margin. Good foundation for sustainable growth."
+```
+
+The same 45% margin would be flagged as ⚠️ "Moderate" for B2B, but is ✅ "Good" for B2C - showcasing how the platform provides context-aware feedback.
+
 ## ✨ Features
 
 ### 📊 15 Essential Startup Metrics
