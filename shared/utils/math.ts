@@ -10,3 +10,6 @@ export function safeDivide(numerator: number, denominator: number): number | nul
   return numerator / denominator;
 }
 
+
+
+

@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+import { FunctionSquare, FileText } from "lucide-react";
 
 interface MetricFormulaSectionProps {
   formula: string;
@@ -15,38 +15,57 @@ export function MetricFormulaSection({
   sampleCalculation,
 }: MetricFormulaSectionProps) {
   return (
-    <section className="mb-10" data-testid="section-formula">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="bg-primary/10 dark:bg-primary/20 p-2.5 rounded-lg">
-          <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-          </svg>
+    <section data-testid="section-formula">
+      {/* Formula Card - Elevated Glass */}
+      <div className="glass-card-elevated rounded-xl sm:rounded-2xl p-5 sm:p-6 lg:p-8 mb-4 sm:mb-6">
+        {/* Header */}
+        <div className="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-6">
+          <div className="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary/20 dark:bg-primary/30 text-primary">
+            <FunctionSquare className="w-4 h-4 sm:w-5 sm:h-5" />
+          </div>
+          <h2 className="text-lg sm:text-xl font-semibold text-foreground">The Formula</h2>
         </div>
-        <h2 className="text-3xl font-bold text-foreground">The Formula</h2>
-      </div>
-      <Card className="bg-gradient-to-br from-primary/5 via-primary/3 to-transparent dark:from-primary/10 dark:via-primary/5 dark:to-transparent border-l-4 border-primary p-8 shadow-md rounded-xl">
-        <div className="font-mono text-xl text-primary font-semibold mb-4 bg-primary/5 dark:bg-primary/10 p-4 rounded-lg" data-testid="formula">
+
+        {/* Formula Display */}
+        <div 
+          className="font-mono text-sm sm:text-base lg:text-lg text-primary font-semibold p-3 sm:p-4 lg:p-5 rounded-lg sm:rounded-xl bg-primary/5 dark:bg-primary/10 border border-primary/10 dark:border-primary/20 mb-4 sm:mb-5 overflow-x-auto"
+          data-testid="formula"
+        >
           {formula}
         </div>
-        <p className="text-foreground text-base leading-relaxed">
+
+        {/* Plain Explanation */}
+        <p className="text-foreground/80 text-sm sm:text-base lg:text-[1.02rem] leading-relaxed">
           {formulaPlain}
         </p>
-      </Card>
+      </div>
 
-      <div className="mt-8 bg-card dark:bg-card border border-card-border dark:border-border rounded-xl p-8 shadow-md">
-        <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <div className="bg-primary/10 dark:bg-primary/20 p-1.5 rounded-md">
-            <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
+      {/* Sample Calculation Card */}
+      <div className="glass-card rounded-xl sm:rounded-2xl p-5 sm:p-6 lg:p-8 transition-all duration-300 hover:shadow-lg dark:hover:shadow-glow-sm">
+        {/* Header */}
+        <div className="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-6">
+          <div className="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary/10 dark:bg-primary/20 text-primary">
+            <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          Sample Calculation
-        </h3>
-        <p className="text-muted-foreground mb-5 text-base">{sampleCalculation.description}</p>
-        <ul className="space-y-3">
+          <h3 className="text-lg sm:text-xl font-semibold text-foreground">Sample Calculation</h3>
+        </div>
+
+        {/* Description */}
+        <p className="text-muted-foreground mb-4 sm:mb-6 text-sm sm:text-base lg:text-[1.02rem]">
+          {sampleCalculation.description}
+        </p>
+
+        {/* Steps */}
+        <ul className="space-y-2.5 sm:space-y-3">
           {sampleCalculation.steps.map((step, index) => (
-            <li key={index} className="text-foreground pl-5 border-l-2 border-primary/30 py-1.5 text-base leading-relaxed hover:border-primary/60 transition-colors duration-200">
-              {step}
+            <li 
+              key={index} 
+              className="flex items-start gap-3 sm:gap-4 text-foreground/90 text-sm sm:text-base lg:text-[1.02rem] leading-relaxed group/step"
+            >
+              <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-md sm:rounded-lg bg-primary/10 dark:bg-primary/20 text-primary text-xs sm:text-sm font-semibold mt-0.5 transition-colors group-hover/step:bg-primary/20 dark:group-hover/step:bg-primary/30">
+                {index + 1}
+              </span>
+              <span className="flex-1 pt-0.5">{step}</span>
             </li>
           ))}
         </ul>

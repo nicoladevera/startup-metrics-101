@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { METRICS } from "@shared/metrics";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { getIcon } from "@/lib/icons";
-import { Search } from "lucide-react";
+import { Search, Calculator, BookOpen, Sparkles } from "lucide-react";
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     document.title = "Startup Metrics 101 - Interactive Learning Platform";
+    // Trigger animations after mount
+    const timer = setTimeout(() => setIsLoaded(true), 50);
+    return () => clearTimeout(timer);
   }, []);
 
   const filteredMetrics = METRICS.filter(metric =>
@@ -20,79 +23,174 @@ export default function HomePage() {
   );
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Theme Toggle */}
-        <div className="flex justify-end mb-4">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Background gradient overlay */}
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/[0.07] via-transparent to-indigo-500/[0.05] dark:from-blue-600/15 dark:via-blue-900/10 dark:to-indigo-900/20 pointer-events-none" />
+      
+      {/* Secondary radial glow - both modes */}
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,0.08),transparent_50%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,0.15),transparent_50%)] pointer-events-none" />
+      
+      {/* Bottom corner accent */}
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(99,102,241,0.06),transparent_50%)] dark:bg-[radial-gradient(ellipse_at_bottom_right,rgba(99,102,241,0.10),transparent_50%)] pointer-events-none" />
+      
+      {/* Subtle grid pattern */}
+      <div className="fixed inset-0 bg-grid-pattern opacity-60 pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        {/* Theme Toggle - Top Right */}
+        <div className={`flex justify-end mb-6 transition-all duration-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
           <ThemeToggle />
         </div>
 
         {/* Hero Section */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-[#0052CC] via-[#0066FF] to-[#0085FF] dark:from-[#0a1628] dark:via-[#0d1b2e] dark:to-[#0f2239] text-white py-16 px-8 rounded-2xl shadow-2xl mb-12 border border-white/10 dark:border-white/5">
-          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent dark:from-white/[0.03] dark:to-transparent pointer-events-none"></div>
-          <div className="relative z-10">
-            <h1 className="text-6xl font-bold text-center mb-5 tracking-tight" data-testid="hero-title">
-              Startup Metrics 101
-            </h1>
-            <p className="text-xl text-center max-w-3xl mx-auto opacity-95 leading-relaxed font-normal">
-              Master the 15 essential business metrics every startup professional should know.
-              Interactive calculators and clear explanations make learning easy.
-            </p>
+        <div className={`relative mb-8 sm:mb-12 lg:mb-16 transition-all duration-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          {/* Hero Card with Glass Effect */}
+          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl">
+            {/* Background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0052CC] via-[#0066FF] to-[#0085FF] dark:from-[#0a1220] dark:via-[#0d1829] dark:to-[#101d30]" />
+            
+            {/* Decorative elements - hidden on mobile for performance */}
+            <div className="hidden sm:block absolute top-0 right-0 w-64 lg:w-96 h-64 lg:h-96 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+            <div className="hidden sm:block absolute bottom-0 left-0 w-48 lg:w-72 h-48 lg:h-72 bg-gradient-to-tr from-blue-400/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+            
+            {/* Content */}
+            <div className="relative z-10 px-5 py-10 sm:px-8 sm:py-14 lg:px-16 lg:py-20">
+              {/* Title */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center text-white mb-4 sm:mb-6 tracking-tight" data-testid="hero-title">
+                Startup Metrics 101
+              </h1>
 
-            {/* Search Bar */}
-            <div className="mt-10 max-w-2xl mx-auto relative">
-              <div className="relative">
-                <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
-                <Input
-                  type="search"
-                  placeholder="Search metrics (e.g., MRR, Churn, CAC...)"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-14 pr-5 py-4 text-base border border-white/20 dark:border-white/10 focus:border-white/40 dark:focus:border-white/20 bg-white/10 dark:bg-white/5 text-white placeholder:text-white/60 dark:placeholder:text-white/40 rounded-xl shadow-lg transition-all duration-200 focus:ring-2 focus:ring-white/20"
-                  data-testid="search-input"
-                />
+              {/* Subtitle */}
+              <p className="text-base sm:text-lg lg:text-xl text-center max-w-2xl mx-auto text-white/80 leading-relaxed mb-8 sm:mb-10 px-2">
+                Master the 15 essential business metrics every startup professional should know.
+              </p>
+
+              {/* Stats Row */}
+              <div className="flex flex-wrap justify-center gap-6 sm:gap-8 lg:gap-16 mb-8 sm:mb-12">
+                <div className="text-center min-w-[80px]">
+                  <div className="flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+                  </div>
+                  <div className="text-xs sm:text-sm text-white/60 mt-1">Free Platform</div>
+                </div>
+                <div className="text-center min-w-[80px]">
+                  <div className="flex items-center justify-center">
+                    <Calculator className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+                  </div>
+                  <div className="text-xs sm:text-sm text-white/60 mt-1">Interactive Calculators</div>
+                </div>
+                <div className="text-center min-w-[80px]">
+                  <div className="flex items-center justify-center">
+                    <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+                  </div>
+                  <div className="text-xs sm:text-sm text-white/60 mt-1">Clear Explanations</div>
+                </div>
+              </div>
+
+              {/* Search Bar */}
+              <div className="max-w-xl mx-auto px-2 sm:px-0">
+                <div className="relative group">
+                  <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 sm:w-5 sm:h-5 transition-colors group-focus-within:text-white/70" />
+                  <Input
+                    type="search"
+                    placeholder="Search metrics..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full h-12 sm:h-14 pl-10 sm:pl-12 pr-4 sm:pr-5 text-sm sm:text-base bg-white/10 dark:bg-white/5 border-white/20 dark:border-white/10 text-white placeholder:text-white/50 rounded-xl sm:rounded-2xl focus:border-white/40 dark:focus:border-white/20 focus:ring-2 focus:ring-white/20 transition-all duration-200"
+                    data-testid="search-input"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
 
+        {/* Section Title */}
+        <div className={`mb-6 sm:mb-8 transition-all duration-700 delay-100 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+            {searchQuery ? `Results for "${searchQuery}"` : "All Metrics"}
+          </h2>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
+            {filteredMetrics.length} metric{filteredMetrics.length !== 1 ? 's' : ''} available
+          </p>
+        </div>
+
         {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-          {filteredMetrics.map((metric) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          {filteredMetrics.map((metric, index) => (
             <Link key={metric.id} href={`/metric/${metric.id}`} data-testid={`link-metric-${metric.id}`}>
-              <Card
-                className="group relative p-7 cursor-pointer transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl border border-card-border dark:border-border bg-card dark:bg-card backdrop-blur-sm"
+              <div
+                className={`group relative overflow-hidden rounded-2xl transition-all duration-500 ${
+                  isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${150 + index * 50}ms` }}
                 data-testid={`metric-card-${metric.id}`}
               >
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:to-primary/10 transition-all duration-300 pointer-events-none"></div>
-                <div className="relative space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="text-primary transition-all duration-300 group-hover:scale-110" data-testid={`metric-icon-${metric.id}`}>
-                      {getIcon(metric.iconName, "w-11 h-11")}
+                {/* Glass Card */}
+                <div className="relative h-full p-5 sm:p-6 lg:p-7 glass-card rounded-xl sm:rounded-2xl hover:border-primary/30 transition-all duration-300 sm:hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(59,130,246,0.15)] dark:hover:shadow-[0_0_40px_rgba(59,130,246,0.18)]">
+                  {/* Hover gradient overlay */}
+                  <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-primary/0 to-primary/0 group-hover:from-primary/[0.06] group-hover:to-primary/[0.03] dark:group-hover:from-primary/15 dark:group-hover:to-primary/5 transition-all duration-300 pointer-events-none" />
+                  
+                  {/* Content */}
+                  <div className="relative space-y-3 sm:space-y-4">
+                    {/* Icon */}
+                    <div 
+                      className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-primary/10 dark:bg-primary/20 text-primary transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/15 dark:group-hover:bg-primary/25"
+                      data-testid={`metric-icon-${metric.id}`}
+                    >
+                      {getIcon(metric.iconName, "w-5 h-5 sm:w-6 sm:h-6")}
                     </div>
+
+                    {/* Title */}
+                    <h3 
+                      className="text-base sm:text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-200"
+                      data-testid={`metric-name-${metric.id}`}
+                    >
+                      {metric.name}
+                    </h3>
+
+                    {/* Description */}
+                    <p 
+                      className="text-sm sm:text-[0.925rem] text-muted-foreground leading-relaxed"
+                      data-testid={`metric-description-${metric.id}`}
+                    >
+                      {metric.shortDescription}
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-200" data-testid={`metric-name-${metric.id}`}>
-                    {metric.name}
-                  </h3>
-                  <p className="text-muted-foreground text-[0.95rem] leading-relaxed" data-testid={`metric-description-${metric.id}`}>
-                    {metric.shortDescription}
-                  </p>
+
+                  {/* Arrow indicator - hidden on mobile */}
+                  <div className="hidden sm:block absolute bottom-5 right-5 sm:bottom-6 sm:right-6 lg:bottom-7 lg:right-7 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                    <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
                 </div>
-              </Card>
+              </div>
             </Link>
           ))}
         </div>
 
+        {/* Empty State */}
         {filteredMetrics.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-xl text-gray-500">
-              No metrics found matching "{searchQuery}"
+          <div className={`text-center py-16 transition-all duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-muted mb-4">
+              <Search className="w-8 h-8 text-muted-foreground" />
+            </div>
+            <p className="text-xl font-medium text-foreground mb-2">
+              No metrics found
             </p>
-            <p className="text-gray-400 mt-2">
-              Try a different search term
+            <p className="text-muted-foreground">
+              Try searching for something like "MRR", "Churn", or "Growth"
             </p>
           </div>
         )}
+
+        {/* Footer */}
+        <footer className={`mt-12 sm:mt-16 lg:mt-20 pt-6 sm:pt-8 border-t border-border/50 text-center transition-all duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            Made with care for the startup community
+          </p>
+        </footer>
       </div>
     </div>
   );
