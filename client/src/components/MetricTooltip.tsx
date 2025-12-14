@@ -14,24 +14,26 @@ interface MetricTooltipProps {
 export function MetricTooltip({ term, children }: MetricTooltipProps) {
   const definition = TOOLTIPS[term];
   const [open, setOpen] = useState(false);
-  
+
   if (!definition) {
     return <>{children || term}</>;
   }
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setOpen(!open);
-  };
+
 
   return (
     <Tooltip open={open} onOpenChange={setOpen} delayDuration={200}>
       <TooltipTrigger asChild>
-        <span 
+        <span
           className="border-b-2 border-dotted border-primary cursor-help font-semibold text-primary"
-          onClick={handleClick}
+          onClick={(e) => {
+            e.preventDefault();
+            setOpen(true);
+          }}
           onMouseEnter={() => setOpen(true)}
           onMouseLeave={() => setOpen(false)}
+          onFocus={() => setOpen(true)}
+          onBlur={() => setOpen(false)}
         >
           {children || term}
         </span>
@@ -48,9 +50,9 @@ export function addTooltips(text: string): React.ReactNode[] {
   let lastIndex = 0;
 
   const terms = Object.keys(TOOLTIPS).sort((a, b) => b.length - a.length);
-  
+
   const matches: Array<{ term: string; index: number }> = [];
-  
+
   terms.forEach(term => {
     const regex = new RegExp(`\\b${term}\\b`, 'gi');
     let match;
@@ -66,9 +68,9 @@ export function addTooltips(text: string): React.ReactNode[] {
     const overlaps = used.some(usedIndex => {
       const usedMatch = matches[usedIndex];
       return match.index < usedMatch.index + usedMatch.term.length &&
-             match.index + match.term.length > usedMatch.index;
+        match.index + match.term.length > usedMatch.index;
     });
-    
+
     if (!overlaps) {
       if (match.index > lastIndex) {
         parts.push(text.substring(lastIndex, match.index));
