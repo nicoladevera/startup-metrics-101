@@ -1,10 +1,10 @@
-# Startup Metrics Explained - Design Guidelines
+# Startup Metrics 101 - Design Guidelines
 
-## Design Approach
+## Design Philosophy
 
-**Selected Approach:** Hybrid - Modern Educational Platform with Dashboard Aesthetics
+**Selected Approach:** Premium Glass Aesthetic with Sophisticated Blue Gradients
 
-Drawing inspiration from educational platforms like Khan Academy and Duolingo for approachability, combined with dashboard/analytics tools like Stripe's Dashboard and Linear for professional data presentation. This creates a trustworthy, information-dense interface that remains welcoming to startup newcomers.
+The design draws inspiration from modern Web3 platforms and premium dashboard interfaces, featuring glassmorphism effects, thoughtful blue gradient accents, and a sophisticated visual hierarchy. The interface balances professional data presentation with an approachable, educational feel.
 
 ---
 
@@ -12,166 +12,324 @@ Drawing inspiration from educational platforms like Khan Academy and Duolingo fo
 
 ### A. Color Palette
 
-**Light Mode (Primary):**
-- Primary Brand: 217 91% 60% (Deep Blue - #2563EB)
-- Success/Healthy: 142 76% 36% (Green - #10B981)
-- Warning/Caution: 38 92% 50% (Amber - #F59E0B)
-- Error/Concern: 0 72% 51% (Red - #EF4444)
-- Background: 220 14% 98% (Off-white - #F9FAFB)
-- Surface: 0 0% 100% (Pure white)
-- Text Primary: 220 9% 9% (#111827)
-- Text Secondary: 215 14% 34% (#4B5563)
-- Borders: 220 13% 91% (#E5E7EB)
+**Dark Mode (Primary):**
+- Background Base: `hsl(222 58% 7%)` - Deep navy with blue undertones
+- Background Secondary: `hsl(220 55% 10%)` - Slightly lighter navy
+- Primary Accent: `hsl(217 100% 60%)` - Vibrant blue (#0066FF)
+- Glass Card BG: `rgba(15, 30, 60, 0.70)` to `rgba(20, 40, 80, 0.50)` - Blue-tinted transparency
+- Glass Border: `rgba(59, 130, 246, 0.12)` - Subtle blue border
+- Text Primary: `hsl(210 40% 98%)` - Near white
+- Text Secondary: `hsl(215 25% 60%)` - Muted blue-gray
+- Success: Emerald green (#10B981)
+- Warning: Amber (#F59E0B)
+- Error: Red (#EF4444)
 
-**Accent Usage:**
-- Use primary blue for interactive elements, CTAs, and metric headers
-- Apply green/yellow/red exclusively for calculator feedback zones
-- Maintain high contrast for accessibility (minimum 4.5:1 ratio)
+**Light Mode:**
+- Background Base: `hsl(220 30% 97%)` - Soft blue-gray
+- Background Secondary: `hsl(215 30% 94%)` - Lighter blue-gray
+- Primary Accent: `hsl(217 100% 50%)` - Electric blue
+- Glass Card BG: `rgba(255, 255, 255, 0.95)` to `rgba(248, 250, 255, 0.90)` - White with blue tint
+- Glass Border: `rgba(59, 130, 246, 0.12)` - Subtle blue border
+- Text Primary: `hsl(222 47% 11%)` - Deep navy
+- Text Secondary: `hsl(215 15% 40%)` - Muted blue-gray
+
+**Gradient Overlays:**
+- Dark Mode: `from-blue-600/15 via-blue-900/10 to-indigo-900/20`
+- Light Mode: `from-blue-500/[0.07] via-transparent to-indigo-500/[0.05]`
+- Radial Glows: `radial-gradient(ellipse_at_top, rgba(59,130,246,0.15), transparent 50%)`
 
 ### B. Typography
 
 **Font Stack:**
-- Primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif
-- Monospace (for formulas/code): 'SF Mono', 'Monaco', 'Courier New', monospace
+- Primary: `'Plus Jakarta Sans'` - Modern, professional sans-serif
+- Fallback: `-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`
+- Monospace: `'JetBrains Mono', 'SF Mono', 'Monaco', monospace` - For formulas
 
 **Type Scale:**
-- Hero/Page Titles: 2.5rem (40px), weight 700
-- Section Headings: 1.8rem (28px), weight 700
-- Card Titles: 1.4rem (22px), weight 700
-- Body Text: 1.1rem (17.6px), weight 400, line-height 1.8
-- Small/Meta Text: 0.95rem (15px), weight 400
+- Hero Title: `text-3xl sm:text-4xl md:text-5xl lg:text-6xl` (48px-64px), weight 700, letter-spacing -0.035em
+- Section Headings: `text-lg sm:text-xl` (18px-20px), weight 600
+- Card Titles: `text-base sm:text-lg` (16px-18px), weight 600
+- Body Text: `text-sm sm:text-base lg:text-[1.05rem]` (14px-17px), weight 400, line-height 1.85
+- Small/Meta Text: `text-xs sm:text-sm` (12px-14px), weight 400
 
-### C. Spacing System
+**Letter Spacing:**
+- Headings: `-0.025em` to `-0.035em` for tighter, modern look
+- Body: Normal (0em)
+- Labels: `0.05em` uppercase tracking
 
-**Tailwind Units:** Use 4, 8, 12, 20, 30, 40, 50 for consistent rhythm
-- Component padding: p-6 (24px) to p-10 (40px)
-- Section spacing: mb-12 (48px) to mb-20 (80px)
-- Card gaps: gap-5 (20px)
-- Input groups: mb-6 (24px)
+### C. Glass Card System
 
-### D. Component Library
+**Standard Glass Card (`.glass-card`):**
+- Background: Gradient with blue-tinted transparency
+- Backdrop Filter: `blur(12px)` for glassmorphism effect
+- Border: `1px solid rgba(59, 130, 246, 0.12)` - Subtle blue
+- Shadow: `0 4px 24px rgba(0, 0, 0, 0.3), 0 0 20px rgba(59, 130, 246, 0.05)`
+- Border Radius: `rounded-xl sm:rounded-2xl` (12px-16px)
+- Inner Highlight: `inset 0 1px 0 rgba(255, 255, 255, 0.04)` for depth
+
+**Elevated Glass Card (`.glass-card-elevated`):**
+- Enhanced background gradient with deeper blue tones
+- Stronger border: `rgba(59, 130, 246, 0.25)`
+- Blue glow: `0 0 60px rgba(59, 130, 246, 0.18)`
+- Used for: Calculator sections, formula displays, important content
+
+**Hover States:**
+- Subtle lift: `-translate-y-1` (4px)
+- Enhanced glow: `shadow-[0_8px_30px_rgba(59,130,246,0.15)]`
+- Border brightening: `border-primary/30`
+- Gradient overlay: `from-primary/[0.06] to-primary/[0.03]`
+
+### D. Spacing System
+
+**Tailwind Units:** Responsive spacing with mobile-first approach
+- Component padding: `p-5 sm:p-6 lg:p-8` (20px-32px)
+- Section spacing: `mb-6 sm:mb-8 lg:mb-12` (24px-48px)
+- Card gaps: `gap-4 sm:gap-5` (16px-20px)
+- Input groups: `space-y-3 sm:space-y-4` (12px-16px)
+- Hero padding: `px-5 py-10 sm:px-8 sm:py-14 lg:px-16 lg:py-20`
+
+### E. Component Library
 
 **Homepage Metrics Grid:**
-- 3-column grid on desktop (grid-cols-3), 2-column on tablet (md:grid-cols-2), single column on mobile
-- Card design: white background, rounded-xl (12px), shadow-md, border-2 transparent
-- Hover state: transform -translateY-1, shadow-lg, border-primary
-- Card content: Large emoji/icon (text-4xl), metric name in primary blue (text-xl font-bold), one-line description (text-gray-600)
+- Responsive: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`
+- Card design: Glass card with icon, title, description
+- Icon: `w-10 h-10 sm:w-12 sm:h-12` rounded container with primary background
+- Hover: Lift effect, blue glow, arrow indicator (desktop only)
+- Arrow indicator: Hidden on mobile, visible on hover (desktop)
+
+**Hero Section:**
+- Gradient background: `from-[#0052CC] via-[#0066FF] to-[#0085FF]`
+- Decorative blurs: Hidden on mobile for performance
+- Stats row: Three features with icons, responsive text sizes
+- Search bar: Glass effect with white/transparent background
 
 **Search Functionality:**
-- Prominent search bar below hero (max-w-2xl centered)
-- Input: rounded-lg, border-2, px-5 py-4, focus:border-primary
-- Real-time filtering of metric cards with smooth fade transitions
+- Glass input: `bg-white/10 dark:bg-white/5` with backdrop blur
+- Border: `border-white/20 dark:border-white/10`
+- Focus: `border-white/40 dark:border-white/20` with ring
+- Placeholder: Shortened on mobile ("Search metrics...")
 
 **Individual Metric Pages:**
-- Sticky back button (top-8, z-50): primary blue button with left arrow icon
-- Page title: text-4xl font-bold with 3px bottom border in primary blue
-- Section titles: text-3xl with icon prefix (emoji or Font Awesome icon)
+- Hero header: Gradient card matching homepage style
+- Back button: Ghost variant, shows "Back" on mobile, "All Metrics" on desktop
+- Section spacing: `space-y-6 sm:space-y-8` for comfortable reading
 
 **Interactive Calculator Section:**
-- Distinct background: bg-gray-50, rounded-xl, border-2 border-gray-200, p-8
-- Input groups: Label (font-semibold text-gray-700) + synchronized number input and slider
-- Number input: w-36, px-4 py-3, rounded-md, border-2, focus:border-primary
-- Range slider: Custom styled with primary blue thumb (20px circle), gray-300 track
-- Result display: Separate card with white bg, rounded-xl, shadow-lg, p-8, centered text
-- Result value: text-5xl font-bold with color-coded class (green/yellow/red)
-- Feedback message: Matching colored background (bg-green-100, bg-yellow-100, bg-red-100) with dark text, rounded-lg, p-4
+- Elevated glass card: `.glass-card-elevated` with blue glow
+- Input groups: Two-column grid on desktop, stacked on mobile
+- Number inputs: `h-12 sm:h-14` with glass background
+- Sliders: Gradient track (`from-primary to-primary/80`), animated thumb
+- Min/Max labels: `text-[10px] sm:text-xs` below sliders
+- Result display: Large, color-coded with status badge and feedback card
 
 **Formula Display:**
-- Light gray background (bg-gray-100), rounded-lg, border-l-4 border-primary, p-6
-- Formula text: Monospace font, text-xl, text-primary-dark, font-semibold
-
-**Tooltips:**
-- Dotted underline on trigger terms (border-b-2 border-dotted border-primary)
-- Tooltip popup: Dark background (#1F2937), white text, rounded-md, shadow-xl, max-w-xs
-- Position: Above term with arrow pointer
-- Transition: Smooth fade-in (transition-opacity 300ms)
+- Elevated glass card with blue-tinted background
+- Formula text: Monospace, `text-sm sm:text-base lg:text-lg`, primary color
+- Border: `border-primary/10 dark:border-primary/20`
+- Background: `bg-primary/5 dark:bg-primary/10`
 
 **Tips & Mistakes Lists:**
-- Tips: Light gray bg, rounded-lg, border-l-4 border-green-500, p-4, lightbulb emoji prefix
-- Mistakes: Light yellow bg, rounded-lg, border-l-4 border-yellow-500, p-4, warning emoji prefix
-- Each list item: mb-4 spacing
-
-**Chart Containers:**
-- White background, rounded-lg, shadow-sm, p-5
-- Chart.js styling: Primary blue for main data, gray for grid lines
-- Responsive canvas with aspect ratio 2:1 for desktop, 1:1 for mobile
+- Tips: Glass card with emerald accent (`border-l-4 border-emerald-500/50`)
+- Mistakes: Glass card with amber accent (`border-l-4 border-amber-500/50`)
+- Icons: `w-6 h-6 sm:w-8 sm:h-8` rounded containers
+- Text: `text-sm sm:text-base lg:text-[1.02rem]` with relaxed leading
 
 ---
 
 ## Layout Specifications
 
 ### Homepage Layout:
-- Hero section: Gradient background (from primary 600 to primary 700), white text, py-12, rounded-xl
-- Hero title: text-5xl font-bold, centered
-- Hero subtitle: text-xl, max-w-3xl, centered, opacity-90
-- Search bar: mt-8, max-w-2xl mx-auto
-- Metrics grid: mt-12, grid with gap-5
+- Container: `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`
+- Hero section: Gradient card with rounded corners (`rounded-2xl sm:rounded-3xl`)
+- Hero padding: `px-5 py-10 sm:px-8 sm:py-14 lg:px-16 lg:py-20`
+- Title: Single line with `whitespace-nowrap` on larger screens
+- Stats: Horizontal flex with responsive gaps (`gap-6 sm:gap-8 lg:gap-16`)
+- Metrics grid: Responsive columns with gap spacing
 
 ### Metric Detail Page Layout:
-- Container: max-w-4xl mx-auto, px-4
-- Back button: mt-8 mb-8
-- Content sections: Stacked vertically with mb-12 spacing
-- Two-column layout for calculator inputs on desktop (grid-cols-2 gap-8), stack on mobile
-- Full-width result display and charts
+- Container: `max-w-4xl mx-auto px-4 sm:px-6 lg:px-8`
+- Header: Flex layout with back button and theme toggle
+- Hero: Gradient card matching homepage style
+- Content sections: Stacked with `space-y-6 sm:space-y-8`
+- Calculator: Two-column grid on desktop (`lg:grid-cols-2`), single column on mobile
+
+---
+
+## Background & Effects
+
+**Background Layers (from bottom to top):**
+1. Base background color (dark navy or light blue-gray)
+2. Gradient overlay (`bg-gradient-to-br` with blue tones)
+3. Radial glow at top (`radial-gradient(ellipse_at_top, ...)`)
+4. Bottom corner accent (`radial-gradient(ellipse_at_bottom_right, ...)`)
+5. Grid pattern (`bg-grid-pattern` with blue-tinted lines)
+6. Content layer
+
+**Grid Pattern:**
+- Dark Mode: `rgba(59, 130, 246, 0.03)` - Subtle blue lines
+- Light Mode: `rgba(59, 130, 246, 0.04)` - Slightly more visible
+- Size: `50px × 50px` grid
+- Opacity: `opacity-60` (60%)
+
+**Performance Optimizations:**
+- Decorative blur elements: `hidden sm:block` on mobile
+- Reduced blur intensity on smaller screens
+- Optimized backdrop-filter usage
 
 ---
 
 ## Interaction & Animation Guidelines
 
 **Transitions:**
-- Card hover: 300ms ease for transform and shadow
-- Input focus: 300ms for border-color
-- Page navigation: Smooth scroll behavior
-- Tooltip: 200ms fade-in/out
+- Card hover: `duration-300` (300ms) ease for transform and shadow
+- Input focus: `duration-200` (200ms) for border and ring
+- Page load: Staggered fade-in with delays (`delay-100`, `delay-150`, etc.)
+- Theme toggle: Smooth color transitions
 
 **Micro-interactions:**
-- Button press: Subtle scale (0.98) on active state
-- Slider thumb: Scale to 1.1 on hover
-- Calculator result: Gentle pulse animation on value update (optional, subtle)
+- Card hover: `-translate-y-1` (4px lift) with enhanced glow
+- Button press: Subtle scale on active state
+- Slider thumb: `scale-110` on hover
+- Icon containers: `scale-110` on card hover
+- Arrow indicator: Slide-in from right on hover
+
+**Animations:**
+- Fade-in: `opacity-0` to `opacity-100` with `translate-y-8` to `translate-y-0`
+- Stagger delays: `150ms + index * 50ms` for metric cards
+- Minimal and subtle - no distracting effects
 
 **Avoid:**
 - Heavy animations that distract from learning
 - Parallax or scroll-triggered effects
 - Loading spinners (all client-side, instant)
+- Auto-playing animations
 
 ---
 
-## Images
+## Responsive Breakpoints
 
-**Homepage Hero Background:**
-- Abstract gradient mesh or subtle geometric pattern overlay on gradient
-- No specific image needed - use CSS gradient with optional SVG pattern
+**Mobile First Approach:**
+- Mobile: `< 640px` (sm breakpoint)
+  - Single column layouts
+  - Reduced padding and spacing
+  - Smaller text sizes
+  - Hidden decorative elements
+  - Simplified navigation
 
-**Metric Page Icons:**
-- Use Font Awesome icons or emoji for each metric category
-- Consistent size (text-4xl) and placement in section headers
+- Tablet: `640px - 1024px` (sm to lg)
+  - Two-column grids
+  - Medium padding
+  - Standard text sizes
+  - Some decorative elements visible
 
-**No photography required** - This is a data/educational tool where clarity trumps visual decoration
+- Desktop: `> 1024px` (lg breakpoint)
+  - Three-column grids
+  - Full padding and spacing
+  - Larger text sizes
+  - All decorative elements visible
+  - Hover effects enabled
 
 ---
 
 ## Accessibility & Responsiveness
 
 **Breakpoints:**
-- Mobile: < 768px (single column, stacked layout)
-- Tablet: 768px - 1024px (2-column grid)
-- Desktop: > 1024px (3-column grid, side-by-side calculator inputs)
+- Mobile: `< 640px` - Single column, stacked layout, reduced spacing
+- Tablet: `640px - 1024px` - Two-column grid, medium spacing
+- Desktop: `> 1024px` - Three-column grid, full spacing, hover effects
 
 **Keyboard Navigation:**
 - Tab order follows visual hierarchy
-- Focus rings: 2px primary blue outline with 2px offset
+- Focus rings: `ring-2 ring-primary/20` with offset
 - Slider controls keyboard accessible (arrow keys)
+- All interactive elements focusable
 
 **Touch Targets:**
-- Minimum 44px × 44px for all interactive elements on mobile
-- Slider thumb: 32px on touch devices
+- Minimum `44px × 44px` for all interactive elements on mobile
+- Slider thumb: `20px` circle with hover scale
+- Button heights: `h-10 sm:h-12` (40px-48px)
+- Input heights: `h-12 sm:h-14` (48px-56px)
+
+**Color Contrast:**
+- Text on glass cards: Minimum 4.5:1 contrast ratio
+- Interactive elements: High contrast borders and backgrounds
+- Status colors: WCAG AA compliant
 
 ---
 
 ## Visual Hierarchy Principles
 
-1. **Calculator Results Dominate:** Largest, boldest element on metric pages
-2. **Color Communicates Status:** Green/yellow/red instantly convey metric health
-3. **Progressive Disclosure:** Essential info first, advanced tips/mistakes sections below
-4. **Scannable Content:** Clear section headers, bullet points, short paragraphs
-5. **Data Clarity:** Charts and visualizations simplified, no chart junk
+1. **Hero Sections Dominate:** Large gradient cards with prominent titles
+2. **Calculator Results Stand Out:** Large, color-coded numbers with status badges
+3. **Glass Cards Create Depth:** Layered transparency creates visual hierarchy
+4. **Blue Accents Guide Attention:** Strategic use of blue gradients and glows
+5. **Progressive Disclosure:** Essential info first, tips/mistakes below
+6. **Scannable Content:** Clear section headers, icons, short paragraphs
+7. **Color Communicates Status:** Green/yellow/red instantly convey metric health
+
+---
+
+## Design Tokens Reference
+
+**CSS Custom Properties** (defined in `client/src/index.css`):
+- `--background`: Base background color
+- `--foreground`: Primary text color
+- `--primary`: Main accent color (blue)
+- `--glass-bg`: Glass card background
+- `--glass-border`: Glass card border
+- `--glow-primary`: Blue glow effect
+- `--shadow-*`: Custom shadow scales
+
+**Tailwind Utilities:**
+- `.glass-card`: Standard glass effect
+- `.glass-card-elevated`: Enhanced glass with glow
+- `.bg-grid-pattern`: Subtle grid overlay
+- `.glow-primary`: Blue glow shadow
+- `.stats-number`: Tabular numbers for metrics
+
+---
+
+## Mobile Optimizations
+
+**Performance:**
+- Decorative blur elements hidden on mobile
+- Reduced backdrop-filter usage
+- Optimized gradient overlays
+- Smaller image sizes where applicable
+
+**UX Improvements:**
+- Touch-friendly input sizes
+- Simplified navigation (shorter button text)
+- Reduced spacing for content density
+- Single-column layouts for readability
+- Larger tap targets
+
+**Typography:**
+- Responsive font sizes with `clamp()` where appropriate
+- Adjusted line heights for mobile readability
+- Shorter placeholder text in search
+
+---
+
+## Theme Consistency
+
+**Dark Mode:**
+- Deep navy backgrounds with blue undertones
+- Glass cards with subtle blue tints
+- Blue gradient overlays and radial glows
+- High contrast text for readability
+
+**Light Mode:**
+- Soft blue-gray backgrounds
+- White glass cards with blue-tinted shadows
+- Subtle blue gradient overlays
+- Maintains same visual hierarchy as dark mode
+
+**Theme Toggle:**
+- Smooth transitions between themes
+- Persists user preference in localStorage
+- Critical CSS prevents FOUC (Flash of Unstyled Content)
+
+---
+
+Made with attention to detail for the startup community

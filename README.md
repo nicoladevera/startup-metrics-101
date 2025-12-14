@@ -49,24 +49,39 @@ For each metric, you get:
 
 ### 🎨 User Experience
 
-- **Modern UI** - Clean, professional dashboard design
-- **Responsive Design** - Works on mobile, tablet, and desktop
-- **Dark/Light Mode** - Theme toggle for comfortable viewing
-- **Search & Filter** - Quickly find the metrics you need
-- **Smooth Animations** - Polished, professional interactions
-- **Accessible** - High contrast and screen reader support
+- **Premium Glass Aesthetic** - Sophisticated glassmorphism design with subtle transparency and depth
+- **Blue Gradient Accents** - Thoughtfully placed blue gradients and glows throughout both themes
+- **Responsive Design** - Fully optimized for mobile, tablet, and desktop with adaptive layouts
+- **Dual Theme System** - Beautiful dark mode with deep navy blues and vibrant light mode with blue undertones
+- **Plus Jakarta Sans Typography** - Modern, professional font for enhanced readability
+- **Search & Filter** - Quickly find the metrics you need with an elegant search interface
+- **Smooth Animations** - Subtle fade-in and hover effects for polished interactions
+- **Glass Cards** - Elevated card design with backdrop blur and refined borders
+- **Accessible** - High contrast, screen reader support, and keyboard navigation
 
 ## 📸 Screenshots
 
 ### Homepage - Metric Dashboard
-Browse all 15 essential startup metrics with search and filtering capabilities in a beautiful dark mode interface.
+Browse all 15 essential startup metrics with search and filtering capabilities in a premium dark mode interface featuring glass cards, blue gradients, and sophisticated visual design.
 
 ![Homepage](docs/screenshots/homepage.png)
 
+The homepage showcases:
+- **Hero Section** - Gradient background with key features (Free Platform, Interactive Calculators, Clear Explanations)
+- **Search Bar** - Glass-effect search with real-time filtering
+- **Metric Cards** - Glass cards with icons, hover effects, and smooth transitions
+- **Responsive Grid** - Adapts seamlessly from mobile (1 column) to desktop (3 columns)
+
 ### Interactive Calculator
-Real-time metric calculations with interactive sliders, instant feedback, and color-coded benchmarks showing performance levels.
+Real-time metric calculations with interactive sliders, instant feedback, and color-coded benchmarks. The calculator features elevated glass styling with refined inputs and prominent result displays.
 
 ![Interactive Calculator](docs/screenshots/interactive-calculator.png)
+
+The calculator interface includes:
+- **Glass Card Design** - Elevated container with blue-tinted borders and subtle glow
+- **Interactive Sliders** - Smooth gradient tracks with responsive thumb controls
+- **Result Display** - Large, color-coded results with status badges (Excellent/Good/Warning)
+- **Business Type Toggle** - Pill-style selector for B2B/B2C benchmarks (where applicable)
 
 ## 🏢 Business Type Support (B2B vs B2C)
 
@@ -136,11 +151,12 @@ The same 45% margin would be flagged as ⚠️ "Moderate" for B2B, but is ✅ "G
 ### Frontend
 - **React 18.3** with TypeScript
 - **Vite 5.4** - Build tool and dev server
-- **Tailwind CSS 3.4** - Utility-first styling
-- **shadcn/ui** - Radix UI component library
+- **Tailwind CSS 3.4** - Utility-first styling with custom glass utilities
+- **Plus Jakarta Sans** - Premium typography for modern, professional look
+- **shadcn/ui** - Radix UI component library with custom glass variants
 - **Wouter 3.3** - Lightweight routing
 - **TanStack React Query 5.6** - Data fetching
-- **Framer Motion 11.13** - Animations
+- **Framer Motion 11.13** - Subtle animations and transitions
 - **Chart.js 4.5** + **Recharts 2.15** - Data visualization
 - **React Hook Form 7.55** - Form handling
 - **Zod 3.24** - Schema validation
@@ -202,9 +218,14 @@ The same 45% margin would be flagged as ⚠️ "Moderate" for B2B, but is ✅ "G
    ```bash
    npm run dev
    ```
+   
+   **Note**: The server will start on port 5000 by default. If port 5000 is unavailable (common on macOS due to AirPlay), you can use a different port:
+   ```bash
+   PORT=3000 npm run dev
+   ```
 
 6. **Open your browser**
-   Navigate to `http://localhost:5000`
+   Navigate to `http://localhost:5000` (or the port you specified)
 
 ## 🔐 Environment Variables
 
@@ -475,17 +496,36 @@ export const yourMetric: Metric = {
 }
 ```
 
-### Theming
+### Theming & Design System
 
-Customize colors in `tailwind.config.ts`:
+The app features a sophisticated design system with glassmorphism effects and blue gradient accents.
+
+**Design Tokens** (defined in `client/src/index.css`):
+- **Glass Cards** - `.glass-card` and `.glass-card-elevated` utilities with backdrop blur
+- **Color Palette** - Blue-tinted backgrounds and borders for both dark and light modes
+- **Gradients** - Radial and linear gradients for depth and visual interest
+- **Shadows & Glows** - Custom shadow utilities with blue-tinted glows
+
+**Customize Colors** in `tailwind.config.ts`:
 ```typescript
 colors: {
-  primary: { ... },
-  success: { ... },
-  warning: { ... },
-  error: { ... }
+  primary: { ... },      // Vibrant blue (#0066FF)
+  success: { ... },      // Emerald green
+  warning: { ... },      // Amber yellow
+  error: { ... }         // Red
 }
 ```
+
+**Glass Card Utilities**:
+- `.glass-card` - Standard glass effect with subtle transparency
+- `.glass-card-elevated` - Enhanced glass with blue glow for important sections
+- `.bg-grid-pattern` - Subtle grid overlay for texture
+- `.glow-primary` - Blue glow effects for interactive elements
+
+**Theme Variables**:
+- Dark mode uses deep navy backgrounds (`hsl(222 58% 7%)`) with blue undertones
+- Light mode uses soft blue-gray backgrounds (`hsl(220 30% 97%)`) with blue accents
+- Both themes feature consistent blue gradient overlays and radial glows
 
 ## 🚢 Deployment
 
@@ -590,6 +630,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - UI components from [shadcn/ui](https://ui.shadcn.com/)
 - Icons from [Lucide](https://lucide.dev/)
 - Styled with [Tailwind CSS](https://tailwindcss.com/)
+- Typography: [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) from Google Fonts
+- Design inspiration: Modern glassmorphism and premium dashboard aesthetics
 
 ## 📞 Support
 
