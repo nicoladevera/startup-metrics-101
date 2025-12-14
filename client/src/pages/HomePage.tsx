@@ -66,24 +66,24 @@ export default function HomePage() {
               </p>
 
               {/* Stats Row */}
-              <div className="flex flex-wrap justify-center gap-6 sm:gap-8 lg:gap-16 mb-8 sm:mb-12">
-                <div className="text-center min-w-[80px]">
+              <div className="flex justify-center gap-3 sm:gap-8 lg:gap-16 mb-8 sm:mb-12">
+                <div className="text-center flex-1 max-w-[110px] sm:max-w-none">
                   <div className="flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+                    <Sparkles className="w-4 h-4 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
                   </div>
-                  <div className="text-xs sm:text-sm text-white/60 mt-1">Free Platform</div>
+                  <div className="text-[10px] sm:text-sm text-white/60 mt-0.5 sm:mt-1">Free Platform</div>
                 </div>
-                <div className="text-center min-w-[80px]">
+                <div className="text-center flex-1 max-w-[110px] sm:max-w-none">
                   <div className="flex items-center justify-center">
-                    <Calculator className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+                    <Calculator className="w-4 h-4 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
                   </div>
-                  <div className="text-xs sm:text-sm text-white/60 mt-1">Interactive Calculators</div>
+                  <div className="text-[10px] sm:text-sm text-white/60 mt-0.5 sm:mt-1">Interactive Calculators</div>
                 </div>
-                <div className="text-center min-w-[80px]">
+                <div className="text-center flex-1 max-w-[110px] sm:max-w-none">
                   <div className="flex items-center justify-center">
-                    <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+                    <BookOpen className="w-4 h-4 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
                   </div>
-                  <div className="text-xs sm:text-sm text-white/60 mt-1">Clear Explanations</div>
+                  <div className="text-[10px] sm:text-sm text-white/60 mt-0.5 sm:mt-1">Clear Explanations</div>
                 </div>
               </div>
 
