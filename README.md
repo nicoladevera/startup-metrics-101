@@ -67,21 +67,37 @@ Browse all 15 essential startup metrics with search and filtering capabilities i
 ![Homepage](docs/screenshots/homepage.png)
 
 The homepage showcases:
-- **Hero Section** - Gradient background with key features (Free Platform, Interactive Calculators, Clear Explanations)
-- **Search Bar** - Glass-effect search with real-time filtering
-- **Metric Cards** - Glass cards with icons, hover effects, and smooth transitions
-- **Responsive Grid** - Adapts seamlessly from mobile (1 column) to desktop (3 columns)
+- **Hero Section** - Gradient blue background with centered title "Startup Metrics 101" and descriptive subtitle
+- **Key Features** - Three feature highlights: Free Platform (sparkles icon), Interactive Calculators (calculator icon), and Clear Explanations (book icon)
+- **Search Bar** - Glass-effect search bar with magnifying glass icon and "Search metrics..." placeholder
+- **Metric Cards Grid** - Three-column grid displaying 9+ metric cards, each with:
+  - Icon in the top-left corner (line graph, dollar sign, flame, airplane, target, diamond, scales, trend line, bar chart)
+  - Bold metric name with abbreviation (e.g., "Monthly Recurring Revenue (MRR)")
+  - One-line description below the name
+- **Theme Toggle** - Sun/moon icon in the top-right corner for switching between light and dark modes
+- **Subtle Grid Pattern** - Blue-tinted grid overlay visible in the dark background
 
-### Interactive Calculator
+### Interactive Calculator - Net Revenue Retention (NRR)
 Real-time metric calculations with interactive sliders, instant feedback, and color-coded benchmarks. The calculator features elevated glass styling with refined inputs and prominent result displays.
 
 ![Interactive Calculator](docs/screenshots/interactive-calculator.png)
 
 The calculator interface includes:
+- **Sample Calculation Section** - Example walkthrough showing:
+  - Starting MRR: $100,000
+  - Expansion revenue: +$30,000
+  - Churned revenue: -$10,000
+  - Final NRR calculation: 120%
+- **Interactive Calculator Section** - Three input fields with synchronized sliders:
+  - **Starting MRR** - Input box ($100,000) with slider ranging $0 to $1,000,000
+  - **Expansion Revenue** - Input box ($30,000) with slider ranging $0 to $500,000
+  - **Churned Revenue** - Input box ($10,000) with slider ranging $0 to $500,000
+- **Result Display** - Prominent result card showing:
+  - Green status badge with checkmark icon labeled "Excellent"
+  - Large green percentage "120%" displayed prominently
+  - Feedback message: "Exceptional! Your product has strong expansion and retention."
 - **Glass Card Design** - Elevated container with blue-tinted borders and subtle glow
-- **Interactive Sliders** - Smooth gradient tracks with responsive thumb controls
-- **Result Display** - Large, color-coded results with status badges (Excellent/Good/Warning)
-- **Business Type Toggle** - Pill-style selector for B2B/B2C benchmarks (where applicable)
+- **Dark Theme** - Clean dark blue background with light blue and green accents
 
 ## 🏢 Business Type Support (B2B vs B2C)
 
