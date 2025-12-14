@@ -48,7 +48,7 @@ export default function HomePage() {
                   placeholder="Search metrics (e.g., MRR, Churn, CAC...)"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-14 pr-5 py-4 text-base border border-white/20 dark:border-white/10 focus:border-white/40 dark:focus:border-white/20 bg-white/10 dark:bg-white/5 text-white placeholder:text-white/60 dark:placeholder:text-white/40 backdrop-blur-sm rounded-xl shadow-lg transition-all duration-200 focus:ring-2 focus:ring-white/20"
+                  className="w-full pl-14 pr-5 py-4 text-base border border-white/20 dark:border-white/10 focus:border-white/40 dark:focus:border-white/20 bg-white/10 dark:bg-white/5 text-white placeholder:text-white/60 dark:placeholder:text-white/40 rounded-xl shadow-lg transition-all duration-200 focus:ring-2 focus:ring-white/20"
                   data-testid="search-input"
                 />
               </div>
