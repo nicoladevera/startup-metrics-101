@@ -15,7 +15,7 @@ test.describe('HomePage', () => {
     await expect(htmlElement).toHaveAttribute('class', /dark/);
   });
 
-  test('should display all 15 metric cards', async ({ page }) => {
+  test('should display all 18 metric cards', async ({ page }) => {
     await page.goto('/');
 
     // Wait for metrics to load
@@ -23,7 +23,7 @@ test.describe('HomePage', () => {
 
     // Count metric cards
     const metricCards = page.locator('[data-testid^="metric-card-"]');
-    await expect(metricCards).toHaveCount(15);
+    await expect(metricCards).toHaveCount(18);
   });
 
   test('should navigate to metric detail when card is clicked', async ({ page }) => {
@@ -48,8 +48,8 @@ test.describe('HomePage', () => {
     const visibleCards = page.locator('[data-testid^="metric-card-"]:visible');
     const count = await visibleCards.count();
 
-    // Should show less than 15 metrics
-    expect(count).toBeLessThan(15);
+    // Should show less than 18 metrics
+    expect(count).toBeLessThan(18);
     expect(count).toBeGreaterThan(0);
   });
 
