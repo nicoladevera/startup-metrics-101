@@ -17,6 +17,9 @@ import { NET_PROFIT_MARGIN_METRIC } from './net-profit-margin';
 import { GROWTH_RATE_METRIC } from './growth-rate';
 import { RULE_OF_40_METRIC } from './rule-of-40';
 import { UNIT_ECONOMICS_METRIC } from './unit-economics';
+import { CAC_PAYBACK_PERIOD_METRIC } from './cac-payback-period';
+import { ARPU_METRIC } from './arpu';
+import { EBITDA_MARGIN_METRIC } from './ebitda-margin';
 
 export const METRICS = [
   MRR_METRIC,
@@ -33,7 +36,10 @@ export const METRICS = [
   NET_PROFIT_MARGIN_METRIC,
   GROWTH_RATE_METRIC,
   RULE_OF_40_METRIC,
-  UNIT_ECONOMICS_METRIC
+  UNIT_ECONOMICS_METRIC,
+  CAC_PAYBACK_PERIOD_METRIC,
+  ARPU_METRIC,
+  EBITDA_MARGIN_METRIC
 ];
 
 export function getMetricById(id: string) {
