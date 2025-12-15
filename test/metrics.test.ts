@@ -499,6 +499,99 @@ describe('Metric Calculator Functions', () => {
       expect(result).toBe(null);
     });
   });
+
+  describe('CAC Payback Period', () => {
+    const metric = getMetricById('cac-payback-period')!;
+
+    it('should calculate payback period correctly', () => {
+      const result = metric.calculator.calculateFn({ cac: 1000, arpu: 100, grossMargin: 80 });
+      // $100 * 0.8 = $80 gross profit per month
+      // 1000 / 80 = 12.5 months
+      expect(result).toBe(12.5);
+    });
+
+    it('should format result with months suffix', () => {
+      const formatted = metric.calculator.formatResult(12.5);
+      expect(formatted).toBe('12.5 months');
+    });
+
+    it('should return different benchmarks for B2B vs B2C', () => {
+      const b2bBenchmark = metric.calculator.getBenchmark(12, 'B2B');
+      const b2cBenchmark = metric.calculator.getBenchmark(12, 'B2C');
+
+      expect(b2bBenchmark.label).toBe('Excellent');
+      expect(b2cBenchmark.label).toBe('Fair'); // B2C needs faster payback
+    });
+
+    it('should return null when ARPU or Gross Margin is 0', () => {
+      const result = metric.calculator.calculateFn({ cac: 1000, arpu: 0, grossMargin: 80 });
+      expect(result).toBe(null);
+    });
+  });
+
+  describe('ARPU (Average Revenue Per User)', () => {
+    const metric = getMetricById('arpu')!;
+
+    it('should calculate ARPU correctly', () => {
+      const result = metric.calculator.calculateFn({ revenue: 50000, users: 500 });
+      expect(result).toBe(100);
+    });
+
+    it('should format result with currency', () => {
+      const formatted = metric.calculator.formatResult(1000.50);
+      expect(formatted).toBe('$1,000.50');
+    });
+
+    it('should return different benchmarks for B2B vs B2C', () => {
+      const b2bBenchmark = metric.calculator.getBenchmark(100, 'B2B');
+      const b2cBenchmark = metric.calculator.getBenchmark(100, 'B2C');
+
+      expect(b2bBenchmark.label).toBe('Good (Mid-Market)');
+      expect(b2cBenchmark.label).toBe('High');
+    });
+
+    it('should return null when users count is 0', () => {
+      const result = metric.calculator.calculateFn({ revenue: 50000, users: 0 });
+      expect(result).toBe(null);
+    });
+  });
+
+  describe('EBITDA Margin', () => {
+    const metric = getMetricById('ebitda-margin')!;
+
+    it('should calculate EBITDA margin correctly', () => {
+      const result = metric.calculator.calculateFn({ ebitda: 200000, revenue: 1000000 });
+      expect(result).toBe(20);
+    });
+
+    it('should format result as percentage', () => {
+      const formatted = metric.calculator.formatResult(20.5);
+      expect(formatted).toBe('20.5%');
+    });
+
+    it('should return excellent for high margin', () => {
+      const benchmark = metric.calculator.getBenchmark(45);
+      expect(benchmark.color).toBe('success');
+      expect(benchmark.label).toBe('World Class');
+    });
+
+    it('should return warning for burn mode', () => {
+      const benchmark = metric.calculator.getBenchmark(-10);
+      expect(benchmark.color).toBe('warning');
+      expect(benchmark.label).toBe('Burn Mode');
+    });
+
+    it('should return error for high burn', () => {
+      const benchmark = metric.calculator.getBenchmark(-30);
+      expect(benchmark.color).toBe('error');
+      expect(benchmark.label).toBe('High Burn');
+    });
+
+    it('should return null when revenue is 0', () => {
+      const result = metric.calculator.calculateFn({ ebitda: 50000, revenue: 0 });
+      expect(result).toBe(null);
+    });
+  });
 });
 
 describe('getMetricById utility', () => {
@@ -515,8 +608,8 @@ describe('getMetricById utility', () => {
 });
 
 describe('METRICS array', () => {
-  it('should contain 15 metrics', () => {
-    expect(METRICS).toHaveLength(15);
+  it('should contain 18 metrics', () => {
+    expect(METRICS).toHaveLength(18);
   });
 
   it('should have unique IDs', () => {
