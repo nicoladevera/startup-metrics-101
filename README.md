@@ -8,11 +8,11 @@ An interactive educational platform that teaches startup professionals about ess
 
 ## 🎯 Overview
 
-Startup Metrics 101 makes complex startup metrics understandable and actionable for founders, investors, and startup professionals. Learn about 15 essential business metrics with hands-on calculation tools, real-time feedback, and comprehensive educational content.
+Startup Metrics 101 makes complex startup metrics understandable and actionable for founders, investors, and startup professionals. Learn about 18 essential business metrics with hands-on calculation tools, real-time feedback, and comprehensive educational content.
 
 ## ✨ Features
 
-### 📊 15 Essential Startup Metrics
+### 📊 18 Essential Startup Metrics
 
 - **MRR** (Monthly Recurring Revenue) - Predictable monthly subscription revenue
 - **ARR** (Annual Recurring Revenue) - Annualized version of MRR
@@ -29,6 +29,9 @@ Startup Metrics 101 makes complex startup metrics understandable and actionable 
 - **Growth Rate** - Month-over-month or period-over-period growth
 - **Rule of 40** - Growth rate + profit margin indicator
 - **Unit Economics** - LTV to CAC comparison
+- **CAC Payback Period** - Time to recover acquisition costs
+- **ARPU** (Average Revenue Per User) - Revenue generated per active user
+- **EBITDA Margin** - Operating profitability percentage
 
 ### 🧮 Interactive Learning
 
@@ -62,7 +65,7 @@ For each metric, you get:
 ## 📸 Screenshots
 
 ### Homepage - Metric Dashboard
-Browse all 15 essential startup metrics with search and filtering capabilities in a premium dark mode interface featuring glass cards, blue gradients, and sophisticated visual design.
+Browse all 18 essential startup metrics with search and filtering capabilities in a premium dark mode interface featuring glass cards, blue gradients, and sophisticated visual design.
 
 ![Homepage](docs/screenshots/homepage.png)
 
@@ -105,7 +108,7 @@ Several metrics include **business type-specific benchmarks** to provide more ac
 
 ### Metrics with Business Type Differentiation
 
-The following 5 metrics support B2B/B2C toggle with tailored benchmarks:
+The following 7 metrics support B2B/B2C toggle with tailored benchmarks:
 
 | Metric | B2B Benchmark | B2C Benchmark | Why It Differs |
 |--------|---------------|---------------|----------------|
@@ -114,6 +117,8 @@ The following 5 metrics support B2B/B2C toggle with tailored benchmarks:
 | **Customer Acquisition Cost (CAC)** | $500-5,000+ | $10-100 | B2B requires sales teams and longer cycles; B2C relies on digital marketing at scale |
 | **Lifetime Value (LTV)** | $5,000-50,000+ | $100-1,000 | B2B contracts are larger and longer-term; B2C purchases are smaller and more frequent |
 | **Churn Rate** | 5-7% annual (Good) | 30-40% annual (Acceptable) | B2B has contracts and switching costs; B2C has low friction and high competition |
+| **CAC Payback Period** | <12 months (Excellent) | <6 months (Excellent) | B2B contracts lock in revenue allowing longer payback; B2C needs faster ROI due to churn risk |
+| **ARPU** | >$1,000 (Enterprise) | >$50 (High) | B2B involves teams/licenses; B2C is individual volume-based |
 
 ### How to Use Business Type Toggle
 
