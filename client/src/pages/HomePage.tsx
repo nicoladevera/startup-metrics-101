@@ -23,7 +23,7 @@ const METRIC_CATEGORIES = [
     id: 'profitability',
     title: 'Profitability & Health',
     description: 'Are you making money and surviving?',
-    metricIds: ['gross-margin', 'contribution-margin', 'net-profit-margin', 'burn-rate', 'runway', 'ebitda-margin']
+    metricIds: ['gross-margin', 'contribution-margin', 'net-profit-margin', 'ebitda-margin', 'burn-rate', 'runway']
   }
 ];
 
