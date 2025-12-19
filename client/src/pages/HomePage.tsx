@@ -76,14 +76,22 @@ export default function HomePage() {
 
             {/* Content */}
             <div className="relative z-10 px-5 py-10 sm:px-8 sm:py-14 lg:px-16 lg:py-20">
+              <div className="flex justify-center mb-6">
+                <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-sm">
+                  <div className="w-2 h-2 rounded-full bg-blue-500 mr-2 animate-pulse"></div>
+                  <span className="text-xs font-semibold tracking-wider text-blue-100 uppercase">Updated for 2026</span>
+                </div>
+              </div>
+
               {/* Title */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center text-white mb-4 sm:mb-6 tracking-tight" data-testid="hero-title">
-                Startup Metrics 101
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-center text-white mb-6 tracking-tight leading-tight" data-testid="hero-title">
+                Master the <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Startup Metrics</span> <br className="hidden sm:block" />
+                that Matter
               </h1>
 
               {/* Subtitle */}
-              <p className="text-base sm:text-lg lg:text-xl text-center max-w-2xl mx-auto text-white/80 leading-relaxed mb-8 sm:mb-10 px-2">
-                Master the 18 essential business metrics every startup professional should know.
+              <p className="text-lg sm:text-xl text-center max-w-3xl mx-auto text-blue-100/80 leading-relaxed mb-10 px-4">
+                A comprehensive, free guide to the 18 essential metrics every founder needs to understand. From CAC to LTV, we break it down simply.
               </p>
 
               {/* Stats Row */}
@@ -114,7 +122,7 @@ export default function HomePage() {
                   <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 sm:w-5 sm:h-5 transition-colors group-focus-within:text-white/70" />
                   <Input
                     type="search"
-                    placeholder="Search metrics..."
+                    placeholder="Search for a metric (e.g. 'Churn', 'MRR')..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full h-12 sm:h-14 pl-10 sm:pl-12 pr-4 sm:pr-5 text-sm sm:text-base bg-white/10 dark:bg-white/5 border-white/20 dark:border-white/10 text-white placeholder:text-white/50 rounded-xl sm:rounded-2xl focus:border-white/40 dark:focus:border-white/20 focus:ring-2 focus:ring-white/20 transition-all duration-200"
