@@ -8,7 +8,7 @@ test.describe('HomePage', () => {
     await expect(page).toHaveTitle(/Startup Metrics 101/);
 
     // Check main heading is visible
-    await expect(page.getByRole('heading', { name: /Startup Metrics 101/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Master the Startup Metrics/i })).toBeVisible();
 
     // Check default theme is dark (wait for theme to be applied)
     const htmlElement = page.locator('html');
@@ -41,7 +41,7 @@ test.describe('HomePage', () => {
     await page.goto('/');
 
     // Find and fill the search input
-    const searchInput = page.getByPlaceholder(/search metrics/i);
+    const searchInput = page.getByPlaceholder(/search for a metric/i);
     await searchInput.fill('revenue');
 
     // Check that only revenue-related metrics are shown
