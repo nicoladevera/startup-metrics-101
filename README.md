@@ -16,22 +16,22 @@ Startup Metrics 101 makes complex startup metrics understandable and actionable 
 
 - **MRR** (Monthly Recurring Revenue) - Predictable monthly subscription revenue
 - **ARR** (Annual Recurring Revenue) - Annualized version of MRR
-- **Burn Rate** - Monthly cash spending rate
-- **Runway** - Months of cash remaining
+- **Growth Rate** - Month-over-month or period-over-period growth
+- **NRR** (Net Revenue Retention) - Revenue growth from existing customers
+- **Churn Rate** - Percentage of customers lost
+- **Rule of 40** - Growth rate + profit margin indicator
 - **CAC** (Customer Acquisition Cost) - Cost to acquire one customer
 - **LTV** (Lifetime Value) - Total revenue per customer over lifetime
 - **LTV:CAC Ratio** - Customer value vs. acquisition cost relationship
-- **Churn Rate** - Percentage of customers lost
-- **NRR** (Net Revenue Retention) - Revenue growth from existing customers
-- **Gross Margin** - Revenue minus cost of goods sold
-- **Contribution Margin** - Revenue after variable costs
-- **Net Profit Margin** - Final profit as percentage of revenue
-- **Growth Rate** - Month-over-month or period-over-period growth
-- **Rule of 40** - Growth rate + profit margin indicator
 - **Unit Economics** - LTV to CAC comparison
 - **CAC Payback Period** - Time to recover acquisition costs
 - **ARPU** (Average Revenue Per User) - Revenue generated per active user
+- **Gross Margin** - Revenue minus cost of goods sold
+- **Contribution Margin** - Revenue after variable costs
+- **Net Profit Margin** - Final profit as percentage of revenue
 - **EBITDA Margin** - Operating profitability percentage
+- **Burn Rate** - Monthly cash spending rate
+- **Runway** - Months of cash remaining
 
 ### 🧮 Interactive Learning
 
