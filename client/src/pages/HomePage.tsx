@@ -76,12 +76,6 @@ export default function HomePage() {
 
             {/* Content */}
             <div className="relative z-10 px-5 py-10 sm:px-8 sm:py-14 lg:px-16 lg:py-20">
-              <div className="flex justify-center mb-6">
-                <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-sm">
-                  <div className="w-2 h-2 rounded-full bg-blue-500 mr-2 animate-pulse"></div>
-                  <span className="text-xs font-semibold tracking-wider text-blue-100 uppercase">Updated for 2026</span>
-                </div>
-              </div>
 
               {/* Title */}
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-center text-white mb-6 tracking-tight leading-tight" data-testid="hero-title">
